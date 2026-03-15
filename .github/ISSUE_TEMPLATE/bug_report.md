@@ -10,7 +10,7 @@ labels: bug
 
 ## Steps to reproduce
 
-1. Run `/tai-...`
+1. Run `/tstack-...`
 2. ...
 
 ## Expected behavior
@@ -19,7 +19,7 @@ labels: bug
 
 ## Environment
 
-- tai version: (run `tai --version` or check `~/tai/VERSION`)
+- tstack version: (run `tstack --version` or check `~/tstack/VERSION`)
 - Claude Code version:
 - OS:
 

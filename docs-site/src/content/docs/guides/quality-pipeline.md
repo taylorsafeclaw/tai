@@ -35,11 +35,11 @@ Vitest (or Jest) unit/integration tests. Catches logic errors and regressions. I
 
 ## Browser testing (step 4)
 
-Browser tests are smart-detected — tai checks what's configured before deciding whether to run them.
+Browser tests are smart-detected — tstack checks what's configured before deciding whether to run them.
 
 ### Playwright detection
 
-Before running, tai checks:
+Before running, tstack checks:
 1. Does `playwright.config.ts` exist?
 2. Is `@playwright/test` in `package.json`?
 3. Are there `*.spec.ts` files for the area that was touched?
@@ -55,7 +55,7 @@ Before running, tai checks:
 1. Does `.claude/dogfood.json` exist?
 2. Does it have a target URL and auth configured?
 
-Dogfood is never auto-run (it's stateful and interacts with a live environment). It requires explicit opt-in via `--dogfood` flag or `/tai-test dogfood`.
+Dogfood is never auto-run (it's stateful and interacts with a live environment). It requires explicit opt-in via `--dogfood` flag or `/tstack-test dogfood`.
 
 ### When browser tests run
 
@@ -69,13 +69,13 @@ Dogfood is never auto-run (it's stateful and interacts with a live environment).
 
 ## Standalone commands
 
-### `/tai-validate`
+### `/tstack-validate`
 
 Runs steps 1–3 (+ playwright if configured) and reports results. Used standalone or spawned by other commands.
 
 Does **not** fix anything. Single pass. Stops on first failure.
 
-### `/tai-test [playwright|dogfood|all]`
+### `/tstack-test [playwright|dogfood|all]`
 
 Runs browser tests only (steps 4). Use after code is confirmed passing steps 1–3.
 

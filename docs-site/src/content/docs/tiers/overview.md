@@ -3,21 +3,21 @@ title: "Tiers: Task / Feature / Mission"
 description: The three work tiers and how to choose between them
 ---
 
-tai organizes work into three tiers based on scope and coordination needs.
+tstack organizes work into three tiers based on scope and coordination needs.
 
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  TIER 1: TASK                                           │
 │  Minutes. One agent. One commit. No PR.                 │
-│  /tai-task "fix the submit button color"                │
+│  /tstack-task "fix the submit button color"                │
 ├──────────────────────────────────────────────────────────┤
 │  TIER 2: FEATURE                                        │
 │  Hours. Agent Team. Atomic commits. PR.                 │
-│  /tai-feature "add workspace pause/resume"              │
+│  /tstack-feature "add workspace pause/resume"              │
 ├──────────────────────────────────────────────────────────┤
 │  TIER 3: MISSION                                        │
 │  Days/weeks. Multiple features. Multiple PRs.           │
-│  /tai-mission "build workspace management"              │
+│  /tstack-mission "build workspace management"              │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -41,7 +41,7 @@ When in doubt, start smaller — a task can always be promoted to a feature if i
 
 ## Tier 1: Task
 
-**Command:** `/tai-task`
+**Command:** `/tstack-task`
 
 **Pipeline:**
 ```
@@ -58,14 +58,14 @@ context (fast Explore) → implement → lint + build + test → commit
 
 **Example:**
 ```
-/tai-task "fix the workspace card status badge color — it should be green for running"
+/tstack-task "fix the workspace card status badge color — it should be green for running"
 ```
 
 ---
 
 ## Tier 2: Feature
 
-**Command:** `/tai-feature`
+**Command:** `/tstack-feature`
 
 **Pipeline:**
 ```
@@ -83,42 +83,42 @@ context → plan → confirm → branch → Agent Team → quality → push → 
 
 **Manual decomposed flow** (step-by-step control):
 ```
-/tai-context "pause/resume"   → gather context
-/tai-plan "pause/resume"      → write plan, confirm
-/tai-implement plan.md        → Agent Team executes
-/tai-validate                 → quality pipeline
-/tai-commit                   → commit
-/tai-ship                     → open PR
+/tstack-context "pause/resume"   → gather context
+/tstack-plan "pause/resume"      → write plan, confirm
+/tstack-implement plan.md        → Agent Team executes
+/tstack-validate                 → quality pipeline
+/tstack-commit                   → commit
+/tstack-ship                     → open PR
 ```
 
 **Example:**
 ```
-/tai-feature "add workspace pause/resume — pause stops the machine, resume restarts it"
+/tstack-feature "add workspace pause/resume — pause stops the machine, resume restarts it"
 ```
 
 ---
 
 ## Tier 3: Mission
 
-**Command:** `/tai-mission`
+**Command:** `/tstack-mission`
 
 **Pipeline:**
 ```
 scope codebase → produce ROADMAP.md → create state.json → per-feature loop:
-  /tai-scope → /tai-plan → /tai-execute → /tai-verify → /tai-next → repeat
+  /tstack-scope → /tstack-plan → /tstack-execute → /tstack-verify → /tstack-next → repeat
 ```
 
 - ROADMAP.md defines numbered features with success criteria
-- `.tai/state.json` tracks progress across sessions
+- `.tstack/state.json` tracks progress across sessions
 - Each feature is a self-contained tier-2 pipeline with its own branch and PR
-- `/tai-next` closes the current feature (verify → PR → advance)
+- `/tstack-next` closes the current feature (verify → PR → advance)
 - State persists across Claude Code sessions — missions can span days or weeks
 
 **Model:** opus (mission planning + scoping), sonnet (execution), haiku (verification)
 
 **Example:**
 ```
-/tai-mission "build the full workspace management system — pause, resume, archive, restore, billing"
+/tstack-mission "build the full workspace management system — pause, resume, archive, restore, billing"
 ```
 
 See [Missions](/tiers/missions/) for the full mission workflow and state format.

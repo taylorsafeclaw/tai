@@ -1,17 +1,17 @@
-# CLAUDE.md — tai Framework
+# CLAUDE.md — tstack Framework
 
-This is the tai dev framework repository. tai is a lightweight, installable workflow for Claude Code — three work tiers, opinionated quality pipeline, plug-and-play agents and skills.
+This is the tstack dev framework repository. tstack is a lightweight, installable workflow for Claude Code — three work tiers, opinionated quality pipeline, plug-and-play agents and skills.
 
 ## Repo structure
 
 ```
-tai/
-├── cli/                ← Rust CLI binary (`tai install`, `tai doctor`, etc.)
+tstack/
+├── cli/                ← Rust CLI binary (`tstack install`, `tstack doctor`, etc.)
 │   ├── Cargo.toml
 │   └── src/
-├── commands/           ← slash commands → ~/.claude/commands/tai-*.md
-├── agents/             ← subagents → ~/.claude/agents/tai-*.md
-├── skills/             ← skills → ~/.claude/skills/tai-*/SKILL.md
+├── commands/           ← slash commands → ~/.claude/commands/tstack-*.md
+├── agents/             ← subagents → ~/.claude/agents/tstack-*.md
+├── skills/             ← skills → ~/.claude/skills/tstack-*/SKILL.md
 ├── hooks/              ← hook scripts (quality gate, branch guard, etc.)
 ├── templates/          ← project-specific extensions
 │   └── example/        ← minimal template stub (reference implementation)
@@ -30,12 +30,12 @@ tai/
 
 ```bash
 # Via CLI (preferred):
-tai install      # symlinks commands + agents + skills to ~/.claude/
-tai uninstall    # removes all symlinks
+tstack install      # symlinks commands + agents + skills to ~/.claude/
+tstack uninstall    # removes all symlinks
 
 # Or via bash scripts:
-./setup          # same as tai install
-./uninstall      # same as tai uninstall
+./setup          # same as tstack install
+./uninstall      # same as tstack uninstall
 ```
 
 Both are idempotent — safe to re-run after adding commands, agents, or skills.
@@ -43,37 +43,37 @@ Both are idempotent — safe to re-run after adding commands, agents, or skills.
 ### Building the CLI
 
 ```bash
-cd cli && cargo install --path .   # puts `tai` on PATH
+cd cli && cargo install --path .   # puts `tstack` on PATH
 # or: cd cli && cargo build --release
 ```
 
 ## Conventions
 
-- All tai files are prefixed `tai-` — prevents collisions with other frameworks (`gsd-*`, `gstack-*`)
-- Commands: `commands/tai-*.md` with frontmatter (`name`, `description`, `argument-hint`, `model`)
-- Agents: `agents/tai-*.md` with frontmatter (`name`, `description`, `model`, `tools`, `maxTurns`)
-- Skills: `skills/tai-*/SKILL.md` with frontmatter (`name`, `description`, `user-invocable`)
+- All tstack files are prefixed `tstack-` — prevents collisions with other frameworks (`gsd-*`, `gstack-*`)
+- Commands: `commands/tstack-*.md` with frontmatter (`name`, `description`, `argument-hint`, `model`)
+- Agents: `agents/tstack-*.md` with frontmatter (`name`, `description`, `model`, `tools`, `maxTurns`)
+- Skills: `skills/tstack-*/SKILL.md` with frontmatter (`name`, `description`, `user-invocable`)
 - Project templates: `templates/<project>/` with an `install` script
 
 ## Adding a new command
 
 ```bash
 # Via CLI:
-tai add command my-thing   # scaffolds commands/tai-my-thing.md
-tai install                # refresh symlinks
+tstack add command my-thing   # scaffolds commands/tstack-my-thing.md
+tstack install                # refresh symlinks
 
 # Via slash command:
-/tai-new-command
+/tstack-new-command
 
 # Or manually:
-# 1. Create commands/tai-<name>.md with frontmatter
-# 2. Run tai install (or ./setup)
+# 1. Create commands/tstack-<name>.md with frontmatter
+# 2. Run tstack install (or ./setup)
 ```
 
 Frontmatter format:
 ```yaml
 ---
-name: tai-<name>
+name: tstack-<name>
 description: <one-line description>
 argument-hint: "<hint for the user>"
 model: sonnet | opus | haiku
@@ -84,17 +84,17 @@ model: sonnet | opus | haiku
 
 ```bash
 # Scaffold with the built-in tool:
-/tai-new-agent
+/tstack-new-agent
 
 # Or create manually:
-# 1. Create agents/tai-<name>.md with frontmatter
+# 1. Create agents/tstack-<name>.md with frontmatter
 # 2. Run ./setup to refresh symlinks
 ```
 
 Agent frontmatter:
 ```yaml
 ---
-name: tai-<name>
+name: tstack-<name>
 description: <one-line description>
 model: sonnet | opus | haiku
 tools: Read, Grep, Glob, Edit, Write, Bash
@@ -105,14 +105,14 @@ maxTurns: 30
 ## Adding a new skill
 
 ```bash
-# 1. Create skills/tai-<name>/SKILL.md with frontmatter
+# 1. Create skills/tstack-<name>/SKILL.md with frontmatter
 # 2. Run ./setup to refresh symlinks
 ```
 
 Skill frontmatter:
 ```yaml
 ---
-name: tai-<name>
+name: tstack-<name>
 description: <one-line description>
 user-invocable: true | false
 ---
@@ -122,15 +122,15 @@ user-invocable: true | false
 
 | Tier | Command | Scope | Model |
 |------|---------|-------|-------|
-| Task | `/tai-task` | Minutes, 1–3 files, single commit, no PR | sonnet |
-| Feature | `/tai-feature` | Hours, 3–10 files, Agent Team, PR | opus → sonnet |
-| Mission | `/tai-mission` | Days/weeks, multiple features, multiple PRs | opus → sonnet → haiku |
+| Task | `/tstack-task` | Minutes, 1–3 files, single commit, no PR | sonnet |
+| Feature | `/tstack-feature` | Hours, 3–10 files, Agent Team, PR | opus → sonnet |
+| Mission | `/tstack-mission` | Days/weeks, multiple features, multiple PRs | opus → sonnet → haiku |
 
 ## Model strategy
 
-- **opus** — thinking: context (`/tai-context`), planning (`/tai-plan`), missions, scoping, debugging
-- **sonnet** — building: implementation (`/tai-task`, `/tai-execute`), review, refactoring, committing
-- **haiku** — running: validation (`/tai-validate`), status, help
+- **opus** — thinking: context (`/tstack-context`), planning (`/tstack-plan`), missions, scoping, debugging
+- **sonnet** — building: implementation (`/tstack-task`, `/tstack-execute`), review, refactoring, committing
+- **haiku** — running: validation (`/tstack-validate`), status, help
 
 ## Quality pipeline
 
@@ -143,14 +143,14 @@ Stop on first failure. Never commit broken code.
 ## Extension system
 
 Commands, agents, and skills can live in three places (highest → lowest priority):
-1. `<project>/.claude/commands|agents|skills/tai-*.md` — project-specific
-2. `~/tai/extensions/tai-*.md` — personal add-ons (gitignored)
-3. `~/tai/commands|agents|skills/tai-*.md` — core (this repo)
+1. `<project>/.claude/commands|agents|skills/tstack-*.md` — project-specific
+2. `~/tstack/extensions/tstack-*.md` — personal add-ons (gitignored)
+3. `~/tstack/commands|agents|skills/tstack-*.md` — core (this repo)
 
 ## Documentation
 
 Full docs in `docs/`:
-- `docs/cli.md` — Rust CLI reference (`tai`, `tai doctor`, etc.)
+- `docs/cli.md` — Rust CLI reference (`tstack`, `tstack doctor`, etc.)
 - `docs/tiers.md` — tier breakdown and decision guide
 - `docs/commands.md` — all slash commands with args, model, behavior
 - `docs/agents.md` — agents reference (global + project template agents)

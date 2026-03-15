@@ -1,8 +1,8 @@
 [package]
-name = "tai"
+name = "tstack"
 version = "0.2.0"
 edition = "2021"
-description = "CLI for the tai dev framework"
+description = "CLI for the tstack dev framework"
 license = "MIT"
 
 [dependencies]

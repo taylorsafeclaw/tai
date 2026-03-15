@@ -10,7 +10,7 @@
  *   "hooks": {
  *     "PreToolUse": [{
  *       "matcher": "Bash",
- *       "command": "node ~/tai/hooks/guard-pnpm.js"
+ *       "command": "node ~/tstack/hooks/guard-pnpm.js"
  *     }]
  *   }
  * }

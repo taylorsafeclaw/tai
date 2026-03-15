@@ -21,7 +21,7 @@ pub fn print_logo(version: &str) {
     println!();
 }
 
-/// Print a section heading: "  ◆ tai install"
+/// Print a section heading: "  ◆ tstack install"
 pub fn heading(text: &str) {
     println!("  {} {}", "◆".cyan(), text.bold());
     println!();
@@ -77,7 +77,7 @@ pub fn info_line(key: &str, value: &str) {
     println!("  {}  {}", key.dimmed(), value);
 }
 
-/// Print a success item: "  ✓ commands/tai-task.md"
+/// Print a success item: "  ✓ commands/tstack-task.md"
 pub fn success(text: &str) {
     println!("  {} {}", "✓".green(), text);
 }

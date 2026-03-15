@@ -1,10 +1,10 @@
 use anyhow::Result;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::types::*;
 use crate::ui;
 
 pub fn run() -> Result<()> {
-    let config = TaiConfig::detect()?;
+    let config = TstackConfig::detect()?;
     let version = config.version();
 
     ui::print_logo(&version);
@@ -24,7 +24,7 @@ pub fn run() -> Result<()> {
     ui::hook_status_line(hooks.len(), 0); // TODO: detect configured hooks
 
     println!();
-    ui::info_line("root", &config.tai_root.display().to_string());
+    ui::info_line("root", &config.tstack_root.display().to_string());
     ui::info_line("home", &config.claude_dir.display().to_string());
     println!();
 

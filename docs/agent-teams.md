@@ -11,26 +11,26 @@ Commands that need multi-agent coordination use a **dual-path pattern** — chec
 ```
 Orchestrator (main context)
   │
-  ├── Glob check: .claude/agents/tai-convex.md ✓
-  ├── Glob check: .claude/agents/tai-ui.md ✓
+  ├── Glob check: .claude/agents/tstack-convex.md ✓
+  ├── Glob check: .claude/agents/tstack-ui.md ✓
   │
-  ├── Agent tool: spawn tai-convex ─────────────────────────┐
+  ├── Agent tool: spawn tstack-convex ─────────────────────────┐
   │     prompt: backend tasks, files to modify, patterns     │
-  │     tai-convex: reads schema, validators, auth, crypto   │
-  │     tai-convex: writes mutations + queries               │
-  │     tai-convex: runs pnpm build + pnpm test              │
-  │     tai-convex: commits atomically                       │
+  │     tstack-convex: reads schema, validators, auth, crypto   │
+  │     tstack-convex: writes mutations + queries               │
+  │     tstack-convex: runs pnpm build + pnpm test              │
+  │     tstack-convex: commits atomically                       │
   │     Returns: API shape ──────────────────────────────── ┤
   │       { pauseWorkspace: { args: {id}, returns: null } }  │
   │                                                          │
   ├── (orchestrator extracts API shape)                      │
   │                                                          │
-  ├── Agent tool: spawn tai-ui ───────────────────────────── ┘
+  ├── Agent tool: spawn tstack-ui ───────────────────────────── ┘
   │     prompt: UI tasks + API shape from backend
-  │     tai-ui: reads globals.css, workspace-shell, patterns
-  │     tai-ui: builds components using exact API shape
-  │     tai-ui: runs pnpm build
-  │     tai-ui: commits atomically
+  │     tstack-ui: reads globals.css, workspace-shell, patterns
+  │     tstack-ui: builds components using exact API shape
+  │     tstack-ui: runs pnpm build
+  │     tstack-ui: commits atomically
   │
   └── Quality gate in main context
         pnpm lint + build + test (+ playwright if configured)
@@ -41,10 +41,10 @@ Orchestrator (main context)
 ```
 Orchestrator
   │
-  ├── Glob check: .claude/agents/tai-convex.md ✗
-  ├── Glob check: ~/.claude/agents/tai-implementer.md ✓
+  ├── Glob check: .claude/agents/tstack-convex.md ✗
+  ├── Glob check: ~/.claude/agents/tstack-implementer.md ✓
   │
-  └── Agent tool: spawn tai-implementer
+  └── Agent tool: spawn tstack-implementer
         prompt: full task context, all files, patterns
         Implements everything, runs quality, commits
 ```
@@ -59,7 +59,7 @@ Commands use the Agent tool with specific parameters:
 
 ```
 Agent tool:
-  name: "tai-convex"
+  name: "tstack-convex"
   prompt: "Implement these backend tasks:
     1. Add pause mutation to convex/workspaces/mutations.ts
     2. Add resume mutation
@@ -78,12 +78,12 @@ Tasks are defined in `plan.md` with domain assignments:
 ```markdown
 ## Tasks
 
-### Backend (tai-convex)
+### Backend (tstack-convex)
 - [ ] Add pause/resume mutations to convex/workspaces/mutations.ts
 - [ ] Add status query updates to convex/workspaces/queries.ts
 - [ ] Add indexes for new queries in schema.ts
 
-### Frontend (tai-ui)
+### Frontend (tstack-ui)
 - [ ] Pause button component (blocked by backend)
 - [ ] Status indicator updates (blocked by backend)
 - [ ] Wire to Convex mutations
@@ -117,8 +117,8 @@ feat(workspace): add pause/resume UI controls
 ## When NOT to use multi-agent coordination
 
 - Tasks (tier 1) — always single agent or direct, too small to coordinate
-- Pure-backend features — single `tai-convex` call
-- Pure-frontend features — single `tai-ui` call
+- Pure-backend features — single `tstack-convex` call
+- Pure-frontend features — single `tstack-ui` call
 - Config/script changes — handled in main context
 
 Teams are for features that genuinely cross the backend/frontend boundary.
@@ -128,5 +128,5 @@ Teams are for features that genuinely cross the backend/frontend boundary.
 If an agent fails mid-execution:
 1. Save progress to plan.md (mark completed tasks with `[x]`)
 2. Report which agent failed, at which task, with the exact error
-3. Suggest: "Resume with `/tai-execute` — it will pick up from the last incomplete task"
+3. Suggest: "Resume with `/tstack-execute` — it will pick up from the last incomplete task"
 4. Never retry the whole pipeline automatically

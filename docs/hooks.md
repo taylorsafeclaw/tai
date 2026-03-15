@@ -4,26 +4,26 @@ Hooks are scripts that run in response to Claude Code events. They enforce guard
 
 ## Available hooks
 
-### `tai-quality-gate.js`
+### `tstack-quality-gate.js`
 **Event:** `PreToolUse` (matcher: `Bash`)
 **Trigger:** `git commit` commands
 
-Blocks commits if the quality pipeline hasn't passed in the current session. Checks for `.tai/.quality-passed` flag file.
+Blocks commits if the quality pipeline hasn't passed in the current session. Checks for `.tstack/.quality-passed` flag file.
 
 **How it works:**
-1. When `pnpm lint && pnpm build && pnpm test` all pass, touch `.tai/.quality-passed`
+1. When `pnpm lint && pnpm build && pnpm test` all pass, touch `.tstack/.quality-passed`
 2. On any file edit, the flag is cleared
 3. On `git commit`, the hook checks for the flag
 4. If missing: blocks with "Run quality pipeline first"
 
-### `tai-agent-return-validator.js`
+### `tstack-agent-return-validator.js`
 **Event:** `SubagentStop`
 
-Logs agent completion, duration, and exit status to `.tai/.agent-log`. Informational only — never blocks.
+Logs agent completion, duration, and exit status to `.tstack/.agent-log`. Informational only — never blocks.
 
 Useful for debugging Agent Team coordination and understanding agent performance.
 
-### `tai-branch-guard.js`
+### `tstack-branch-guard.js`
 **Event:** `PreToolUse` (matcher: `Bash`)
 **Trigger:** `git push` to main/master
 
@@ -51,20 +51,20 @@ Add hooks to `.claude/settings.json`:
     "PreToolUse": [
       {
         "matcher": "Bash",
-        "command": "node ~/tai/hooks/tai-quality-gate.js"
+        "command": "node ~/tstack/hooks/tstack-quality-gate.js"
       },
       {
         "matcher": "Bash",
-        "command": "node ~/tai/hooks/tai-branch-guard.js"
+        "command": "node ~/tstack/hooks/tstack-branch-guard.js"
       },
       {
         "matcher": "Bash",
-        "command": "node ~/tai/hooks/guard-destructive.js"
+        "command": "node ~/tstack/hooks/guard-destructive.js"
       }
     ],
     "SubagentStop": [
       {
-        "command": "node ~/tai/hooks/tai-agent-return-validator.js"
+        "command": "node ~/tstack/hooks/tstack-agent-return-validator.js"
       }
     ]
   }
@@ -76,7 +76,7 @@ To also enforce pnpm (opt-in):
 ```json
 {
   "matcher": "Bash",
-  "command": "node ~/tai/hooks/guard-pnpm.js"
+  "command": "node ~/tstack/hooks/guard-pnpm.js"
 }
 ```
 

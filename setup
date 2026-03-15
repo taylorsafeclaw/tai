@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-# tai setup — symlinks commands + agents to ~/.claude/
+# tstack setup — symlinks commands + agents to ~/.claude/
 set -euo pipefail
 
-TAI_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TSTACK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
 # Ensure target directories exist
 mkdir -p "$CLAUDE_DIR/commands" "$CLAUDE_DIR/agents" "$CLAUDE_DIR/skills"
 
-echo "tai setup — installing from $TAI_DIR"
+echo "tstack setup — installing from $TSTACK_DIR"
 echo ""
 
 # Symlink commands
 COMMAND_COUNT=0
-for src in "$TAI_DIR/commands"/tai-*.md; do
+for src in "$TSTACK_DIR/commands"/tstack-*.md; do
   [ -f "$src" ] || continue
   filename="$(basename "$src")"
   dst="$CLAUDE_DIR/commands/$filename"
@@ -30,7 +30,7 @@ done
 
 # Symlink agents
 AGENT_COUNT=0
-for src in "$TAI_DIR/agents"/tai-*.md; do
+for src in "$TSTACK_DIR/agents"/tstack-*.md; do
   [ -f "$src" ] || continue
   filename="$(basename "$src")"
   dst="$CLAUDE_DIR/agents/$filename"
@@ -47,7 +47,7 @@ done
 
 # Symlink skills (directory-level symlinks)
 SKILL_COUNT=0
-for src in "$TAI_DIR/skills"/tai-*/; do
+for src in "$TSTACK_DIR/skills"/tstack-*/; do
   [ -d "$src" ] || continue
   dirname="$(basename "$src")"
   dst="$CLAUDE_DIR/skills/$dirname"
@@ -66,13 +66,13 @@ echo ""
 echo "Installed: $COMMAND_COUNT commands, $AGENT_COUNT agents, $SKILL_COUNT skills"
 echo ""
 echo "Available commands:"
-ls "$CLAUDE_DIR/commands"/tai-*.md 2>/dev/null | while read -r f; do
+ls "$CLAUDE_DIR/commands"/tstack-*.md 2>/dev/null | while read -r f; do
   echo "  /$(basename "$f" .md)"
 done
 echo ""
 echo "Available skills:"
-ls -d "$CLAUDE_DIR/skills"/tai-*/ 2>/dev/null | while read -r d; do
+ls -d "$CLAUDE_DIR/skills"/tstack-*/ 2>/dev/null | while read -r d; do
   echo "  $(basename "$d")"
 done
 echo ""
-echo "Run /tai-help in Claude Code to see everything."
+echo "Run /tstack-help in Claude Code to see everything."

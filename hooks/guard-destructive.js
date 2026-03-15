@@ -8,7 +8,7 @@
  *   "hooks": {
  *     "PreToolUse": [{
  *       "matcher": "Bash",
- *       "command": "node ~/tai/hooks/guard-destructive.js"
+ *       "command": "node ~/tstack/hooks/guard-destructive.js"
  *     }]
  *   }
  * }

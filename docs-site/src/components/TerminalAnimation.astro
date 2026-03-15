@@ -118,7 +118,7 @@
     | { type: 'clear' };
 
   const steps: AnyStep[] = [
-    { type: 'type', text: 'tai install' },
+    { type: 'type', text: 'tstack install' },
     { type: 'pause', ms: 400 },
     {
       type: 'output', lines: [
@@ -130,7 +130,7 @@
       ]
     },
     { type: 'pause', ms: 600 },
-    { type: 'type', text: '/tai-feature "add auth flow"' },
+    { type: 'type', text: '/tstack-feature "add auth flow"' },
     { type: 'pause', ms: 500 },
     {
       type: 'output', lines: [

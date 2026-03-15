@@ -22,7 +22,7 @@ echo ""
 mkdir -p "$PROJECT_ROOT/.claude/agents" "$PROJECT_ROOT/.claude/commands"
 
 # Copy agents
-for src in "$TEMPLATE_DIR/agents"/tai-*.md; do
+for src in "$TEMPLATE_DIR/agents"/tstack-*.md; do
   [ -f "$src" ] || continue
   filename="$(basename "$src")"
   cp "$src" "$PROJECT_ROOT/.claude/agents/$filename"
@@ -30,7 +30,7 @@ for src in "$TEMPLATE_DIR/agents"/tai-*.md; do
 done
 
 # Copy commands
-for src in "$TEMPLATE_DIR/commands"/tai-*.md; do
+for src in "$TEMPLATE_DIR/commands"/tstack-*.md; do
   [ -f "$src" ] || continue
   filename="$(basename "$src")"
   cp "$src" "$PROJECT_ROOT/.claude/commands/$filename"

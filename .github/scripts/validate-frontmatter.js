@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validates that all tai-*.md files have required frontmatter fields.
+ * Validates that all tstack-*.md files have required frontmatter fields.
  */
 
 const fs = require('fs');
@@ -27,7 +27,7 @@ function checkDir(dir, required, kind) {
   const errors = [];
   if (!fs.existsSync(dir)) return errors;
   for (const file of fs.readdirSync(dir)) {
-    if (!file.startsWith('tai-') || !file.endsWith('.md')) continue;
+    if (!file.startsWith('tstack-') || !file.endsWith('.md')) continue;
     const content = fs.readFileSync(path.join(dir, file), 'utf8');
     const fm = parseFrontmatter(content);
     if (!fm) {
@@ -45,7 +45,7 @@ function checkSkills(dir) {
   const errors = [];
   if (!fs.existsSync(dir)) return errors;
   for (const skillDir of fs.readdirSync(dir)) {
-    if (!skillDir.startsWith('tai-')) continue;
+    if (!skillDir.startsWith('tstack-')) continue;
     const skillFile = path.join(dir, skillDir, 'SKILL.md');
     if (!fs.existsSync(skillFile)) {
       errors.push(`skills/${skillDir}: missing SKILL.md`);

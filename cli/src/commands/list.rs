@@ -1,12 +1,12 @@
 use anyhow::Result;
 use owo_colors::OwoColorize;
 use crate::cli::ListKind;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::types::*;
 use crate::ui;
 
 pub fn run(kind: ListKind) -> Result<()> {
-    let config = TaiConfig::detect()?;
+    let config = TstackConfig::detect()?;
 
     match kind {
         ListKind::Commands => list_commands(&config)?,
@@ -24,10 +24,10 @@ pub fn run(kind: ListKind) -> Result<()> {
     Ok(())
 }
 
-fn list_commands(config: &TaiConfig) -> Result<()> {
+fn list_commands(config: &TstackConfig) -> Result<()> {
     let items = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command);
 
-    ui::heading("tai commands");
+    ui::heading("tstack commands");
 
     if items.is_empty() {
         ui::info("No commands found.");
@@ -43,10 +43,10 @@ fn list_commands(config: &TaiConfig) -> Result<()> {
     Ok(())
 }
 
-fn list_agents(config: &TaiConfig) -> Result<()> {
+fn list_agents(config: &TstackConfig) -> Result<()> {
     let items = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent);
 
-    ui::heading("tai agents");
+    ui::heading("tstack agents");
 
     if items.is_empty() {
         ui::info("No agents found.");
@@ -62,10 +62,10 @@ fn list_agents(config: &TaiConfig) -> Result<()> {
     Ok(())
 }
 
-fn list_skills(config: &TaiConfig) -> Result<()> {
+fn list_skills(config: &TstackConfig) -> Result<()> {
     let items = scan_skills(config);
 
-    ui::heading("tai skills");
+    ui::heading("tstack skills");
 
     if items.is_empty() {
         ui::info("No skills found.");
@@ -81,10 +81,10 @@ fn list_skills(config: &TaiConfig) -> Result<()> {
     Ok(())
 }
 
-fn list_hooks(config: &TaiConfig) -> Result<()> {
+fn list_hooks(config: &TstackConfig) -> Result<()> {
     let items = scan_hooks(config);
 
-    ui::heading("tai hooks");
+    ui::heading("tstack hooks");
 
     if items.is_empty() {
         ui::info("No hooks found.");
@@ -111,7 +111,7 @@ fn truncate_str(s: &str, max_chars: usize) -> String {
     }
 }
 
-fn print_item(item: &TaiItem) {
+fn print_item(item: &TstackItem) {
     let status_icon = match &item.status {
         LinkStatus::Linked => "●".green().to_string(),
         LinkStatus::Broken => "●".red().to_string(),

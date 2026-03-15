@@ -1,14 +1,14 @@
 use anyhow::{bail, Result};
 use crate::cli::AddKind;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::ui;
 
 pub fn run(kind: AddKind, name: String) -> Result<()> {
-    let config = TaiConfig::detect()?;
+    let config = TstackConfig::detect()?;
 
-    // Normalize name: strip tai- prefix if provided
-    let name = name.strip_prefix("tai-").unwrap_or(&name);
-    let tai_name = format!("tai-{name}");
+    // Normalize name: strip tstack- prefix if provided
+    let name = name.strip_prefix("tstack-").unwrap_or(&name);
+    let tai_name = format!("tstack-{name}");
 
     match kind {
         AddKind::Command => add_command(&config, name, &tai_name)?,
@@ -17,13 +17,13 @@ pub fn run(kind: AddKind, name: String) -> Result<()> {
     }
 
     println!();
-    ui::info("Run `tai install` to symlink the new item.");
+    ui::info("Run `tstack install` to symlink the new item.");
     println!();
 
     Ok(())
 }
 
-fn add_command(config: &TaiConfig, _name: &str, tai_name: &str) -> Result<()> {
+fn add_command(config: &TstackConfig, _name: &str, tai_name: &str) -> Result<()> {
     let path = config.commands_dir().join(format!("{tai_name}.md"));
 
     if path.exists() {
@@ -47,13 +47,13 @@ $ARGUMENTS
     );
 
     std::fs::write(&path, content)?;
-    ui::heading("tai add command");
+    ui::heading("tstack add command");
     ui::success(&format!("Created {}", path.display()));
 
     Ok(())
 }
 
-fn add_agent(config: &TaiConfig, _name: &str, tai_name: &str) -> Result<()> {
+fn add_agent(config: &TstackConfig, _name: &str, tai_name: &str) -> Result<()> {
     let path = config.agents_dir().join(format!("{tai_name}.md"));
 
     if path.exists() {
@@ -78,13 +78,13 @@ TODO
     );
 
     std::fs::write(&path, content)?;
-    ui::heading("tai add agent");
+    ui::heading("tstack add agent");
     ui::success(&format!("Created {}", path.display()));
 
     Ok(())
 }
 
-fn add_skill(config: &TaiConfig, _name: &str, tai_name: &str) -> Result<()> {
+fn add_skill(config: &TstackConfig, _name: &str, tai_name: &str) -> Result<()> {
     let dir = config.skills_dir().join(tai_name);
     let path = dir.join("SKILL.md");
 
@@ -108,7 +108,7 @@ TODO — skill instructions here.
     );
 
     std::fs::write(&path, content)?;
-    ui::heading("tai add skill");
+    ui::heading("tstack add skill");
     ui::success(&format!("Created {}", path.display()));
 
     Ok(())

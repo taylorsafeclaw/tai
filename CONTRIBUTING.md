@@ -1,23 +1,23 @@
-# Contributing to tai
+# Contributing to tstack
 
-tai is a collection of markdown files that extend Claude Code. Contributing is as simple as adding or editing a `.md` file.
+tstack is a collection of markdown files that extend Claude Code. Contributing is as simple as adding or editing a `.md` file.
 
 ## What you can contribute
 
-- **Commands** (`commands/tai-*.md`) — new slash commands
-- **Agents** (`agents/tai-*.md`) — new specialized agents
-- **Skills** (`skills/tai-*/SKILL.md`) — new reusable skill modules
+- **Commands** (`commands/tstack-*.md`) — new slash commands
+- **Agents** (`agents/tstack-*.md`) — new specialized agents
+- **Skills** (`skills/tstack-*/SKILL.md`) — new reusable skill modules
 - **Hooks** (`hooks/*.js`) — new PreToolUse/PostToolUse hooks
 - **Docs** (`docs/*.md`) — documentation improvements
 - **CLI** (`cli/src/`) — Rust CLI improvements
 
 ## Adding a command
 
-1. Create `commands/tai-<name>.md` with required frontmatter:
+1. Create `commands/tstack-<name>.md` with required frontmatter:
 
 ```yaml
 ---
-name: tai-<name>
+name: tstack-<name>
 description: <one-line description>
 argument-hint: "<hint for the user>"
 model: sonnet | opus | haiku
@@ -32,11 +32,11 @@ model: sonnet | opus | haiku
 
 ## Adding an agent
 
-1. Create `agents/tai-<name>.md` with required frontmatter:
+1. Create `agents/tstack-<name>.md` with required frontmatter:
 
 ```yaml
 ---
-name: tai-<name>
+name: tstack-<name>
 description: <one-line description>
 model: sonnet | opus | haiku
 tools: Read, Grep, Glob, Edit, Write, Bash
@@ -52,11 +52,11 @@ maxTurns: 30
 
 ## Adding a skill
 
-1. Create `skills/tai-<name>/SKILL.md` with frontmatter:
+1. Create `skills/tstack-<name>/SKILL.md` with frontmatter:
 
 ```yaml
 ---
-name: tai-<name>
+name: tstack-<name>
 description: "<when to use this skill>"
 user-invocable: true | false
 ---
@@ -70,7 +70,7 @@ user-invocable: true | false
 
 ## Guidelines
 
-- **Prefix everything `tai-`** — prevents collisions with other frameworks
+- **Prefix everything `tstack-`** — prevents collisions with other frameworks
 - **One responsibility per file** — commands should orchestrate, agents should implement
 - **Document the `Return contract`** in every agent — orchestrators depend on it
 - **No secrets or credentials** in any files

@@ -1,10 +1,10 @@
 use anyhow::{bail, Result};
 use crate::cli::TemplateAction;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::ui;
 
 pub fn run(action: TemplateAction) -> Result<()> {
-    let config = TaiConfig::detect()?;
+    let config = TstackConfig::detect()?;
 
     match action {
         TemplateAction::Install { name } => install_template(&config, &name)?,
@@ -14,7 +14,7 @@ pub fn run(action: TemplateAction) -> Result<()> {
     Ok(())
 }
 
-fn install_template(config: &TaiConfig, name: &str) -> Result<()> {
+fn install_template(config: &TstackConfig, name: &str) -> Result<()> {
     let template_dir = config.templates_dir().join(name);
 
     if !template_dir.exists() {
@@ -26,7 +26,7 @@ fn install_template(config: &TaiConfig, name: &str) -> Result<()> {
         bail!("Template '{}' has no install script", name);
     }
 
-    ui::heading(&format!("tai template install {name}"));
+    ui::heading(&format!("tstack template install {name}"));
 
     let status = std::process::Command::new("bash")
         .arg(&install_script)
@@ -43,8 +43,8 @@ fn install_template(config: &TaiConfig, name: &str) -> Result<()> {
     Ok(())
 }
 
-fn list_templates(config: &TaiConfig) -> Result<()> {
-    ui::heading("tai templates");
+fn list_templates(config: &TstackConfig) -> Result<()> {
+    ui::heading("tstack templates");
 
     let templates_dir = config.templates_dir();
     if !templates_dir.exists() {

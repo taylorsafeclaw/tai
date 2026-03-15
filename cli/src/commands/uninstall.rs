@@ -1,12 +1,12 @@
 use anyhow::Result;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::symlink;
 use crate::ui;
 
 pub fn run() -> Result<()> {
-    let config = TaiConfig::detect()?;
+    let config = TstackConfig::detect()?;
 
-    ui::heading("tai uninstall");
+    ui::heading("tstack uninstall");
 
     let mut removed = 0;
 
@@ -17,7 +17,7 @@ pub fn run() -> Result<()> {
             for entry in entries.flatten() {
                 let path = entry.path();
                 let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-                if name.starts_with("tai-") && name.ends_with(".md") && path.is_symlink() {
+                if name.starts_with("tstack-") && name.ends_with(".md") && path.is_symlink() {
                     if symlink::remove(&path)? {
                         ui::error(&format!("{dir_name}/{name}"));
                         removed += 1;
@@ -33,7 +33,7 @@ pub fn run() -> Result<()> {
         for entry in entries.flatten() {
             let path = entry.path();
             let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-            if name.starts_with("tai-") && path.is_symlink() {
+            if name.starts_with("tstack-") && path.is_symlink() {
                 if symlink::remove(&path)? {
                     ui::error(&format!("skills/{name}"));
                     removed += 1;

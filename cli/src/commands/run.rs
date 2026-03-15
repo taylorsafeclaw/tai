@@ -2,15 +2,15 @@ use anyhow::{bail, Result};
 use crate::ui;
 use std::process::Command;
 
-/// Invoke a tai slash command via the `claude` CLI.
-/// e.g. `tai run task "fix the bug"` → `claude -p "/tai-task fix the bug"`
+/// Invoke a tstack slash command via the `claude` CLI.
+/// e.g. `tstack run task "fix the bug"` → `claude -p "/tstack-task fix the bug"`
 pub fn run(command: String, args: Vec<String>, print_mode: bool) -> Result<()> {
-    let base = command.trim_start_matches("tai-");
+    let base = command.trim_start_matches("tstack-");
 
     let slash_cmd = if args.is_empty() {
-        format!("/tai-{base}")
+        format!("/tstack-{base}")
     } else {
-        format!("/tai-{base} {}", args.join(" "))
+        format!("/tstack-{base} {}", args.join(" "))
     };
 
     ui::info_line("invoke", &slash_cmd);

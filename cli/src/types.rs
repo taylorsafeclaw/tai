@@ -1,10 +1,10 @@
 use std::path::PathBuf;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::frontmatter::Frontmatter;
 
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
-pub struct TaiItem {
+pub struct TstackItem {
     pub name: String,
     pub description: String,
     pub model: Option<String>,
@@ -47,12 +47,12 @@ impl LinkStatus {
     }
 }
 
-/// Scan a directory for tai-*.md files and return TaiItems
+/// Scan a directory for tstack-*.md files and return TstackItems
 pub fn scan_md_items(
     source_dir: &PathBuf,
     target_dir: &PathBuf,
     item_type: ItemType,
-) -> Vec<TaiItem> {
+) -> Vec<TstackItem> {
     let mut items = Vec::new();
 
     let entries = match std::fs::read_dir(source_dir) {
@@ -64,7 +64,7 @@ pub fn scan_md_items(
         let path = entry.path();
         let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
 
-        if !name.starts_with("tai-") || !name.ends_with(".md") {
+        if !name.starts_with("tstack-") || !name.ends_with(".md") {
             continue;
         }
 
@@ -72,7 +72,7 @@ pub fn scan_md_items(
         let dest = target_dir.join(&name);
         let status = crate::symlink::check(&path, &dest);
 
-        items.push(TaiItem {
+        items.push(TstackItem {
             name: fm.name.unwrap_or_else(|| name.trim_end_matches(".md").to_string()),
             description: fm.description.unwrap_or_default(),
             model: fm.model,
@@ -87,8 +87,8 @@ pub fn scan_md_items(
     items
 }
 
-/// Scan skills directory (directory-level symlinks for tai-* dirs)
-pub fn scan_skills(config: &TaiConfig) -> Vec<TaiItem> {
+/// Scan skills directory (directory-level symlinks for tstack-* dirs)
+pub fn scan_skills(config: &TstackConfig) -> Vec<TstackItem> {
     let source_dir = config.skills_dir();
     let target_dir = config.claude_skills_dir();
     let mut items = Vec::new();
@@ -105,7 +105,7 @@ pub fn scan_skills(config: &TaiConfig) -> Vec<TaiItem> {
         }
 
         let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-        if !name.starts_with("tai-") {
+        if !name.starts_with("tstack-") {
             continue;
         }
 
@@ -120,7 +120,7 @@ pub fn scan_skills(config: &TaiConfig) -> Vec<TaiItem> {
         let dest = target_dir.join(&name);
         let status = crate::symlink::check(&path, &dest);
 
-        items.push(TaiItem {
+        items.push(TstackItem {
             name: fm.name.unwrap_or_else(|| name.clone()),
             description: fm.description.unwrap_or_default(),
             model: fm.model,
@@ -136,7 +136,7 @@ pub fn scan_skills(config: &TaiConfig) -> Vec<TaiItem> {
 }
 
 /// Scan hooks directory (not symlinked, just discovered)
-pub fn scan_hooks(config: &TaiConfig) -> Vec<TaiItem> {
+pub fn scan_hooks(config: &TstackConfig) -> Vec<TstackItem> {
     let source_dir = config.hooks_dir();
     let mut items = Vec::new();
 
@@ -153,7 +153,7 @@ pub fn scan_hooks(config: &TaiConfig) -> Vec<TaiItem> {
             continue;
         }
 
-        items.push(TaiItem {
+        items.push(TstackItem {
             name: name.trim_end_matches(".js").to_string(),
             description: String::new(),
             model: None,

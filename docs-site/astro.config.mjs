@@ -4,14 +4,14 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'tai',
+      title: 'tstack',
       customCss: ['./src/styles/custom.css'],
       components: {
         Hero: './src/components/Hero.astro',
       },
       description: 'Personal dev framework for Claude Code',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/tai-framework/tai' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/tstack-framework/tstack' },
       ],
       sidebar: [
         {

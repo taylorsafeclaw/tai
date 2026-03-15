@@ -35,8 +35,8 @@ jobs:
           TARGET: ${{ matrix.target }}
         run: |
           cd "cli/target/${TARGET}/release"
-          tar czf "tai-${TAG}-${TARGET}.tar.gz" tai
-          echo "ASSET=cli/target/${TARGET}/release/tai-${TAG}-${TARGET}.tar.gz" >> "$GITHUB_ENV"
+          tar czf "tstack-${TAG}-${TARGET}.tar.gz" tstack
+          echo "ASSET=cli/target/${TARGET}/release/tstack-${TAG}-${TARGET}.tar.gz" >> "$GITHUB_ENV"
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:

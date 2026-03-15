@@ -1,14 +1,14 @@
 use anyhow::Result;
 use owo_colors::OwoColorize;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::frontmatter::Frontmatter;
 use crate::types::*;
 use crate::ui;
 
 pub fn run() -> Result<()> {
-    let config = TaiConfig::detect()?;
+    let config = TstackConfig::detect()?;
 
-    ui::heading("tai doctor");
+    ui::heading("tstack doctor");
 
     // Check symlinks
     ui::separator("Symlinks");
@@ -23,10 +23,10 @@ pub fn run() -> Result<()> {
     check_items("skills", &skills);
 
     // Report broken/conflicting
-    let all_items: Vec<&TaiItem> = commands.iter().chain(agents.iter()).chain(skills.iter()).collect();
-    let broken: Vec<&&TaiItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Broken)).collect();
-    let conflicts: Vec<&&TaiItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Conflict(_))).collect();
-    let missing: Vec<&&TaiItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Missing)).collect();
+    let all_items: Vec<&TstackItem> = commands.iter().chain(agents.iter()).chain(skills.iter()).collect();
+    let broken: Vec<&&TstackItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Broken)).collect();
+    let conflicts: Vec<&&TstackItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Conflict(_))).collect();
+    let missing: Vec<&&TstackItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Missing)).collect();
 
     if !broken.is_empty() {
         for item in &broken {
@@ -41,7 +41,7 @@ pub fn run() -> Result<()> {
         }
     }
     if !missing.is_empty() {
-        println!("  {} {} not linked (run `tai install`)", missing.len().to_string().yellow(), "items".dimmed());
+        println!("  {} {} not linked (run `tstack install`)", missing.len().to_string().yellow(), "items".dimmed());
     }
 
     println!();
@@ -110,9 +110,9 @@ pub fn run() -> Result<()> {
                 if path.is_dir() {
                     let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
                     // Count agents, skills, commands in template
-                    let agent_count = count_files(&path.join("agents"), "tai-*.md");
-                    let skill_count = count_dirs(&path.join("skills"), "tai-");
-                    let cmd_count = count_files(&path.join("commands"), "tai-*.md");
+                    let agent_count = count_files(&path.join("agents"), "tstack-*.md");
+                    let skill_count = count_dirs(&path.join("skills"), "tstack-");
+                    let cmd_count = count_files(&path.join("commands"), "tstack-*.md");
                     ui::success(&format!(
                         "{name:<16} {agent_count} agents, {skill_count} skills, {cmd_count} commands"
                     ));
@@ -127,7 +127,7 @@ pub fn run() -> Result<()> {
     Ok(())
 }
 
-fn check_items(label: &str, items: &[TaiItem]) {
+fn check_items(label: &str, items: &[TstackItem]) {
     let healthy = items.iter().filter(|i| i.status.is_healthy()).count();
     let total = items.len();
 

@@ -1,14 +1,14 @@
 use anyhow::Result;
 use std::time::Instant;
-use crate::config::TaiConfig;
+use crate::config::TstackConfig;
 use crate::symlink;
 use crate::ui;
 
 pub fn run() -> Result<()> {
-    let config = TaiConfig::detect()?;
+    let config = TstackConfig::detect()?;
     let start = Instant::now();
 
-    ui::heading("tai install");
+    ui::heading("tstack install");
 
     // Ensure target directories exist
     std::fs::create_dir_all(config.claude_commands_dir())?;
@@ -49,7 +49,7 @@ fn link_md_files(source_dir: &std::path::Path, target_dir: &std::path::Path, lab
         let path = entry.path();
         let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
 
-        if !name.starts_with("tai-") || !name.ends_with(".md") {
+        if !name.starts_with("tstack-") || !name.ends_with(".md") {
             continue;
         }
 
@@ -80,7 +80,7 @@ fn link_skill_dirs(source_dir: &std::path::Path, target_dir: &std::path::Path) -
         }
 
         let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-        if !name.starts_with("tai-") {
+        if !name.starts_with("tstack-") {
             continue;
         }
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# tai uninstall — removes all tai symlinks from ~/.claude/
+# tstack uninstall — removes all tai symlinks from ~/.claude/
 set -euo pipefail
 
 CLAUDE_DIR="$HOME/.claude"
 
-echo "tai uninstall — removing symlinks from $CLAUDE_DIR"
+echo "tstack uninstall — removing symlinks from $CLAUDE_DIR"
 echo ""
 
 REMOVED=0
 for dir in commands agents; do
-  for link in "$CLAUDE_DIR/$dir"/tai-*.md; do
+  for link in "$CLAUDE_DIR/$dir"/tstack-*.md; do
     [ -L "$link" ] || continue
     rm "$link"
     echo "  ✗ $dir/$(basename "$link")"
@@ -18,7 +18,7 @@ for dir in commands agents; do
 done
 
 # Remove skill symlinks (directory-level)
-for link in "$CLAUDE_DIR/skills"/tai-*/; do
+for link in "$CLAUDE_DIR/skills"/tstack-*/; do
   linkpath="${link%/}"
   [ -L "$linkpath" ] || continue
   rm "$linkpath"
