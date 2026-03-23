@@ -42,7 +42,13 @@ Scaffolds a new item with proper frontmatter template.
 
 ```shell
 tstack add command my-thing
+```
+
+```shell
 tstack add agent reviewer
+```
+
+```shell
 tstack add skill linter
 ```
 

@@ -31,6 +31,9 @@ Get tstack running in under 2 minutes. {% .lead %}
 
 ```shell
 git clone https://github.com/taylorsafeclaw/tstack.git ~/tstack
+```
+
+```shell
 claude plugin add ~/tstack
 ```
 

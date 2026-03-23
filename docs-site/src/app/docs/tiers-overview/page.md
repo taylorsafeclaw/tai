@@ -70,10 +70,25 @@ context → plan → confirm → branch → Agent Team → quality → push → 
 
 ```shell
 /context "pause/resume"
+```
+
+```shell
 /plan "pause/resume"
+```
+
+```shell
 /execute plan.md
+```
+
+```shell
 /validate
+```
+
+```shell
 /commit
+```
+
+```shell
 /ship
 ```
 
