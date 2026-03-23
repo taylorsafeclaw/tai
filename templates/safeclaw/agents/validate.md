@@ -1,5 +1,5 @@
 ---
-name: validate
+name: tstack:validate
 description: Quality gate runner — lint, build, test pipeline. Reports only, does not fix.
 model: sonnet
 tools: Read, Grep, Glob, Bash, mcp__vercel__*

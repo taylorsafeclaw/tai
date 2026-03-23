@@ -1,5 +1,5 @@
 ---
-name: seo-writer
+name: tstack:seo-writer
 description: SEO content writer — E-E-A-T quality, people-first content, AEO extractability, internal linking.
 model: sonnet
 tools: Read, Grep, Glob, Edit, Write, Bash

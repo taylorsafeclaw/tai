@@ -20,14 +20,14 @@ The SafeClaw template at `templates/safeclaw/` has 14 agents (unprefixed: `conve
 
 ## Tasks
 
-- [ ] Fix `templates/safeclaw/install:25` — change `tstack-*.md` to `*.md` for agents glob
-- [ ] Fix `templates/safeclaw/install:33` — change `tstack-*.md` to `*.md` for commands glob (no-op today — no commands dir exists — but prevents future bug)
-- [ ] Fix `templates/example/install:25` — same fix for consistency
-- [ ] Fix `templates/example/install:33` — same fix for consistency
-- [ ] Add zero-copy guard to both install scripts — warn when agent/command dirs exist but zero files are copied
-- [ ] Update agent `name:` fields in all 14 safeclaw template agents to `tstack:` namespace (e.g., `name: tstack:convex`, `name: tstack:ui`)
-- [ ] Verify: run install from safeclaw, confirm all 14 agents copied
-- [ ] Verify: `/feature` agent discovery finds agents by `domain:` field
+- [x] Fix `templates/safeclaw/install:25` — change `tstack-*.md` to `*.md` for agents glob
+- [x] Fix `templates/safeclaw/install:33` — change `tstack-*.md` to `*.md` for commands glob (no-op today — no commands dir exists — but prevents future bug)
+- [x] Fix `templates/example/install:25` — same fix for consistency
+- [x] Fix `templates/example/install:33` — same fix for consistency
+- [x] Add zero-copy guard to both install scripts — warn when agent/command dirs exist but zero files are copied
+- [x] Update agent `name:` fields in all 14 safeclaw template agents to `tstack:` namespace (e.g., `name: tstack:convex`, `name: tstack:ui`)
+- [x] Verify: run install from safeclaw, confirm all 14 agents copied
+- [x] Verify: `/feature` agent discovery finds agents by `domain:` field (discovery is domain-based, not name-based — no change needed)
 
 ## What stays untouched
 

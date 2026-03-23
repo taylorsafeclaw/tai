@@ -1,5 +1,5 @@
 ---
-name: seo-lead
+name: tstack:seo-lead
 description: SEO orchestrator — cluster execution, page generation pipeline, quality gates, publishing workflow.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash

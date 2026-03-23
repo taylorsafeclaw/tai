@@ -1,5 +1,5 @@
 ---
-name: reviewer
+name: tstack:reviewer
 description: Code reviewer — security, logic, conventions, SafeClaw-specific patterns. Single-pass, high-confidence issues only.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__posthog__*, mcp__github__*

@@ -22,20 +22,32 @@ echo ""
 mkdir -p "$PROJECT_ROOT/.claude/agents" "$PROJECT_ROOT/.claude/commands"
 
 # Copy agents
-for src in "$TEMPLATE_DIR/agents"/tstack-*.md; do
+agent_count=0
+for src in "$TEMPLATE_DIR/agents"/*.md; do
   [ -f "$src" ] || continue
   filename="$(basename "$src")"
   cp "$src" "$PROJECT_ROOT/.claude/agents/$filename"
   echo "  ✓ agents/$filename"
+  agent_count=$((agent_count + 1))
 done
 
+if [ -d "$TEMPLATE_DIR/agents" ] && [ "$agent_count" -eq 0 ]; then
+  echo "  ⚠ Warning: agents/ directory exists but no .md files were copied"
+fi
+
 # Copy commands
-for src in "$TEMPLATE_DIR/commands"/tstack-*.md; do
+cmd_count=0
+for src in "$TEMPLATE_DIR/commands"/*.md; do
   [ -f "$src" ] || continue
   filename="$(basename "$src")"
   cp "$src" "$PROJECT_ROOT/.claude/commands/$filename"
   echo "  ✓ commands/$filename"
+  cmd_count=$((cmd_count + 1))
 done
 
+if [ -d "$TEMPLATE_DIR/commands" ] && [ "$cmd_count" -eq 0 ]; then
+  echo "  ⚠ Warning: commands/ directory exists but no .md files were copied"
+fi
+
 echo ""
-echo "Done. Re-run this script any time to update."
+echo "Done. Copied $agent_count agent(s) and $cmd_count command(s). Re-run this script any time to update."

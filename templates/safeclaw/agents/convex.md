@@ -1,5 +1,5 @@
 ---
-name: convex
+name: tstack:convex
 description: Convex backend specialist — mutations, queries, actions, schema integration, auth, encryption, state machine logic.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__convex__*, mcp__context7__*

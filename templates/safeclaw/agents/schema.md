@@ -1,5 +1,5 @@
 ---
-name: schema
+name: tstack:schema
 description: Schema specialist — tables, indexes, validators, migrations. Always updates schema.ts + validators.ts + affected functions as one atomic unit.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__convex__*

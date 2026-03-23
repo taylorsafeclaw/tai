@@ -1,5 +1,5 @@
 ---
-name: ui
+name: tstack:ui
 description: Frontend specialist — React components, pages, layouts, design system, Convex data binding, Tailwind styling.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__shadcn__*

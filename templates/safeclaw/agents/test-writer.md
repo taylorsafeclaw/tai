@@ -1,5 +1,5 @@
 ---
-name: test-writer
+name: tstack:test-writer
 description: Test specialist — Vitest + convex-test patterns, auth mocking, Fly API mocking, behavior-focused tests.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash

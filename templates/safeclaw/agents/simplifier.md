@@ -1,5 +1,5 @@
 ---
-name: simplifier
+name: tstack:simplifier
 description: Code cleanup specialist — enforces SafeClaw patterns, removes duplication, improves readability. Focuses on recently changed files.
 model: sonnet
 tools: Read, Grep, Glob, Edit, Write, Bash

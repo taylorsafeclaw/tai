@@ -1,5 +1,5 @@
 ---
-name: fly
+name: tstack:fly
 description: Fly.io infrastructure specialist — Machines API, volumes, provisioning, networking, container orchestration.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__context7__*

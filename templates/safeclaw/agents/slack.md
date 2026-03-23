@@ -1,5 +1,5 @@
 ---
-name: slack
+name: tstack:slack
 description: Slack integration specialist — OAuth, events, Block Kit, modals, canvas, Socket Mode, two-app architecture.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__context7__*

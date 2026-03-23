@@ -1,5 +1,5 @@
 ---
-name: feature-lead
+name: tstack:feature-lead
 description: Feature orchestrator — decomposes specs into agent-sized tasks, coordinates domain agents, manages handoffs.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__convex__*, mcp__linear-server__*, mcp__vercel__*, mcp__github__*

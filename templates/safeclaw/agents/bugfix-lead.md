@@ -1,5 +1,5 @@
 ---
-name: bugfix-lead
+name: tstack:bugfix-lead
 description: Bug investigation orchestrator — classifies symptoms, dispatches specialist agents, verifies fixes.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__convex__*, mcp__linear-server__*, mcp__posthog__*, mcp__sentry__*

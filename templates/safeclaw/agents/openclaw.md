@@ -1,5 +1,5 @@
 ---
-name: openclaw
+name: tstack:openclaw
 description: OpenClaw + Fly.io reference specialist — gateway configuration, channels, agents, tools, security, deployment patterns.
 model: opus
 tools: Read, Grep, Glob, Edit, Write, Bash, mcp__context7__*
