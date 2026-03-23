@@ -52,7 +52,7 @@ Before running, tstack checks:
 1. Does `.claude/dogfood.json` exist?
 2. Does it have a target URL and auth configured?
 
-Dogfood is never auto-run (it's stateful and interacts with a live environment). It requires explicit opt-in via `--dogfood` flag or `/tstack-test dogfood`.
+Dogfood is never auto-run (it's stateful and interacts with a live environment). It requires explicit opt-in via `--dogfood` flag or `/test dogfood`.
 
 ### When browser tests run
 
@@ -66,13 +66,13 @@ Dogfood is never auto-run (it's stateful and interacts with a live environment).
 
 ## Standalone commands
 
-### `/tstack-validate`
+### `/validate`
 
 Runs steps 1–3 (+ playwright if configured) and reports results. Used standalone or spawned by other commands.
 
 Does **not** fix anything. Single pass. Stops on first failure.
 
-### `/tstack-test [playwright|dogfood|all]`
+### `/test [playwright|dogfood|all]`
 
 Runs browser tests only (steps 4). Use after code is confirmed passing steps 1–3.
 
@@ -120,3 +120,18 @@ Full pass:
 ### Result: PASS
 Ready to commit.
 ```
+
+---
+
+## Completion Status Protocol
+
+All pipeline runs and skills emit a structured completion status for downstream commands:
+
+- **DONE** — All steps completed successfully. Evidence provided.
+- **DONE_WITH_CONCERNS** — Completed with caveats. Details documented.
+- **BLOCKED** — Cannot proceed. Reason and context given.
+- **NEEDS_CONTEXT** — Missing information. Specific ask documented.
+
+Orchestrator commands (ship, feature, mission) read these statuses to decide whether to proceed to the next step or stop and report.
+
+Skills also follow a 3-strike escalation rule: after 3 failed attempts at the same step, stop and escalate to the user rather than spiraling.

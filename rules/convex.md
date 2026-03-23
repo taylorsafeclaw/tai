@@ -1,0 +1,15 @@
+---
+paths: ["convex/**"]
+---
+- Schema changes need matching validator updates in convex/lib/validators.ts
+- Queries must use indexed fields — add index to schema.ts if missing
+- Mutations validate inputs before writing
+- Use `v.object()` validators — never trust raw input
+- Action retry logic must be idempotent
+- Actions can't read/write DB directly — use ctx.runQuery/ctx.runMutation
+- Mutations have 2s time limit — long ops must be actions
+- Always run `npx convex dev --once` after schema changes
+- Use encryptApiKey/decryptApiKey for sensitive values (never plaintext)
+- Auth required in all public mutations: requireAuthUser(ctx) or getUserOrThrow(ctx)
+- Workspace ops must verify ownership: workspace.userId !== user._id
+- Reuse validators from convex/lib/validators.ts — never duplicate literal unions

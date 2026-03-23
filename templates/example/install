@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# tai template: example
+# tstack template: example
 # Installs example project-specific agents and commands into .claude/
 set -euo pipefail
 

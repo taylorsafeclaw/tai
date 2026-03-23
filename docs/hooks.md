@@ -1,86 +1,85 @@
 # Hooks
 
-Hooks are scripts that run in response to Claude Code events. They enforce guardrails, log information, and block dangerous actions.
+Hooks are Node.js scripts that run in response to Claude Code events. They enforce guardrails, log information, and block dangerous actions.
 
-## Available hooks
+## Configuration
 
-### `tstack-quality-gate.js`
-**Event:** `PreToolUse` (matcher: `Bash`)
-**Trigger:** `git commit` commands
+Hooks are defined in `hooks/hooks.json` and loaded by the plugin system. No manual settings.json configuration needed.
 
-Blocks commits if the quality pipeline hasn't passed in the current session. Checks for `.tstack/.quality-passed` flag file.
+```json
+{
+  "hooks": [
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
+      "hooks": [
+        { "command": "node ./hooks/guard-destructive.js" },
+        { "command": "node ./hooks/guard-pnpm.js" },
+        { "command": "node ./hooks/branch-guard.js" },
+        { "command": "node ./hooks/quality-gate.js" }
+      ]
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Edit|Write",
+      "hooks": [
+        { "command": "node ./hooks/freeze.js" }
+      ]
+    },
+    {
+      "type": "SubagentStop",
+      "hooks": [
+        { "command": "node ./hooks/agent-return-validator.js" }
+      ]
+    }
+  ]
+}
+```
 
-**How it works:**
-1. When `pnpm lint && pnpm build && pnpm test` all pass, touch `.tstack/.quality-passed`
-2. On any file edit, the flag is cleared
-3. On `git commit`, the hook checks for the flag
-4. If missing: blocks with "Run quality pipeline first"
+## Available Hooks
 
-### `tstack-agent-return-validator.js`
-**Event:** `SubagentStop`
-
-Logs agent completion, duration, and exit status to `.tstack/.agent-log`. Informational only — never blocks.
-
-Useful for debugging Agent Team coordination and understanding agent performance.
-
-### `tstack-branch-guard.js`
-**Event:** `PreToolUse` (matcher: `Bash`)
-**Trigger:** `git push` to main/master
-
-Prevents accidental pushes directly to main/master. Forces feature branch workflow.
-
-### `guard-destructive.js` (default)
-**Event:** `PreToolUse` (matcher: `Bash`)
+### `guard-destructive.js`
+**Event:** PreToolUse (Bash)
 
 Blocks dangerous destructive commands:
 - `git reset --hard` → use git stash or git revert
 - `rm -rf /` or `rm -rf ~` or `rm -rf .` → too dangerous
 
-### `guard-pnpm.js` (opt-in, opinionated)
-**Event:** `PreToolUse` (matcher: `Bash`)
+### `guard-pnpm.js`
+**Event:** PreToolUse (Bash)
 
-Blocks npm/yarn commands, enforcing pnpm as the package manager. Only add this if your project uses pnpm exclusively.
+Blocks npm/yarn commands, enforcing pnpm as the package manager. Opinionated — remove if your project doesn't use pnpm exclusively.
 
-## Configuration
+### `branch-guard.js`
+**Event:** PreToolUse (Bash)
 
-Add hooks to `.claude/settings.json`:
+Prevents accidental pushes directly to main/master. Forces feature branch workflow.
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "command": "node ~/tstack/hooks/tstack-quality-gate.js"
-      },
-      {
-        "matcher": "Bash",
-        "command": "node ~/tstack/hooks/tstack-branch-guard.js"
-      },
-      {
-        "matcher": "Bash",
-        "command": "node ~/tstack/hooks/guard-destructive.js"
-      }
-    ],
-    "SubagentStop": [
-      {
-        "command": "node ~/tstack/hooks/tstack-agent-return-validator.js"
-      }
-    ]
-  }
-}
-```
+### `quality-gate.js`
+**Event:** PreToolUse (Bash) — triggers on `git commit`
 
-To also enforce pnpm (opt-in):
+Blocks commits if the quality pipeline hasn't passed in the current session.
 
-```json
-{
-  "matcher": "Bash",
-  "command": "node ~/tstack/hooks/guard-pnpm.js"
-}
-```
+1. When `pnpm lint && pnpm build && pnpm test` all pass, touch `.tstack/.quality-passed`
+2. On any file edit, the flag is cleared
+3. On `git commit`, the hook checks for the flag
+4. If missing: blocks with "Run quality pipeline first"
 
-## Creating a new hook
+### `freeze.js`
+**Event:** PreToolUse (Edit, Write)
+
+Blocks edits outside a specified directory scope. Useful during debugging to prevent touching unrelated code.
+
+1. Write a path to `.tstack/.freeze-boundary` (e.g., `echo "/path/to/src/auth" > .tstack/.freeze-boundary`)
+2. The hook blocks any Edit/Write to files outside that path
+3. Delete `.tstack/.freeze-boundary` to deactivate
+
+### `agent-return-validator.js`
+**Event:** SubagentStop
+
+Logs agent completion, duration, and exit status to `.tstack/.agent-log`. Informational only — never blocks.
+
+## Creating a New Hook
 
 Hooks are Node.js scripts that:
 1. Read JSON from stdin (tool input or event data)
@@ -94,7 +93,6 @@ process.stdin.setEncoding('utf8');
 process.stdin.on('data', (chunk) => { input += chunk; });
 process.stdin.on('end', () => {
   const data = JSON.parse(input);
-  // ... check data ...
 
   // To block:
   process.stdout.write(JSON.stringify({
@@ -107,3 +105,5 @@ process.stdin.on('end', () => {
   process.exit(0);
 });
 ```
+
+Place new hooks in `hooks/` and add them to `hooks/hooks.json`.

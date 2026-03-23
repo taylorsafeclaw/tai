@@ -1,0 +1,33 @@
+---
+description: docs-site — Next.js + Markdoc docs app
+globs: docs-site/**/*
+alwaysApply: false
+---
+
+# docs-site
+
+**Stack:** Next.js 16, React 19, Tailwind 4, Markdoc, motion (Framer Motion)
+
+## Structure
+
+| Path | Purpose |
+|------|---------|
+| `src/app/` | Pages, layout, providers |
+| `src/components/` | React components (Hero, Layout, Search) |
+| `src/components/ui/` | shadcn-style UI primitives (terminal, blur-fade, border-beam) |
+| `src/app/docs/` | Markdoc pages (`page.md`) |
+| `src/lib/` | Utils, navigation |
+| `src/markdoc/` | Markdoc nodes, config |
+
+## Commands
+
+```bash
+cd docs-site && pnpm dev    # dev server
+pnpm build && pnpm start    # prod
+```
+
+## Conventions
+
+- Use `@/components/...` and `@/lib/...` aliases
+- UI components in `src/components/ui/` use `cn()` for class merging
+- Hero/landing lives in `src/components/Hero.tsx`

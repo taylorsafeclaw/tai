@@ -1,0 +1,13 @@
+---
+paths: ["app/**", "components/**"]
+---
+- Use Radix + CVA + cn() pattern for components
+- No inline styles — Tailwind only (v4 with CSS custom properties)
+- Server components by default, client only when needed
+- Co-locate component tests: Component.test.tsx next to Component.tsx
+- Use useQuery/useMutation from convex/react for data fetching
+- Design system classes: soft-card, soft-card-strong, soft-pill, tag-eyebrow
+- Light theme only — never add dark mode classes
+- Glassmorphic effects: backdrop-filter blur, frosted borders, layered transparency
+- Always handle loading, empty, and error states
+- Invoke /frontend-design skill before creating new components

@@ -21,13 +21,13 @@ cd cli && cargo build --release
 
 Status dashboard — shows ASCII logo, item counts with link health, and config paths.
 
-### `tstack install`
+### `plugin install`
 
 Symlinks all commands, agents, and skills from the tstack repo to `~/.claude/`. Equivalent to running the `setup` bash script. Idempotent — safe to re-run.
 
 ### `tstack uninstall`
 
-Removes all `tstack-*` symlinks from `~/.claude/commands/`, `~/.claude/agents/`, and `~/.claude/skills/`. Does not touch project-level `.claude/` files.
+Removes all `*` symlinks from `~/.claude/commands/`, `~/.claude/agents/`, and `~/.claude/skills/`. Does not touch project-level `.claude/` files.
 
 ### `tstack list [commands|agents|skills|hooks|all]`
 
@@ -41,15 +41,15 @@ Status icons:
 
 ### `tstack add <command|agent|skill> <name>`
 
-Scaffolds a new item with proper frontmatter template. The `tstack-` prefix is added automatically if not provided.
+Scaffolds a new item with proper frontmatter template. The `` prefix is added automatically if not provided.
 
 ```bash
 tstack add command my-thing    # → commands/tstack-my-thing.md
-tstack add agent reviewer      # → agents/tstack-reviewer.md
+tstack add agent reviewer      # → agents/reviewer.md
 tstack add skill linter        # → skills/tstack-linter/SKILL.md
 ```
 
-Run `tstack install` after adding to create the symlink.
+Run `plugin install` after adding to create the symlink.
 
 ### `tstack doctor`
 

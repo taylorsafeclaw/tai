@@ -1,0 +1,12 @@
+---
+paths: ["**/*.test.ts", "**/*.test.tsx"]
+---
+- Use Vitest + convex-test patterns from existing tests
+- Test behavior, not implementation
+- Name tests: "should <expected behavior> when <condition>"
+- Mock external services (Fly.io, Slack), not internal modules
+- Use vi.fn() for function mocks, vi.spyOn() for method spies
+- Auth mocking: t.withIdentity({ subject: "user_id" })
+- Fly mocking: vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(...))
+- Clean up in afterEach: vi.unstubAllGlobals(); vi.restoreAllMocks()
+- Set required env vars in beforeEach (FLY_API_TOKEN, FLY_ORG_SLUG, etc.)

@@ -1,0 +1,8 @@
+{
+  "mode": "normal",
+  "models": {
+    "gate": "haiku",
+    "work": "sonnet",
+    "reasoning": "opus"
+  }
+}

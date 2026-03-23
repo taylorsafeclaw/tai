@@ -1,0 +1,33 @@
+---
+description: tstack project overview — structure, conventions, where things live
+alwaysApply: true
+---
+
+# tstack Project Context
+
+**What it is:** Claude Code plugin — structured dev workflow with commands, agents, skills. Three tiers: Task (minutes), Feature (hours), Mission (days/weeks).
+
+## Key Paths (go here first)
+
+| What | Where |
+|------|-------|
+| Plugin manifest | `.claude-plugin/plugin.json` |
+| Slash commands | `commands/<category>/*.md` (git/, lifecycle/, planning/, quality/, testing/, general/, utility/) |
+| Agents | `agents/core/*.md`, `agents/lifecycle/*.md` |
+| Skills | `skills/<name>/SKILL.md` |
+| Hooks | `hooks/hooks.json`, `hooks/*.js` |
+| Full docs | `CLAUDE.md` — read for conventions, state system, agent protocol |
+
+## Adding Components
+
+- **Command:** Drop `commands/<category>/<name>.md` with YAML frontmatter (`name`, `description`, `argument-hint`, `model`)
+- **Agent:** Drop `agents/<category>/<name>.md` with frontmatter (`name`, `description`, `model`, `tools`, `domain`, `maxTurns`)
+- **Skill:** Create `skills/<name>/SKILL.md` with frontmatter (`name`, `description`, `user-invocable`)
+
+## State System (`.tstack/`)
+
+Agents read/write here. On feature work: read `STATE.md`, `DECISIONS.md`, `features/<n>/plan.md` before implementing.
+
+## Quality Pipeline
+
+`pnpm lint → pnpm build → pnpm test` — stop on first failure. Never commit broken code.

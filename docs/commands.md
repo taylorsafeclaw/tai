@@ -1,267 +1,85 @@
 # Command Reference
 
-All commands are available after running `~/tstack/setup`. Invoke them with `/tstack-<name>` in Claude Code.
-
----
-
-## Tier 1: Task
-
-### `/tstack-task <what to do>`
-**Model:** sonnet
-
-Quick atomic change from description to commit. No planning, no PR.
-
-**Pipeline:** bootstrap → fast context (skip Explore for known files) → route to agent or implement directly → quality gate → commit
-
-**Agent routing:**
-- Checks for domain agents (tstack-convex, tstack-ui) via Glob
-- For 1-3 file changes, prefers direct implementation over spawning agents
-- Falls back to tstack-implementer or main context if no domain agents
-
-**Rules:**
-- No plan file
-- No PR — commits to current branch
-- No agent coordination
-- No browser tests
-- Stops on quality failure
-
-**Example:**
-```
-/tstack-task "rename WorkspaceCard to AgentCard in all components"
-```
-
----
-
-## Tier 2: Feature
-
-### `/tstack-feature <feature description>`
-**Model:** opus
-
-Full feature pipeline from description to merged PR.
-
-**Pipeline:** bootstrap → context (Explore agent) → plan → **user confirms** → branch → agent coordination (dual-path) → quality gate → push → PR
-
-**Agent coordination (dual-path):**
-- **Path A:** Domain agents available → spawn tstack-convex first, extract API shape, spawn tstack-ui with API shape
-- **Path B:** No domain agents → use tstack-implementer or implement directly
-- Each agent commits atomically per logical chunk
-
-**Error recovery:** Logs failures, saves progress to plan.md, attempts one fix, re-runs from failure point. Never loops more than twice.
-
-**Example:**
-```
-/tstack-feature "add workspace pause/resume — pause stops the Fly machine, resume restarts it"
-```
-
----
-
-### `/tstack-context <task or feature description>`
-**Model:** opus
-
-Gather context before implementing. Uses Agent tool with `subagent_type: "Explore"` and specific investigation questions.
-
-Finds: affected files, recent changes, patterns, available agents, gotchas.
-
-**Scope lock:** Gathers context only — does not implement anything.
-
----
-
-### `/tstack-plan <task or feature description>`
-**Model:** opus
-
-Create an implementation plan and wait for user confirmation.
-
-**Small tasks (≤3 files, 1 domain):** plan stays in conversation as bullet points.
-
-**Large tasks (>3 files or multiple domains):** writes plan.md (or `.tstack/features/<N>/plan.md` if mission active).
-
-**Context window sizing:** Each agent's workload sized to ~50% of a fresh context window. Each chunk is self-contained.
-
-Always asks "Does this plan look right?" and waits for confirmation.
-
----
-
-### `/tstack-implement <task description or plan.md path>`
-**Model:** sonnet
-
-Route a task or plan to the right agents and execute.
-
-- Checks agent availability via Glob
-- Uses dual-path agent coordination (domain agents → fallback to tstack-implementer → main context)
-- Atomic commits per logical chunk
-- Runs quality gate after implementation
-
----
-
-## Tier 3: Mission
-
-### `/tstack-mission <description or requirements doc path>`
-**Model:** opus
-
-Start a multi-feature mission.
-
-**Produces:**
-- `.tstack/ROADMAP.md` — numbered features with goals and success criteria
-- `.tstack/state.json` — progress tracker
-- `.tstack/features/<N>/` — directory per feature for plans
-
-**Context window sizing:** Each feature sized to be completable in a fresh context window (~50% utilization). Self-contained plans.
-
-Will **not** overwrite an existing `.tstack/state.json` without asking.
-
----
-
-### `/tstack-scope [feature number or name]`
-**Model:** opus
-
-Research a specific mission feature before planning.
-
-Uses Agent tool with `subagent_type: "Explore"` (very thorough) to find what exists, what needs building, patterns to follow, dependencies, constraints.
-
-Can invoke `tstack-research` skill for web research on external APIs/libraries.
-
-**Scope lock:** Researches only — does not implement anything.
-
----
-
-### `/tstack-execute [plan file path]`
-**Model:** sonnet
-
-Execute a feature plan with agent coordination.
-
-- Reads plan.md (or searches `.tstack/features/<N>/plan.md` → `plan.md`)
-- Uses dual-path agent coordination
-- Updates plan.md with `[x]` marks as tasks complete
-- Reports progress after each agent completes
-- Error recovery: saves progress, suggests resume with `/tstack-execute`
-
----
-
-### `/tstack-verify [feature number]`
-**Model:** sonnet
-
-Verify a completed feature against its ROADMAP.md success criteria.
-
-- Reads success criteria from ROADMAP.md
-- Checks each criterion (code existence, behavior wiring)
-- Runs quality gate
-- Reports pass/fail per criterion with file:line references
-
-Single pass — does **not** fix anything.
-
----
-
-### `/tstack-next`
-**Model:** sonnet
-
-Close the current feature and advance to the next.
-
-1. Runs verification inline (not as separate command)
-2. If fail: shows what's missing, stops
-3. If pass: opens PR (with error recovery for push/auth failures), updates `state.json`, shows next feature goal
-
----
-
-## Quality
-
-### `/tstack-validate`
-**Model:** haiku
-
-Run the quality pipeline and report results. Does **not** fix anything.
-
-```
-pnpm lint   → stop on failure
-pnpm build  → stop on failure
-pnpm test   → stop on failure
-[playwright] → if configured
-```
-
-Detects available scripts from package.json. Skips missing scripts.
-
----
-
-### `/tstack-test [playwright|dogfood|all]`
-**Model:** sonnet
-
-Run browser tests. Smart-detects what's available.
-
-| Mode | What runs |
-|------|-----------|
-| `playwright` | `npx playwright test` |
-| `dogfood` | `tstack-dogfood` skill with credentials from `.claude/dogfood.json` |
-| `all` | playwright then dogfood |
-| (none) | auto-detects — runs playwright if configured |
-
-Can invoke `tstack-test-gen` skill to generate missing tests before running.
-
-**No hardcoded credentials** — reads from `.claude/dogfood.json`.
-
----
-
-### `/tstack-review [files|staged|branch]`
-**Model:** sonnet
-
-Code review recent changes. High-confidence issues only.
-
-- Checks for project-specific reviewer agent first (`.claude/agents/tstack-reviewer.md`)
-- If available, spawns it instead of running generic review
-- Can invoke `tstack-audit` skill for deeper security analysis
-
-Checks: security (OWASP top 10), logic errors, convention violations.
+All commands are available after running `plugin install` (or `~/tstack/setup`). Invoke with `/<name>` in Claude Code — e.g. `/task "fix the login bug"`.
 
 ---
 
 ## Git
 
-### `/tstack-commit [commit message]`
-**Model:** sonnet
-
-Validate then commit. Runs quality gate, stages files specifically, conventional commit format.
-
-### `/tstack-ship [PR title or description]`
-**Model:** sonnet
-
-Full pipeline → PR. Can invoke `tstack-pr-body` skill for rich PR descriptions.
-
-### `/tstack-undo [N]`
-**Model:** sonnet
-
-Safely rollback N commits using `git revert` — never `git reset --hard`.
+| Command | Description | Argument | Model |
+|---------|-------------|----------|-------|
+| `/commit` | Validate then commit — runs quality pipeline, generates conventional commit message, stages files specifically. | `[--split \| --multi]` | sonnet |
+| `/ship` | Full pipeline → PR — validate, commit, push, create PR. Returns PR URL. | `[PR title or description]` | sonnet |
+| `/undo` | Safely rollback N commits using `git revert` (not `reset --hard`). Shows what would be reverted, asks confirmation. | `[number of commits — default 1]` | sonnet |
 
 ---
 
-## Debug & Refactor
+## Lifecycle
 
-### `/tstack-debug <error message or stack trace>`
-**Model:** opus
+| Command | Description | Argument | Model |
+|---------|-------------|----------|-------|
+| `/review-cycle` | Fetch Claude Code GH Action review comments from a PR, classify with confidence scoring, create Linear tickets, fix issues, push, and re-review until clean. | `<PR#> [--ingest \| --ticket \| --fix] [--max-iter N] [--all]` | opus |
+| `/linear` | Run Linear issues through tstack — fetches issue, auto-routes to the right tier, executes, and updates Linear when done. | `<issue ID or query> [--tier task\|feature] [--dry-run]` | sonnet |
 
-Systematic debugging. Uses parallel tool calls to read source + check git history simultaneously. Checks for known quality pipeline fix patterns first.
+---
 
-### `/tstack-refactor <what to refactor>`
-**Model:** sonnet
+## Planning
 
-Safe refactoring with reference discovery.
+| Command | Description | Argument | Model |
+|---------|-------------|----------|-------|
+| `/task` | Tier 1 — quick atomic change → commit. No planning, no PR, no coordination. For fixes, renames, small UI tweaks. | `<what to do>` | sonnet |
+| `/feature` | Tier 2 — full feature pipeline with planning and Agent Team coordination → PR. For multi-step work crossing domains. | `<feature description>` | opus |
+| `/mission` | Tier 3 — start a multi-feature mission. Reads requirements, produces ROADMAP.md + state.json, then runs feature-by-feature. | `<mission description or path to requirements doc>` | opus |
+| `/plan` | Plan an implementation — lightweight for small tasks, detailed plan.md for multi-file features. Asks user to confirm before proceeding. | `<task or feature description>` | opus |
+| `/scope` | Research a mission feature before planning — reads ROADMAP.md goal, explores codebase, identifies what exists vs needs building. | `[feature number or name]` | opus |
+| `/context` | Gather context for a task or feature — reads affected files, recent changes, conventions, gotchas. Output stays in conversation. | `<task or feature description>` | opus |
+| `/next` | Advance a mission to the next feature — verifies current, opens PR, updates state.json, shows next goal. | — | sonnet |
+| `/execute` | Execute a feature plan with Agent Team coordination. Reads plan.md, spawns agents, commits atomically, updates plan progress. | `[plan file path]` | sonnet |
 
-- Warns about existing uncommitted changes before starting
-- Greps all references before touching anything
-- On failure: reverts only refactored files (not `git checkout -- .`)
-- On success: commits with `refactor(<scope>): <what>`
+---
+
+## Quality
+
+| Command | Description | Argument | Model |
+|---------|-------------|----------|-------|
+| `/validate` | Run the quality pipeline — lint, build, test. Stops on first failure. Reports pass/fail with errors. Does not fix anything. | — | haiku |
+| `/review` | Code review recent changes — security, logic errors, convention violations. Single pass, high-confidence issues only. | `[files \| staged \| branch]` | sonnet |
+| `/debug` | Systematic debugging — reads error, traces execution path, checks recent changes, proposes a fix. | `<error message or stack trace>` | opus |
+| `/refactor` | Safe refactoring — greps all references first, makes the change, runs quality pipeline. Reverts on failure. | `<what to refactor>` | sonnet |
+| `/verify` | Verify a completed feature against its success criteria. Single-pass check — reads ROADMAP.md criteria, checks codebase, runs quality pipeline. | `[feature number]` | sonnet |
+| `/plan-review` | Multi-perspective plan review — CEO (scope/ambition), Eng (architecture/edge cases), Design (visual/UX). Rates dimensions 0–10, suggests improvements. | `[--ceo\|--eng\|--design] [plan file path]` | opus |
+
+---
+
+## Testing
+
+| Command | Description | Argument | Model |
+|---------|-------------|----------|-------|
+| `/test` | Browser testing — runs Playwright tests and/or dogfood session. Smart-detects what's available. | `[playwright\|dogfood\|all]` | sonnet |
+
+---
+
+## General
+
+| Command | Description | Argument | Model |
+|---------|-------------|----------|-------|
+| `/research` | Deep research a topic using web search, library docs, and codebase exploration. Outputs structured findings to research.md. | `<topic or question>` | opus |
+| `/simplify` | Review changed code for reuse, quality, and efficiency, then fix issues found. | `[file path \| staged \| last-commit]` | sonnet |
+| `/audit` | Security and performance audit — OWASP top 10, N+1 queries, race conditions, dependency vulnerabilities. | `[file/dir path \| full]` | opus |
+| `/changelog` | Generate changelog entries from git commits and diffs. Follows Keep a Changelog format. | `[version]` | sonnet |
+| `/office-hours` | Product brainstorming — Startup mode (PMF questions) or Builder mode (design thinking). | `[startup \| builder] <idea>` | opus |
+| `/summarize` | Summarize a file, diff, PR, or conversation into a concise overview. | `<file path \| PR# \| diff \| conversation>` | sonnet |
+| `/explain` | Explain code, architecture, or a concept in the context of this codebase. | `<file:line \| function name \| concept>` | sonnet |
+| `/find-examples` | Find usage examples of a pattern, function, or API in the codebase. | `<function name \| pattern \| API>` | sonnet |
 
 ---
 
 ## Utility
 
-### `/tstack-resume`
-**Model:** sonnet — Session continuity.
-
-### `/tstack-status`
-**Model:** haiku — One-screen project pulse.
-
-### `/tstack-help`
-**Model:** haiku — Lists all commands, agents, AND skills.
-
-### `/tstack-new-agent`
-**Model:** sonnet — Scaffold new agent with full frontmatter (tools, maxTurns, etc.).
-
-### `/tstack-new-command`
-**Model:** sonnet — Scaffold new command.
+| Command | Description | Argument | Model |
+|---------|-------------|----------|-------|
+| `/status` | Quick pulse — git state, mission progress if active, one-screen output. | — | haiku |
+| `/resume` | Session continuity — shows git state, reads plan/mission files, summarizes where you are and what's next. | — | sonnet |
+| `/help` | List all available tstack commands, agents, and skills, grouped by tier. | — | haiku |
+| `/new-agent` | Scaffold a new tstack agent with proper frontmatter. Places in the right directory (global or project). | `<agent name and purpose>` | sonnet |
+| `/new-command` | Scaffold a new tstack command with proper frontmatter. Places in the right directory (global or project). | `<command name and purpose>` | sonnet |

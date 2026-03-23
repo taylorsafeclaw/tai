@@ -1,6 +1,6 @@
 # Extension System
 
-tstack is extended by dropping `tstack-*.md` files in specific directories. No registration, no config — Claude Code discovers them automatically.
+tstack is extended by dropping `*.md` files in specific directories. No registration, no config — Claude Code discovers them automatically.
 
 ## Directory priority
 
@@ -14,7 +14,7 @@ tstack is extended by dropping `tstack-*.md` files in specific directories. No r
 ~/tstack/commands/                         ← core global commands (lowest)
 ```
 
-A project-level `tstack-<name>.md` overrides the global one. This is how project templates work — they install project-specific agents that know about your schema, auth patterns, and conventions.
+A project-level `<name>.md` overrides the global one. This is how project templates work — they install project-specific agents that know about your schema, auth patterns, and conventions.
 
 ## Adding a command
 
@@ -50,9 +50,9 @@ cp my-agent.md ~/tstack/agents/tstack-my-agent.md
 
 ## Naming convention
 
-All tstack files must be prefixed `tstack-`. This prevents collisions with other frameworks (`gsd-*`, `gstack-*`, etc.) and makes them instantly recognizable.
+All tstack files must be prefixed ``. This prevents collisions with other frameworks (`gsd-*`, `gstack-*`, etc.) and makes them instantly recognizable.
 
-Examples: `tstack-my-command.md`, `tstack-stripe.md`, `tstack-rails.md`
+Examples: `my-command.md`, `stripe.md`, `rails.md`
 
 ## Scaffolding
 
@@ -71,15 +71,15 @@ For reusable project setups, create a template directory:
 ~/tstack/templates/<project-name>/
 ├── install                 ← copies agents + commands to project .claude/
 ├── agents/
-│   └── tstack-*.md
+│   └── *.md
 └── commands/
-    └── tstack-*.md
+    └── *.md
 ```
 
 The `install` script should:
 1. Find the project root (directory with `.claude/`)
 2. `mkdir -p .claude/agents .claude/commands`
-3. Copy `tstack-*.md` files
+3. Copy `*.md` files
 
 See `templates/example/install` for a reference implementation.
 
@@ -92,4 +92,4 @@ Agents start project-specific and are promoted to global when they prove useful 
 3. Move the generic version to `~/tstack/agents/`
 4. The project keeps its override — the global version is the fallback
 
-Example: A project-specific `tstack-validate` agent that knows your exact `pnpm` commands could be generalized to auto-detect the package manager and test runner, then promoted to global.
+Example: A project-specific `validate` agent that knows your exact `pnpm` commands could be generalized to auto-detect the package manager and test runner, then promoted to global.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# tstack uninstall — removes all tai symlinks from ~/.claude/
+# tstack uninstall — removes all tstack symlinks from ~/.claude/
 set -euo pipefail
 
 CLAUDE_DIR="$HOME/.claude"

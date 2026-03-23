@@ -6,15 +6,15 @@ tstack organizes work into three tiers based on scope and coordination needs.
 ┌──────────────────────────────────────────────────────────┐
 │  TIER 1: TASK                                           │
 │  Minutes. One agent. One commit. No PR.                 │
-│  /tstack-task "fix the submit button color"                │
+│  /task "fix the submit button color"                │
 ├──────────────────────────────────────────────────────────┤
 │  TIER 2: FEATURE                                        │
 │  Hours. Agent Team. Atomic commits. PR.                 │
-│  /tstack-feature "add workspace pause/resume"              │
+│  /feature "add workspace pause/resume"              │
 ├──────────────────────────────────────────────────────────┤
 │  TIER 3: MISSION                                        │
 │  Days/weeks. Multiple features. Multiple PRs.           │
-│  /tstack-mission "build workspace management"              │
+│  /mission "build workspace management"              │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -38,7 +38,7 @@ When in doubt, start smaller — a task can always be promoted to a feature if i
 
 ## Tier 1: Task
 
-**Command:** `/tstack-task`
+**Command:** `/task`
 
 **Pipeline:**
 ```
@@ -55,14 +55,14 @@ context (fast Explore) → implement → lint + build + test → commit
 
 **Example:**
 ```
-/tstack-task "fix the workspace card status badge color — it should be green for running"
+/task "fix the workspace card status badge color — it should be green for running"
 ```
 
 ---
 
 ## Tier 2: Feature
 
-**Command:** `/tstack-feature`
+**Command:** `/feature`
 
 **Pipeline:**
 ```
@@ -80,42 +80,42 @@ context → plan → confirm → branch → Agent Team → quality → push → 
 
 **Manual decomposed flow** (step-by-step control):
 ```
-/tstack-context "pause/resume"   → gather context
-/tstack-plan "pause/resume"      → write plan, confirm
-/tstack-implement plan.md        → Agent Team executes
-/tstack-validate                 → quality pipeline
-/tstack-commit                   → commit
-/tstack-ship                     → open PR
+/context "pause/resume"   → gather context
+/plan "pause/resume"      → write plan, confirm
+/implement plan.md        → Agent Team executes
+/validate                 → quality pipeline
+/commit                   → commit
+/ship                     → open PR
 ```
 
 **Example:**
 ```
-/tstack-feature "add workspace pause/resume — pause stops the machine, resume restarts it"
+/feature "add workspace pause/resume — pause stops the machine, resume restarts it"
 ```
 
 ---
 
 ## Tier 3: Mission
 
-**Command:** `/tstack-mission`
+**Command:** `/mission`
 
 **Pipeline:**
 ```
 scope codebase → produce ROADMAP.md → create state.json → per-feature loop:
-  /tstack-scope → /tstack-plan → /tstack-execute → /tstack-verify → /tstack-next → repeat
+  /scope → /plan → /execute → /verify → /next → repeat
 ```
 
 - ROADMAP.md defines numbered features with success criteria
 - `.tstack/state.json` tracks progress across sessions
 - Each feature is a self-contained tier-2 pipeline with its own branch and PR
-- `/tstack-next` closes the current feature (verify → PR → advance)
+- `/next` closes the current feature (verify → PR → advance)
 - State persists across Claude Code sessions — missions can span days or weeks
 
 **Model:** opus (mission planning + scoping), sonnet (execution), haiku (verification)
 
 **Example:**
 ```
-/tstack-mission "build the full workspace management system — pause, resume, archive, restore, billing"
+/mission "build the full workspace management system — pause, resume, archive, restore, billing"
 ```
 
 See [missions.md](missions.md) for the full mission workflow and state format.

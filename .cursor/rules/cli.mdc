@@ -1,0 +1,30 @@
+---
+description: tstack CLI — Rust binary
+globs: cli/**/*
+alwaysApply: false
+---
+
+# tstack CLI
+
+**Location:** `cli/` — Rust CLI for `tstack doctor`, `tstack add`, etc.
+
+## Build & Run
+
+```bash
+cd cli && cargo build
+cargo install --path .   # puts `tstack` on PATH
+```
+
+## Structure
+
+| Path | Purpose |
+|------|---------|
+| `cli/src/main.rs` | Entry point |
+| `cli/src/commands/` | Subcommands (add, doctor, list, run, status) |
+| `cli/Cargo.toml` | Dependencies |
+
+## Adding a Command
+
+1. Add module in `cli/src/commands/mod.rs`
+2. Implement in `cli/src/commands/<name>.rs`
+3. Register in `main.rs` or mod

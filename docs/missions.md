@@ -5,12 +5,12 @@ A mission is a large initiative broken into a sequence of shippable features. Ea
 ## Starting a mission
 
 ```bash
-/tstack-mission "build the full workspace management system"
+/mission "build the full workspace management system"
 ```
 
 Or pass a requirements doc path:
 ```bash
-/tstack-mission docs/requirements.md
+/mission docs/requirements.md
 ```
 
 tstack will:
@@ -110,17 +110,17 @@ Status values: `ready`, `in_progress`, `complete`
 ### Standard loop
 
 ```
-/tstack-scope     → research the current feature
-/tstack-plan      → create plan.md, confirm with user
-/tstack-execute   → Agent Team implements, atomic commits
-/tstack-verify    → check success criteria + quality
-/tstack-next      → PR + advance state to next feature
+/scope     → research the current feature
+/plan      → create plan.md, confirm with user
+/execute   → Agent Team implements, atomic commits
+/verify    → check success criteria + quality
+/next      → PR + advance state to next feature
 ```
 
 ### Shortcut
 
 ```
-/tstack-next      → runs verify internally, opens PR, advances, shows next feature
+/next      → runs verify internally, opens PR, advances, shows next feature
 ```
 
 Use the shortcut when the feature is done and you just want to ship and move on.
@@ -129,7 +129,7 @@ Use the shortcut when the feature is done and you just want to ship and move on.
 
 ## Per-feature commands
 
-### `/tstack-scope`
+### `/scope`
 
 Research what a feature needs before planning. Reads the ROADMAP.md goal, explores the codebase, finds:
 - What already exists
@@ -137,25 +137,25 @@ Research what a feature needs before planning. Reads the ROADMAP.md goal, explor
 - Patterns to follow
 - Dependencies and constraints
 
-Use before `/tstack-plan` for medium/large features.
+Use before `/plan` for medium/large features.
 
-### `/tstack-plan`
+### `/plan`
 
 Creates `plan.md` for the current feature. See [commands.md](commands.md#tstack-plan) for the plan.md format.
 
 The plan goes in `.tstack/features/<N>/plan.md`.
 
-### `/tstack-execute`
+### `/execute`
 
 Reads `plan.md`, creates an Agent Team, runs implementation, marks tasks complete. See [agent-teams.md](agent-teams.md) for coordination details.
 
-### `/tstack-verify`
+### `/verify`
 
 Single-pass verification against ROADMAP.md success criteria. Checks code existence and runs the quality pipeline. Reports pass/fail per criterion — does **not** fix anything.
 
-### `/tstack-next`
+### `/next`
 
-The closer. Internally runs `/tstack-verify`. If pass: opens PR, updates `state.json`, shows next feature. If fail: shows what's missing, stops.
+The closer. Internally runs `/verify`. If pass: opens PR, updates `state.json`, shows next feature. If fail: shows what's missing, stops.
 
 ---
 
@@ -168,7 +168,7 @@ main
   └── feat/billing-events       → PR #48 (feature 3, in progress)
 ```
 
-Each feature gets its own branch (created automatically by `/tstack-execute` or the feature pipeline). PRs merge to main.
+Each feature gets its own branch (created automatically by `/execute` or the feature pipeline). PRs merge to main.
 
 For large missions with many sequential features, you can optionally use a mission branch:
 ```
@@ -183,7 +183,7 @@ main
 ## Resuming after a break
 
 ```
-/tstack-resume
+/resume
 ```
 
 Shows git state, mission progress, incomplete tasks, open PRs, and the next action. Works across sessions because `.tstack/` files are the source of truth.
@@ -192,13 +192,13 @@ Shows git state, mission progress, incomplete tasks, open PRs, and the next acti
 
 ## Completing a mission
 
-When `/tstack-next` is run on the last feature, it detects there's no next feature and prints:
+When `/next` is run on the last feature, it detects there's no next feature and prints:
 
 ```
 ✓ Feature 7 complete → PR #61
 
 Mission complete! All features shipped.
-Run /tstack-status to see the full summary.
+Run /status to see the full summary.
 ```
 
 The `.tstack/` files can be archived or left as project history.

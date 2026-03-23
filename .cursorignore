@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+cli/target/
+docs-site/.next/
+docs-site/.astro/
+docs-site/out/
+
+# Nested repo (docs-site has its own .git)
+docs-site/.git/
+
+# Lock files (large, rarely need to search)
+pnpm-lock.yaml
+Cargo.lock
+
+# Extensions (user add-ons, not core)
+extensions/

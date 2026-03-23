@@ -14,23 +14,23 @@ Orchestrator (main context)
   ├── Glob check: .claude/agents/tstack-convex.md ✓
   ├── Glob check: .claude/agents/tstack-ui.md ✓
   │
-  ├── Agent tool: spawn tstack-convex ─────────────────────────┐
+  ├── Agent tool: spawn convex ─────────────────────────┐
   │     prompt: backend tasks, files to modify, patterns     │
-  │     tstack-convex: reads schema, validators, auth, crypto   │
-  │     tstack-convex: writes mutations + queries               │
-  │     tstack-convex: runs pnpm build + pnpm test              │
-  │     tstack-convex: commits atomically                       │
+  │     convex: reads schema, validators, auth, crypto   │
+  │     convex: writes mutations + queries               │
+  │     convex: runs pnpm build + pnpm test              │
+  │     convex: commits atomically                       │
   │     Returns: API shape ──────────────────────────────── ┤
   │       { pauseWorkspace: { args: {id}, returns: null } }  │
   │                                                          │
   ├── (orchestrator extracts API shape)                      │
   │                                                          │
-  ├── Agent tool: spawn tstack-ui ───────────────────────────── ┘
+  ├── Agent tool: spawn ui ───────────────────────────── ┘
   │     prompt: UI tasks + API shape from backend
-  │     tstack-ui: reads globals.css, workspace-shell, patterns
-  │     tstack-ui: builds components using exact API shape
-  │     tstack-ui: runs pnpm build
-  │     tstack-ui: commits atomically
+  │     ui: reads globals.css, workspace-shell, patterns
+  │     ui: builds components using exact API shape
+  │     ui: runs pnpm build
+  │     ui: commits atomically
   │
   └── Quality gate in main context
         pnpm lint + build + test (+ playwright if configured)
@@ -42,9 +42,9 @@ Orchestrator (main context)
 Orchestrator
   │
   ├── Glob check: .claude/agents/tstack-convex.md ✗
-  ├── Glob check: ~/.claude/agents/tstack-implementer.md ✓
+  ├── Glob check: ~/.claude/agents/implementer.md ✓
   │
-  └── Agent tool: spawn tstack-implementer
+  └── Agent tool: spawn implementer
         prompt: full task context, all files, patterns
         Implements everything, runs quality, commits
 ```
@@ -59,7 +59,7 @@ Commands use the Agent tool with specific parameters:
 
 ```
 Agent tool:
-  name: "tstack-convex"
+  name: "convex"
   prompt: "Implement these backend tasks:
     1. Add pause mutation to convex/workspaces/mutations.ts
     2. Add resume mutation
@@ -117,8 +117,8 @@ feat(workspace): add pause/resume UI controls
 ## When NOT to use multi-agent coordination
 
 - Tasks (tier 1) — always single agent or direct, too small to coordinate
-- Pure-backend features — single `tstack-convex` call
-- Pure-frontend features — single `tstack-ui` call
+- Pure-backend features — single `convex` call
+- Pure-frontend features — single `ui` call
 - Config/script changes — handled in main context
 
 Teams are for features that genuinely cross the backend/frontend boundary.
@@ -128,5 +128,5 @@ Teams are for features that genuinely cross the backend/frontend boundary.
 If an agent fails mid-execution:
 1. Save progress to plan.md (mark completed tasks with `[x]`)
 2. Report which agent failed, at which task, with the exact error
-3. Suggest: "Resume with `/tstack-execute` — it will pick up from the last incomplete task"
+3. Suggest: "Resume with `/execute` — it will pick up from the last incomplete task"
 4. Never retry the whole pipeline automatically

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# tstack template: safeclaw
+# Installs SafeClaw project-specific agents into .claude/
+set -euo pipefail
+
+# Find project root (directory containing .claude/)
+PROJECT_ROOT="$(pwd)"
+while [ ! -d "$PROJECT_ROOT/.claude" ] && [ "$PROJECT_ROOT" != "/" ]; do
+  PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
+done
+
+if [ ! -d "$PROJECT_ROOT/.claude" ]; then
+  echo "Error: could not find .claude/ directory. Run this from inside your project."
+  exit 1
+fi
+
+TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "Installing safeclaw template into $PROJECT_ROOT/.claude/"
+echo ""
+
+mkdir -p "$PROJECT_ROOT/.claude/agents" "$PROJECT_ROOT/.claude/commands"
+
+# Copy agents
+for src in "$TEMPLATE_DIR/agents"/tstack-*.md; do
+  [ -f "$src" ] || continue
+  filename="$(basename "$src")"
+  cp "$src" "$PROJECT_ROOT/.claude/agents/$filename"
+  echo "  ✓ agents/$filename"
+done
+
+# Copy commands
+for src in "$TEMPLATE_DIR/commands"/tstack-*.md; do
+  [ -f "$src" ] || continue
+  filename="$(basename "$src")"
+  cp "$src" "$PROJECT_ROOT/.claude/commands/$filename"
+  echo "  ✓ commands/$filename"
+done
+
+echo ""
+echo "Done. Re-run this script any time to update."

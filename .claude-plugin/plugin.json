@@ -1,0 +1,28 @@
+{
+  "name": "tstack",
+  "version": "0.3.0",
+  "description": "Opinionated dev framework with three tiers, quality pipeline, and agent teams. Categories: git, lifecycle, planning, quality, testing, general, utility.",
+  "author": {
+    "name": "Taylor Allen"
+  },
+  "license": "MIT",
+  "keywords": ["dev-framework", "workflow", "quality-pipeline", "agent-teams"],
+  "commands": [
+    "./commands/git",
+    "./commands/lifecycle",
+    "./commands/planning",
+    "./commands/quality",
+    "./commands/testing",
+    "./commands/general",
+    "./commands/utility"
+  ],
+  "agents": [
+    "./agents/core",
+    "./agents/lifecycle"
+  ],
+  "skills": "./skills",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json",
+  "lspServers": "./.lsp.json",
+  "outputStyles": "./output-styles/"
+}

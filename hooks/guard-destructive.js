@@ -33,7 +33,7 @@ process.stdin.on('end', () => {
     }
 
     // Block rm -rf on dangerous paths
-    else if (command.match(/\brm\s+-rf\s+[\/~]/) || command.match(/\brm\s+-rf\s+\.\s/)) {
+    else if (command.match(/\brm\s+-rf\s+[\/~]/) || command.match(/\brm\s+-rf\s+\.(\s|$)/)) {
       process.stdout.write(JSON.stringify({
         decision: "block",
         reason: "rm -rf on root/home/current directory is too dangerous. Be more specific about what to delete."

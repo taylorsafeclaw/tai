@@ -7,51 +7,57 @@
 - `pnpm` (for quality pipeline)
 - `gh` CLI (for PR creation)
 
-## Install
+## Install (Plugin)
 
 ```bash
-git clone https://github.com/tstack-framework/tstack.git ~/tstack && ~/tstack/setup
+git clone https://github.com/taylorsafeclaw/tstack.git ~/tstack
+claude plugin add ~/tstack
 ```
 
-The `setup` script:
-1. Symlinks every `commands/tstack-*.md` → `~/.claude/commands/`
-2. Symlinks every `agents/tstack-*.md` → `~/.claude/agents/`
-3. Symlinks every `skills/tstack-*/` → `~/.claude/skills/`
-4. Prints a summary of installed commands, agents, and skills
+The plugin system discovers all commands, agents, skills, and hooks from the `plugin.json` manifest automatically.
 
-After install, all `/tstack-*` commands are available in every Claude Code session.
+After install, all tstack commands (e.g., `/commit`, `/task`, `/ship`) are available in every Claude Code session, namespaced as `tstack:<category>`.
 
 ## Verify
 
 ```bash
-ls ~/.claude/commands/tstack-*.md
+# In a Claude Code session:
+/help
 ```
 
-You should see 23 command symlinks.
+You should see tstack commands grouped by category (git, lifecycle, planning, quality, testing, general, utility).
 
 ## Uninstall
 
 ```bash
-~/tstack/uninstall
+claude plugin remove tstack
 ```
 
-Removes all `~/.claude/commands/tstack-*.md`, `~/.claude/agents/tstack-*.md`, and `~/.claude/skills/tstack-*/` symlinks. Does **not** touch any project-level `.claude/` files.
-
----
+Does **not** touch any project-level `.claude/` files or runtime state.
 
 ## Update
 
 ```bash
-cd ~/tstack && git pull && ~/tstack/setup
+cd ~/tstack && git pull
 ```
 
-`setup` is idempotent — re-running it refreshes all symlinks.
+Plugin changes take effect on the next Claude Code session. No re-install needed.
 
 ---
 
-## Project templates
+## Building the CLI (optional)
 
-Templates install project-specific agents, commands, and skills into your project's `.claude/` directory. These override global tstack commands when they share a name.
+```bash
+cd ~/tstack/cli && cargo install --path .
+```
+
+The CLI provides: `tstack doctor`, `tstack add`, `tstack boost/eco/normal`, and delegates AI commands to Claude Code via `claude -p`.
+
+---
+
+## Project Templates
+
+Templates install project-specific agents, commands, and skills into your project's `.claude/` directory. These override plugin-level components when they share a name.
 
 ### Using a template
 
@@ -61,30 +67,23 @@ Templates install project-specific agents, commands, and skills into your projec
 
 ### Creating a template
 
-Create a directory under `templates/` with an install script:
-
 ```
 ~/tstack/templates/<my-project>/
-├── install                 ← copies agents + commands + skills to project .claude/
+├── install                ← copies components to project .claude/
 ├── agents/
-│   └── tstack-*.md            ← project-specific agent overrides
+│   └── <name>.md          ← project-specific agent overrides
 ├── commands/
-│   └── tstack-*.md            ← project-specific commands
+│   └── <name>.md          ← project-specific commands
 └── skills/
-    └── tstack-*/
-        └── SKILL.md        ← project-specific skills
+    └── <name>/
+        └── SKILL.md       ← project-specific skills
 ```
-
-The `install` script should:
-1. Find the project root (directory with `.claude/`)
-2. `mkdir -p .claude/agents .claude/commands .claude/skills`
-3. Copy `tstack-*.md` files and skill directories
 
 See `templates/example/install` for a reference implementation.
 
 ---
 
-## Runtime directory
+## Runtime Directory
 
 Many tstack commands write to `.tstack/` in your project root:
 - `.tstack/state.json` — mission progress state
@@ -92,3 +91,23 @@ Many tstack commands write to `.tstack/` in your project root:
 - `.tstack/.agent-log` — agent coordination log
 
 Add `.tstack/` to your project's `.gitignore`.
+
+---
+
+## Boost Mode
+
+Configure model selection via `tstack.local.md` in your project root:
+
+```yaml
+---
+mode: boost    # normal | boost | economy
+---
+```
+
+| Type | Normal | Boost | Economy |
+|------|--------|-------|---------|
+| Gates (validate, status, help) | haiku | sonnet | haiku |
+| Work (commit, ship, review) | sonnet | opus | sonnet |
+| Reasoning (plan, scope, debug) | opus | opus | sonnet |
+
+Copy the template from `~/tstack/templates/tstack.local.md`.
