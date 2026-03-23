@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 
 const variantStyles = {
   primary:
@@ -20,7 +20,7 @@ export function Button({
   className,
   ...props
 }: ButtonProps) {
-  className = clsx(variantStyles[variant], className)
+  className = cn(variantStyles[variant], className)
 
   return typeof props.href === 'undefined' ? (
     <button className={className} {...props} />

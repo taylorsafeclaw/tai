@@ -1,6 +1,6 @@
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 
-import { Icon } from '@/components/Icon'
+import { Icon } from '@/components/icon'
 
 const styles = {
   note: {
@@ -33,18 +33,18 @@ export function Callout({
   children: React.ReactNode
   type?: keyof typeof styles
 }) {
-  let IconComponent = icons[type]
+  const IconComponent = icons[type]
 
   return (
-    <div className={clsx('my-8 flex p-6', styles[type].container)}>
+    <div className={cn('my-8 flex p-6', styles[type].container)}>
       <IconComponent className="h-8 w-8 flex-none" />
       <div className="ml-4 flex-auto">
         <p
-          className={clsx('not-prose font-mono text-base font-bold', styles[type].title)}
+          className={cn('not-prose font-mono text-base font-bold', styles[type].title)}
         >
           {title}
         </p>
-        <div className={clsx('prose mt-2.5', styles[type].body)}>
+        <div className={cn('prose mt-2.5', styles[type].body)}>
           {children}
         </div>
       </div>

@@ -25,13 +25,13 @@ src/
 │   ├── layout.tsx              ← root layout (fonts, dark mode, wraps Layout)
 │   ├── page.md                 ← homepage (markdoc)
 │   └── docs/<topic>/page.md    ← each doc page is a markdoc file
-├── components/
-│   ├── Layout.tsx              ← shell: Header + Hero (homepage only) + sidebar + content
-│   ├── DocsLayout.tsx          ← markdoc document renderer (header + prose + TOC)
-│   ├── Hero.tsx                ← homepage hero (terminal animation, CTA)
-│   ├── Navigation.tsx          ← sidebar nav (reads from lib/navigation.ts)
+├── components/                   ← all kebab-case filenames
+│   ├── layout.tsx              ← shell: Header + Hero (homepage only) + sidebar + content
+│   ├── docs-layout.tsx         ← markdoc document renderer (header + prose + TOC)
+│   ├── hero.tsx                ← homepage hero (terminal animation, CTA)
+│   ├── navigation.tsx          ← sidebar nav (reads from lib/navigation.ts)
 │   ├── ui/                     ← shadcn + custom UI primitives
-│   └── icons/                  ← SVG icon components
+│   └── icons/                  ← SVG icon components (kebab-case)
 ├── lib/
 │   ├── navigation.ts           ← sidebar nav structure (sections + links)
 │   ├── sections.ts             ← TOC section collector
@@ -89,10 +89,12 @@ Everything follows a strict neobrutalist aesthetic. Do not deviate.
 
 ## Key conventions
 
-- Use `cn()` from `@/lib/utils` for conditional classes (not raw clsx)
+- **Kebab-case filenames** — all components use `kebab-case.tsx` (e.g., `docs-header.tsx`, `mobile-navigation.tsx`), NOT PascalCase
+- Use `cn()` from `@/lib/utils` for ALL conditional classes (never raw `clsx`)
+- Use `const` for all non-reassigned variables (never `let` for hooks, destructured state, etc.)
 - `'use client'` directive on any component using hooks or browser APIs
-- Layout.tsx shows Hero only on homepage (`pathname === '/'`)
-- Components use `clsx` directly for simple cases, `cn()` when merging Tailwind
+- `layout.tsx` shows Hero only on homepage (`pathname === '/'`)
+- No `forwardRef` — use React 19 ref-as-prop pattern instead
 - shadcn components go in `src/components/ui/`
 - Icons go in `src/components/icons/`
 

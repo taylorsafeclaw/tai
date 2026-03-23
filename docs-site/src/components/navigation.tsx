@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
+
+import { cn } from '@/lib/utils'
 
 import { navigation } from '@/lib/navigation'
 
@@ -11,10 +12,10 @@ export function Navigation({
   className?: string
   onLinkClick?: React.MouseEventHandler<HTMLAnchorElement>
 }) {
-  let pathname = usePathname()
+  const pathname = usePathname()
 
   return (
-    <nav className={clsx('text-base lg:text-sm', className)}>
+    <nav className={cn('text-base lg:text-sm', className)}>
       <ul role="list" className="space-y-9">
         {navigation.map((section) => (
           <li key={section.title}>
@@ -30,7 +31,7 @@ export function Navigation({
                   <Link
                     href={link.href}
                     onClick={onLinkClick}
-                    className={clsx(
+                    className={cn(
                       'block w-full pl-3.5 font-mono before:pointer-events-none before:absolute before:top-1/2 before:-left-[2px] before:h-4 before:w-[3px] before:-translate-y-1/2',
                       link.href === pathname
                         ? 'font-semibold text-lime-400 before:bg-lime-400'

@@ -15,10 +15,9 @@ export function Logomark(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
-export function Logo(props: React.ComponentPropsWithoutRef<'svg'>) {
-  void props
+export function Logo({ className, ...props }: React.ComponentPropsWithoutRef<'span'>) {
   return (
-    <span className="flex items-center gap-2" aria-label="tstack">
+    <span className="flex items-center gap-2" aria-label="tstack" {...props}>
       <Logomark className="h-7 w-7 text-lime-400" />
       <span className="font-mono text-base font-semibold tracking-tight text-neutral-900 dark:text-white">
         tstack

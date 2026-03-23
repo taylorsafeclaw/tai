@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 
-import { Hero } from '@/components/Hero'
-import { Logo, Logomark } from '@/components/Logo'
-import { MobileNavigation } from '@/components/MobileNavigation'
-import { Navigation } from '@/components/Navigation'
-import { Search } from '@/components/Search'
+import { Hero } from '@/components/hero'
+import { Logo, Logomark } from '@/components/logo'
+import { MobileNavigation } from '@/components/mobile-navigation'
+import { Navigation } from '@/components/navigation'
+import { Search } from '@/components/search'
 
 function GitHubIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -20,7 +20,7 @@ function GitHubIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 }
 
 function Header() {
-  let [isScrolled, setIsScrolled] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
     function onScroll() {
@@ -35,7 +35,7 @@ function Header() {
 
   return (
     <header
-      className={clsx(
+      className={cn(
         'sticky top-0 z-50 flex flex-none flex-wrap items-center justify-between border-b-2 border-neutral-800 bg-white px-4 py-5 transition duration-500 sm:px-6 lg:px-8 dark:bg-[#0a0a0a]',
         isScrolled
           ? 'dark:bg-[#0a0a0a]/95 dark:backdrop-blur-sm dark:[@supports(backdrop-filter:blur(0))]:bg-[#0a0a0a]/75'
@@ -68,8 +68,8 @@ function Header() {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  let pathname = usePathname()
-  let isHomePage = pathname === '/'
+  const pathname = usePathname()
+  const isHomePage = pathname === '/'
 
   return (
     <div className="flex w-full flex-col">

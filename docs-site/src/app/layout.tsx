@@ -1,9 +1,7 @@
 import { type Metadata } from 'next'
 import { Geist, JetBrains_Mono, Syne } from 'next/font/google'
 import localFont from 'next/font/local'
-import clsx from 'clsx'
-
-import { Layout } from '@/components/Layout'
+import { Layout } from '@/components/layout'
 
 import '@/styles/tailwind.css'
 import { cn } from '@/lib/utils'
@@ -47,13 +45,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        clsx(
-          'dark h-full antialiased',
-          geist.variable,
-          syne.variable,
-          lexend.variable,
-          jetbrainsMono.variable,
-        ),
+        'dark h-full antialiased',
+        geist.variable,
+        syne.variable,
+        lexend.variable,
+        jetbrainsMono.variable,
         'font-sans',
       )}
     >

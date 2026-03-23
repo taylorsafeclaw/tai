@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 
 export function Prose<T extends React.ElementType = 'div'>({
   as,
@@ -7,11 +7,11 @@ export function Prose<T extends React.ElementType = 'div'>({
 }: React.ComponentPropsWithoutRef<T> & {
   as?: T
 }) {
-  let Component = as ?? 'div'
+  const Component = as ?? 'div'
 
   return (
     <Component
-      className={clsx(
+      className={cn(
         className,
         'prose max-w-none dark:text-neutral-400 dark:prose-invert',
         // headings

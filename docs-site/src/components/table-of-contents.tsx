@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import clsx from 'clsx'
+
+import { cn } from '@/lib/utils'
 
 import { type Section, type Subsection } from '@/lib/sections'
 
@@ -11,19 +12,19 @@ export function TableOfContents({
 }: {
   tableOfContents: Array<Section>
 }) {
-  let [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id)
+  const [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id)
 
-  let getHeadings = useCallback((tableOfContents: Array<Section>) => {
+  const getHeadings = useCallback((tableOfContents: Array<Section>) => {
     return tableOfContents
       .flatMap((node) => [node.id, ...node.children.map((child) => child.id)])
       .map((id) => {
-        let el = document.getElementById(id)
+        const el = document.getElementById(id)
         if (!el) return null
 
-        let style = window.getComputedStyle(el)
-        let scrollMt = parseFloat(style.scrollMarginTop)
+        const style = window.getComputedStyle(el)
+        const scrollMt = parseFloat(style.scrollMarginTop)
 
-        let top = window.scrollY + el.getBoundingClientRect().top - scrollMt
+        const top = window.scrollY + el.getBoundingClientRect().top - scrollMt
         return { id, top }
       })
       .filter((x): x is { id: string; top: number } => x !== null)
@@ -31,11 +32,11 @@ export function TableOfContents({
 
   useEffect(() => {
     if (tableOfContents.length === 0) return
-    let headings = getHeadings(tableOfContents)
+    const headings = getHeadings(tableOfContents)
     function onScroll() {
-      let top = window.scrollY
+      const top = window.scrollY
       let current = headings[0].id
-      for (let heading of headings) {
+      for (const heading of headings) {
         if (top >= heading.top - 10) {
           current = heading.id
         } else {
@@ -78,7 +79,7 @@ export function TableOfContents({
                   <h3>
                     <Link
                       href={`#${section.id}`}
-                      className={clsx(
+                      className={cn(
                         isActive(section)
                           ? 'text-lime-400'
                           : 'font-normal text-neutral-500 hover:text-neutral-300',

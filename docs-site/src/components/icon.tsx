@@ -1,12 +1,12 @@
 import { useId } from 'react'
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 
-import { InstallationIcon } from '@/components/icons/InstallationIcon'
-import { LightbulbIcon } from '@/components/icons/LightbulbIcon'
-import { PluginsIcon } from '@/components/icons/PluginsIcon'
-import { PresetsIcon } from '@/components/icons/PresetsIcon'
-import { ThemingIcon } from '@/components/icons/ThemingIcon'
-import { WarningIcon } from '@/components/icons/WarningIcon'
+import { InstallationIcon } from '@/components/icons/installation-icon'
+import { LightbulbIcon } from '@/components/icons/lightbulb-icon'
+import { PluginsIcon } from '@/components/icons/plugins-icon'
+import { PresetsIcon } from '@/components/icons/presets-icon'
+import { ThemingIcon } from '@/components/icons/theming-icon'
+import { WarningIcon } from '@/components/icons/warning-icon'
 
 const icons = {
   installation: InstallationIcon,
@@ -32,15 +32,15 @@ export function Icon({
   color?: keyof typeof iconStyles
   icon: keyof typeof icons
 } & Omit<React.ComponentPropsWithoutRef<'svg'>, 'color'>) {
-  let id = useId()
-  let IconComponent = icons[icon]
+  const id = useId()
+  const IconComponent = icons[icon]
 
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 32 32"
       fill="none"
-      className={clsx(className, iconStyles[color])}
+      className={cn(className, iconStyles[color])}
       {...props}
     >
       <IconComponent id={id} color={color} />
@@ -85,12 +85,12 @@ export function LightMode({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'g'>) {
-  return <g className={clsx('dark:hidden', className)} {...props} />
+  return <g className={cn('dark:hidden', className)} {...props} />
 }
 
 export function DarkMode({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'g'>) {
-  return <g className={clsx('hidden dark:inline', className)} {...props} />
+  return <g className={cn('hidden dark:inline', className)} {...props} />
 }
