@@ -8,45 +8,46 @@ pub fn run() -> Result<()> {
     let config = TstackConfig::detect()?;
     let start = Instant::now();
 
-    ui::heading("tstack install");
+    cliclack::intro("tstack install")?;
 
     // Ensure target directories exist
     std::fs::create_dir_all(config.claude_commands_dir())?;
     std::fs::create_dir_all(config.claude_agents_dir())?;
     std::fs::create_dir_all(config.claude_skills_dir())?;
 
-    // Symlink commands
-    let cmd_count = link_md_files(&config.commands_dir(), &config.claude_commands_dir(), "commands")?;
+    // Link commands
+    let spin = cliclack::spinner();
+    spin.start("Linking commands...");
+    let cmd_count = link_md_files(&config.commands_dir(), &config.claude_commands_dir())?;
+    spin.stop(format!("Commands   {} linked", cmd_count));
 
-    // Symlink agents
-    let agent_count = link_md_files(&config.agents_dir(), &config.claude_agents_dir(), "agents")?;
+    // Link agents
+    let spin = cliclack::spinner();
+    spin.start("Linking agents...");
+    let agent_count = link_md_files(&config.agents_dir(), &config.claude_agents_dir())?;
+    spin.stop(format!("Agents     {} linked", agent_count));
 
-    // Symlink skills (directory-level)
+    // Link skills
+    let spin = cliclack::spinner();
+    spin.start("Linking skills...");
     let skill_count = link_skill_dirs(&config.skills_dir(), &config.claude_skills_dir())?;
-
-    println!();
-    ui::success(&format!("commands   {cmd_count} linked"));
-    ui::success(&format!("agents     {agent_count} linked"));
-    ui::success(&format!("skills     {skill_count} linked"));
+    spin.stop(format!("Skills     {} linked", skill_count));
 
     let elapsed = start.elapsed();
-    println!();
-    ui::info(&format!("Done in {}ms", elapsed.as_millis()));
-    println!();
+    cliclack::outro(format!("Done in {}ms", elapsed.as_millis()))?;
 
     Ok(())
 }
 
-fn link_md_files(source_dir: &std::path::Path, target_dir: &std::path::Path, label: &str) -> Result<usize> {
+fn link_md_files(source_dir: &std::path::Path, target_dir: &std::path::Path) -> Result<usize> {
     let mut count = 0;
-    link_md_files_recursive(source_dir, target_dir, label, &mut count)?;
+    link_md_files_recursive(source_dir, target_dir, &mut count)?;
     Ok(count)
 }
 
 fn link_md_files_recursive(
     current_dir: &std::path::Path,
     target_dir: &std::path::Path,
-    label: &str,
     count: &mut usize,
 ) -> Result<()> {
     let entries = match std::fs::read_dir(current_dir) {
@@ -57,13 +58,16 @@ fn link_md_files_recursive(
     for entry in entries.flatten() {
         let path = entry.path();
 
-        // Recurse into real subdirectories only (skip symlinks to prevent cycles)
         if path.is_dir() && !path.is_symlink() {
-            link_md_files_recursive(&path, target_dir, label, count)?;
+            link_md_files_recursive(&path, target_dir, count)?;
             continue;
         }
 
-        let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
+        let name = path
+            .file_name()
+            .unwrap_or_default()
+            .to_string_lossy()
+            .to_string();
         if !name.ends_with(".md") {
             continue;
         }
@@ -72,7 +76,7 @@ fn link_md_files_recursive(
         match symlink::create(&path, &dest)? {
             true => *count += 1,
             false => {
-                ui::warn(&format!("SKIP {label}/{name} (non-symlink file exists)"));
+                ui::warn(&format!("SKIP {name} (non-symlink file exists)"));
             }
         }
     }
@@ -80,7 +84,10 @@ fn link_md_files_recursive(
     Ok(())
 }
 
-fn link_skill_dirs(source_dir: &std::path::Path, target_dir: &std::path::Path) -> Result<usize> {
+fn link_skill_dirs(
+    source_dir: &std::path::Path,
+    target_dir: &std::path::Path,
+) -> Result<usize> {
     let mut count = 0;
 
     let entries = match std::fs::read_dir(source_dir) {
@@ -94,7 +101,11 @@ fn link_skill_dirs(source_dir: &std::path::Path, target_dir: &std::path::Path) -
             continue;
         }
 
-        let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
+        let name = path
+            .file_name()
+            .unwrap_or_default()
+            .to_string_lossy()
+            .to_string();
         let dest = target_dir.join(&name);
         match symlink::create(&path, &dest)? {
             true => count += 1,
