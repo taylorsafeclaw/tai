@@ -62,6 +62,7 @@ cd cli && cargo install --path .   # puts `tstack` on PATH
 - Agents: `agents/<category>/<name>.md` with frontmatter (`name`, `description`, `model`, `tools`, `maxTurns`)
 - Skills: `skills/<name>/SKILL.md` with frontmatter (`name`, `description`, `user-invocable`)
 - Project templates: `templates/<project>/` with an `install` script
+- **Always use `/skill-creator` when creating or modifying skill files** — never edit skills directly
 
 ## Adding components
 
@@ -72,7 +73,7 @@ cd cli && cargo install --path .   # puts `tstack` on PATH
 name: <name>
 description: <one-line description>
 argument-hint: "<hint for the user>"
-model: sonnet | opus | haiku
+model: sonnet | opus
 ---
 ```
 
@@ -82,7 +83,7 @@ model: sonnet | opus | haiku
 ---
 name: <name>
 description: <one-line description>
-model: sonnet | opus | haiku
+model: sonnet | opus
 tools: Read, Grep, Glob, Edit, Write, Bash
 domain: backend | frontend | schema | infrastructure | integration | testing | review | quality | orchestrator
 maxTurns: 30
@@ -114,13 +115,20 @@ user-invocable: true | false
 |------|---------|-------|-------|
 | Task | `/task` | Minutes, 1–3 files, single commit, no PR | sonnet |
 | Feature | `/feature` | Hours, 3–10 files, Agent Team, PR | opus → sonnet |
-| Mission | `/mission` | Days/weeks, multiple features, multiple PRs | opus → sonnet → haiku |
+| Mission | `/mission` | Days/weeks, multiple features, multiple PRs | opus → sonnet |
 
 ## Model strategy
 
 - **opus** — thinking: context (`/context`), planning (`/plan`), missions, scoping, debugging. Use boost mode for hard problems.
-- **sonnet** — building: implementation (`/task`, `/execute`), review, refactoring, committing
-- **haiku** — running: validation (`/validate`), status, help
+- **sonnet** — building: implementation (`/task`, `/execute`), review, refactoring, committing, validation, status, help
+- **haiku** — NOT USED in command frontmatter. Haiku's 200K context limit causes "Context limit reached" errors in long sessions. All former haiku commands now use sonnet.
+
+### Model rules (enforced)
+
+1. **Never use extended context models** (`sonnet[1m]`, `opus[1m]`). They are billed as extra usage and should never be set via `/model` or in frontmatter.
+2. **No haiku in command frontmatter.** Use `model: sonnet` for lightweight commands (help, status, validate). Haiku context limits break in long sessions.
+3. **Model switching causes context limit errors** when session tokens exceed the target model's window. If a command fails with "Context limit reached", run `/compact` first, then retry.
+4. **Only two model values in command frontmatter**: `sonnet` (default) and `opus` (planning/reasoning only).
 
 ## Quality pipeline
 

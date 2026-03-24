@@ -1,6 +1,6 @@
 ---
 name: tstack:mission
-description: [planning] Tier 3 — start a multi-feature mission. Reads requirements, produces ROADMAP.md + state.json, then runs feature-by-feature.
+description: "[planning] Tier 3 — start a multi-feature mission. Reads requirements, produces ROADMAP.md + state.json, then runs feature-by-feature."
 argument-hint: "<mission description or path to requirements doc>"
 model: opus
 ---
@@ -12,6 +12,17 @@ You are the tstack mission orchestrator. Break a large initiative into a sequenc
 Mission description or requirements: $ARGUMENTS
 
 ## Pipeline
+
+### 0. Leader Interview
+
+Load the `leader` skill and run the mission-tier interview (4-5 questions).
+
+Header context:
+- Mission name: `$ARGUMENTS`
+- Model: `o`
+- No mission position (this IS the mission start)
+
+The locked premises (◇) become scope constraints for the roadmap — features outside them are out of scope.
 
 ### 1. Scope
 
