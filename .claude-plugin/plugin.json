@@ -16,11 +16,6 @@
     "./commands/general",
     "./commands/utility"
   ],
-  "agents": [
-    "./agents/core",
-    "./agents/lifecycle"
-  ],
   "skills": "./skills",
-  "hooks": "./hooks/hooks.json",
-  "rules": "./rules"
+  "hooks": "./hooks/hooks.json"
 }
