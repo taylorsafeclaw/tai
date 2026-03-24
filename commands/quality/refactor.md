@@ -1,6 +1,6 @@
 ---
 name: tstack:refactor
-description: [quality] Safe refactoring — greps all references first, makes the change, runs quality pipeline. Reverts on failure.
+description: "[quality] Safe refactoring — greps all references first, makes the change, runs quality pipeline. Reverts on failure."
 argument-hint: "<what to refactor>"
 model: sonnet
 ---

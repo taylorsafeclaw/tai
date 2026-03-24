@@ -1,6 +1,6 @@
 ---
 name: tstack:commit
-description: [git] Validate then commit — runs quality pipeline, generates conventional commit message, stages files specifically.
+description: "[git] Validate then commit — runs quality pipeline, generates conventional commit message, stages files specifically."
 argument-hint: "[--split | --multi]"
 model: sonnet
 allowed-tools: >

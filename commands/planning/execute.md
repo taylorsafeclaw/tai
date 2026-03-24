@@ -1,6 +1,6 @@
 ---
 name: tstack:execute
-description: [planning] Execute a feature plan with Agent Team coordination. Reads plan.md, spawns agents, commits atomically, updates plan progress.
+description: "[planning] Execute a feature plan with Agent Team coordination. Reads plan.md, spawns agents, commits atomically, updates plan progress."
 argument-hint: "[plan file path — defaults to .tstack/features/<current>/plan.md or plan.md]"
 model: sonnet
 ---

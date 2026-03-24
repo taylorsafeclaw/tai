@@ -1,6 +1,6 @@
 ---
 name: tstack:feature
-description: [planning] Tier 2 — full feature pipeline with planning and Agent Team coordination → PR. For multi-step work crossing domains.
+description: "[planning] Tier 2 — full feature pipeline with planning and Agent Team coordination → PR. For multi-step work crossing domains."
 argument-hint: "<feature description>"
 model: opus
 ---
@@ -27,6 +27,17 @@ Before advancing to the next step:
 4. Log the transition: "Step N complete → advancing to Step N+1"
 
 ## Pipeline
+
+### Step 0 — Leader Interview
+
+Read `skills/leader/SKILL.md` and follow its instructions for the feature-tier interview (3 questions max).
+
+Header context:
+- Feature name: `$ARGUMENTS`
+- Model: `o`
+- Mission position: read `.tstack/state.json` if it exists — format as `m X/Y`
+
+After premises are locked (◇), carry them forward as constraints for planning and implementation.
 
 ### Step 1 — Context + Agent Discovery
 

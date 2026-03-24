@@ -1,6 +1,6 @@
 ---
 name: tstack:ship
-description: [git] Full pipeline → PR — validate, commit, push, create PR. Returns PR URL.
+description: "[git] Full pipeline → PR — validate, commit, push, create PR. Returns PR URL."
 argument-hint: "[PR title or description]"
 model: sonnet
 ---

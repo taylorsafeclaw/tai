@@ -1,6 +1,6 @@
 ---
 name: tstack:review
-description: [quality] Code review recent changes — security, logic errors, convention violations. Single pass, high-confidence issues only.
+description: "[quality] Code review recent changes — security, logic errors, convention violations. Single pass, high-confidence issues only."
 argument-hint: "[files | 'staged' | 'branch' — defaults to staged + unstaged]"
 model: sonnet
 ---

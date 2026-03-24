@@ -2,7 +2,7 @@
 name: detect
 description: "Detect current dev lifecycle phase by analyzing git state, open PRs, review comments, and Linear tickets. Used by lifecycle commands to infer context and suggest next actions."
 tools: Bash, Read, Grep
-model: haiku
+model: sonnet
 color: cyan
 role: lifecycle
 maxTurns: 10

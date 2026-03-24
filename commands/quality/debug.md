@@ -1,6 +1,6 @@
 ---
 name: tstack:debug
-description: [quality] Systematic debugging — reads error, traces execution path, checks recent changes, proposes a fix. Persists state in .tstack/debug/.
+description: "[quality] Systematic debugging — reads error, traces execution path, checks recent changes, proposes a fix. Persists state in .tstack/debug/."
 argument-hint: "<error message or stack trace>"
 model: opus
 ---

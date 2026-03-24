@@ -1,6 +1,6 @@
 ---
 name: tstack:context
-description: [planning] Gather context for a task or feature — reads affected files, recent changes, conventions, gotchas. Output stays in conversation.
+description: "[planning] Gather context for a task or feature — reads affected files, recent changes, conventions, gotchas. Output stays in conversation."
 argument-hint: "<task or feature description>"
 model: opus
 ---

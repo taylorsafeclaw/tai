@@ -1,6 +1,6 @@
 ---
 name: tstack:undo
-description: [git] Safely rollback N commits using git revert (not reset --hard). Shows what would be reverted, asks confirmation.
+description: "[git] Safely rollback N commits using git revert (not reset --hard). Shows what would be reverted, asks confirmation."
 argument-hint: "[number of commits to revert — default 1]"
 model: sonnet
 ---

@@ -1,49 +1,57 @@
 {
-  "hooks": [
-    {
-      "type": "PreToolUse",
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "command": "node ./hooks/guard-destructive.js",
-          "description": "Block dangerous destructive commands (git reset --hard, rm -rf on root/home dirs)"
-        },
-        {
-          "command": "node ./hooks/guard-pnpm.js",
-          "description": "Enforce pnpm — block npm and yarn commands"
-        },
-        {
-          "command": "node ./hooks/branch-guard.js",
-          "description": "Prevent accidental pushes to main/master"
-        },
-        {
-          "command": "node ./hooks/quality-gate.js",
-          "description": "Block git commits if quality pipeline hasn't passed"
-        }
-      ]
-    },
-    {
-      "type": "PreToolUse",
-      "matcher": "Edit|Write",
-      "hooks": [
-        {
-          "command": "node ./hooks/freeze.js",
-          "description": "Block edits outside the frozen directory scope (when active)"
-        },
-        {
-          "command": "node ./hooks/clear-quality-flag.js",
-          "description": "Clear quality-passed flag when source files are edited (forces re-run of lint/build/test)"
-        }
-      ]
-    },
-    {
-      "type": "SubagentStop",
-      "hooks": [
-        {
-          "command": "node ./hooks/agent-return-validator.js",
-          "description": "Log agent completion and duration for coordination debugging"
-        }
-      ]
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./hooks/guard-destructive.js",
+            "description": "Block dangerous destructive commands (git reset --hard, rm -rf on root/home dirs)"
+          },
+          {
+            "type": "command",
+            "command": "node ./hooks/guard-pnpm.js",
+            "description": "Enforce pnpm — block npm and yarn commands"
+          },
+          {
+            "type": "command",
+            "command": "node ./hooks/branch-guard.js",
+            "description": "Prevent accidental pushes to main/master"
+          },
+          {
+            "type": "command",
+            "command": "node ./hooks/quality-gate.js",
+            "description": "Block git commits if quality pipeline hasn't passed"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./hooks/freeze.js",
+            "description": "Block edits outside the frozen directory scope (when active)"
+          },
+          {
+            "type": "command",
+            "command": "node ./hooks/clear-quality-flag.js",
+            "description": "Clear quality-passed flag when source files are edited (forces re-run of lint/build/test)"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./hooks/agent-return-validator.js",
+            "description": "Log agent completion and duration for coordination debugging"
+          }
+        ]
+      }
+    ]
+  }
 }

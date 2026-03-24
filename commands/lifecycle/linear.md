@@ -1,6 +1,6 @@
 ---
 name: tstack:linear
-description: [lifecycle] Run Linear issues through tstack — fetches issue, auto-routes to the right tier, executes, and updates Linear when done.
+description: "[lifecycle] Run Linear issues through tstack — fetches issue, auto-routes to the right tier, executes, and updates Linear when done."
 argument-hint: "<issue ID or query> [--tier task|feature] [--dry-run]"
 model: sonnet
 ---

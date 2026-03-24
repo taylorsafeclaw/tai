@@ -1,8 +1,8 @@
 ---
 name: tstack:help
-description: [utility] List all available tstack commands, agents, and skills, grouped by category.
+description: "[utility] List all available tstack commands, agents, and skills, grouped by category."
 argument-hint: ""
-model: haiku
+model: sonnet
 ---
 
 List all available tstack commands, agents, and skills.

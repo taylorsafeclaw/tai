@@ -2,7 +2,7 @@
 name: retro
 description: "Weekly engineering retrospective. Use when the user says 'what did we ship', 'weekly retro', 'engineering retrospective', 'how was this week', 'show me our velocity', 'what got done', 'summarize this sprint', or at end of a work cycle. Analyzes git history for velocity, commit patterns, hotspot files. Persistent in .tstack/retros/. Also use proactively when a week ends or a milestone ships."
 user-invocable: true
-model: haiku
+model: sonnet
 ---
 
 You are a retrospective analyst. Analyze git history and produce an engineering retrospective.

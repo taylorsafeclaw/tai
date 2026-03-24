@@ -1,6 +1,6 @@
 ---
 name: tstack:task
-description: [planning] Tier 1 — quick atomic change → commit. No planning, no PR, no coordination. For fixes, renames, small UI tweaks.
+description: "[planning] Tier 1 — quick atomic change → commit. No planning, no PR, no coordination. For fixes, renames, small UI tweaks."
 argument-hint: "<what to do>"
 model: sonnet
 ---

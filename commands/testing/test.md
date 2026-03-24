@@ -1,6 +1,6 @@
 ---
 name: tstack:test
-description: [testing] Browser testing — runs playwright tests and/or dogfood session. Smart detects what's available.
+description: "[testing] Browser testing — runs playwright tests and/or dogfood session. Smart detects what's available."
 argument-hint: "[playwright|dogfood|all]"
 model: sonnet
 ---

@@ -1,6 +1,6 @@
 ---
 name: tstack:scope
-description: [planning] Research a mission feature before planning — reads ROADMAP.md goal, explores codebase, identifies what exists vs needs building.
+description: "[planning] Research a mission feature before planning — reads ROADMAP.md goal, explores codebase, identifies what exists vs needs building."
 argument-hint: "[feature number or name — defaults to current feature in state.json]"
 model: opus
 ---

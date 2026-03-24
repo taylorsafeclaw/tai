@@ -1,6 +1,6 @@
 ---
 name: tstack:next
-description: [planning] Advance a mission to the next feature — verifies current, opens PR, updates state.json, shows next goal.
+description: "[planning] Advance a mission to the next feature — verifies current, opens PR, updates state.json, shows next goal."
 argument-hint: ""
 model: sonnet
 ---

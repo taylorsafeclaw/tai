@@ -1,6 +1,6 @@
 ---
 name: tstack:new-agent
-description: [utility] Scaffold a new tstack agent with proper frontmatter. Places in the right directory (global or project).
+description: "[utility] Scaffold a new tstack agent with proper frontmatter. Places in the right directory (global or project)."
 argument-hint: "<agent name and purpose>"
 model: sonnet
 ---
@@ -44,7 +44,7 @@ Create `<name>.md` in the appropriate `agents/<category>/` directory:
 ---
 name: tstack:<name>
 description: [utility] <one-line description of what this agent does>
-model: <haiku|sonnet|opus>
+model: <sonnet|opus>
 tools: <comma-separated list of tools>
 maxTurns: <number>
 ---

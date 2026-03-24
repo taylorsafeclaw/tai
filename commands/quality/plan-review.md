@@ -1,6 +1,6 @@
 ---
 name: tstack:plan-review
-description: [quality] Multi-perspective plan review — CEO (scope/ambition), Eng (architecture/edge cases), Design (visual/UX). Rates dimensions 0-10, suggests improvements.
+description: "[quality] Multi-perspective plan review — CEO (scope/ambition), Eng (architecture/edge cases), Design (visual/UX). Rates dimensions 0-10, suggests improvements."
 argument-hint: "[--ceo|--eng|--design] [plan file path]"
 model: opus
 ---

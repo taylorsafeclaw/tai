@@ -1,6 +1,6 @@
 ---
 name: tstack:new-command
-description: [utility] Scaffold a new tstack command with proper frontmatter. Places in the right directory (global or project).
+description: "[utility] Scaffold a new tstack command with proper frontmatter. Places in the right directory (global or project)."
 argument-hint: "<command name and purpose>"
 model: sonnet
 ---
@@ -31,7 +31,7 @@ Create `<name>.md` in the appropriate `commands/<category>/` directory:
 name: tstack:<name>
 description: [utility] <one-line description shown in /help>
 argument-hint: "<argument format>"
-model: <haiku|sonnet|opus>
+model: <sonnet|opus>
 ---
 
 You are the tstack <name>. <purpose statement>.

@@ -1,6 +1,6 @@
 ---
 name: tstack:verify
-description: [quality] Verify a completed feature against its success criteria. Single-pass check — reads ROADMAP.md criteria, checks codebase, runs quality pipeline.
+description: "[quality] Verify a completed feature against its success criteria. Single-pass check — reads ROADMAP.md criteria, checks codebase, runs quality pipeline."
 argument-hint: "[feature number — defaults to current feature in state.json]"
 model: sonnet
 ---

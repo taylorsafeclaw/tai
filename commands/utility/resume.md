@@ -1,6 +1,6 @@
 ---
 name: tstack:resume
-description: [utility] Session continuity — reads STATE.md, DECISIONS.md, AGENTS.md, plan files, git state, and agent roster. Synthesizes into actionable "here's exactly where you are" summary.
+description: "[utility] Session continuity — reads STATE.md, DECISIONS.md, AGENTS.md, plan files, git state, and agent roster. Synthesizes into actionable 'here is exactly where you are' summary."
 argument-hint: ""
 model: sonnet
 ---
