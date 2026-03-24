@@ -39,30 +39,45 @@ pub fn run() -> Result<()> {
 
 fn link_md_files(source_dir: &std::path::Path, target_dir: &std::path::Path, label: &str) -> Result<usize> {
     let mut count = 0;
+    link_md_files_recursive(source_dir, target_dir, label, &mut count)?;
+    Ok(count)
+}
 
-    let entries = match std::fs::read_dir(source_dir) {
+fn link_md_files_recursive(
+    current_dir: &std::path::Path,
+    target_dir: &std::path::Path,
+    label: &str,
+    count: &mut usize,
+) -> Result<()> {
+    let entries = match std::fs::read_dir(current_dir) {
         Ok(e) => e,
-        Err(_) => return Ok(0),
+        Err(_) => return Ok(()),
     };
 
     for entry in entries.flatten() {
         let path = entry.path();
-        let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
 
-        if !name.starts_with("tstack-") || !name.ends_with(".md") {
+        // Recurse into real subdirectories only (skip symlinks to prevent cycles)
+        if path.is_dir() && !path.is_symlink() {
+            link_md_files_recursive(&path, target_dir, label, count)?;
+            continue;
+        }
+
+        let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
+        if !name.ends_with(".md") {
             continue;
         }
 
         let dest = target_dir.join(&name);
         match symlink::create(&path, &dest)? {
-            true => count += 1,
+            true => *count += 1,
             false => {
                 ui::warn(&format!("SKIP {label}/{name} (non-symlink file exists)"));
             }
         }
     }
 
-    Ok(count)
+    Ok(())
 }
 
 fn link_skill_dirs(source_dir: &std::path::Path, target_dir: &std::path::Path) -> Result<usize> {
@@ -75,15 +90,11 @@ fn link_skill_dirs(source_dir: &std::path::Path, target_dir: &std::path::Path) -
 
     for entry in entries.flatten() {
         let path = entry.path();
-        if !path.is_dir() {
+        if !path.is_dir() || !path.join("SKILL.md").exists() {
             continue;
         }
 
         let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-        if !name.starts_with("tstack-") {
-            continue;
-        }
-
         let dest = target_dir.join(&name);
         match symlink::create(&path, &dest)? {
             true => count += 1,

@@ -9,8 +9,8 @@ pub fn run() -> Result<()> {
 
     ui::print_logo(&version);
 
-    let commands = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command);
-    let agents = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent);
+    let commands = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command, config.plugin_active);
+    let agents = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent, config.plugin_active);
     let skills = scan_skills(&config);
     let hooks = scan_hooks(&config);
 

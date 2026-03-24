@@ -25,7 +25,7 @@ pub fn run(kind: ListKind) -> Result<()> {
 }
 
 fn list_commands(config: &TstackConfig) -> Result<()> {
-    let items = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command);
+    let items = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command, config.plugin_active);
 
     ui::heading("tstack commands");
 
@@ -44,7 +44,7 @@ fn list_commands(config: &TstackConfig) -> Result<()> {
 }
 
 fn list_agents(config: &TstackConfig) -> Result<()> {
-    let items = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent);
+    let items = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent, config.plugin_active);
 
     ui::heading("tstack agents");
 

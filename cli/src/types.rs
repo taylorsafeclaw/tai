@@ -47,47 +47,73 @@ impl LinkStatus {
     }
 }
 
-/// Scan a directory for tstack-*.md files and return TstackItems
+/// Scan a directory recursively for .md files and return TstackItems.
+/// When plugin_active is true, all items are marked as Linked (plugin handles discovery).
 pub fn scan_md_items(
     source_dir: &std::path::Path,
     target_dir: &std::path::Path,
     item_type: ItemType,
+    plugin_active: bool,
 ) -> Vec<TstackItem> {
     let mut items = Vec::new();
-
-    let entries = match std::fs::read_dir(source_dir) {
-        Ok(entries) => entries,
-        Err(_) => return items,
-    };
-
-    for entry in entries.flatten() {
-        let path = entry.path();
-        let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-
-        if !name.starts_with("tstack-") || !name.ends_with(".md") {
-            continue;
-        }
-
-        let fm = Frontmatter::from_file(&path).unwrap_or_default();
-        let dest = target_dir.join(&name);
-        let status = crate::symlink::check(&path, &dest);
-
-        items.push(TstackItem {
-            name: fm.name.unwrap_or_else(|| name.trim_end_matches(".md").to_string()),
-            description: fm.description.unwrap_or_default(),
-            model: fm.model,
-            item_type: item_type.clone(),
-            source_path: path,
-            symlink_path: Some(dest),
-            status,
-        });
-    }
-
+    walk_md_files(source_dir, target_dir, &item_type, plugin_active, &mut items);
     items.sort_by(|a, b| a.name.cmp(&b.name));
     items
 }
 
-/// Scan skills directory (directory-level symlinks for tstack-* dirs)
+fn walk_md_files(
+    current_dir: &std::path::Path,
+    target_dir: &std::path::Path,
+    item_type: &ItemType,
+    plugin_active: bool,
+    items: &mut Vec<TstackItem>,
+) {
+    let entries = match std::fs::read_dir(current_dir) {
+        Ok(entries) => entries,
+        Err(_) => return,
+    };
+
+    for entry in entries.flatten() {
+        let path = entry.path();
+
+        // Recurse into real subdirectories only (skip symlinks to prevent cycles)
+        if path.is_dir() && !path.is_symlink() {
+            walk_md_files(&path, target_dir, item_type, plugin_active, items);
+            continue;
+        }
+
+        let filename = path.file_name().unwrap_or_default().to_string_lossy().to_string();
+        if !filename.ends_with(".md") {
+            continue;
+        }
+
+        let fm = Frontmatter::from_file(&path).unwrap_or_default();
+
+        // Use frontmatter name, or derive from filename
+        let display_name = fm.name.unwrap_or_else(|| {
+            filename.trim_end_matches(".md").to_string()
+        });
+
+        let status = if plugin_active {
+            LinkStatus::Linked
+        } else {
+            let dest = target_dir.join(&filename);
+            crate::symlink::check(&path, &dest)
+        };
+
+        items.push(TstackItem {
+            name: display_name,
+            description: fm.description.unwrap_or_default(),
+            model: fm.model,
+            item_type: item_type.clone(),
+            source_path: path,
+            symlink_path: None,
+            status,
+        });
+    }
+}
+
+/// Scan skills directory — each subdirectory with a SKILL.md is a skill.
 pub fn scan_skills(config: &TstackConfig) -> Vec<TstackItem> {
     let source_dir = config.skills_dir();
     let target_dir = config.claude_skills_dir();
@@ -105,20 +131,21 @@ pub fn scan_skills(config: &TstackConfig) -> Vec<TstackItem> {
         }
 
         let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-        if !name.starts_with("tstack-") {
-            continue;
-        }
 
         // Read SKILL.md frontmatter
         let skill_md = path.join("SKILL.md");
-        let fm = if skill_md.exists() {
-            Frontmatter::from_file(&skill_md).unwrap_or_default()
-        } else {
-            Frontmatter::default()
-        };
+        if !skill_md.exists() {
+            continue;
+        }
 
-        let dest = target_dir.join(&name);
-        let status = crate::symlink::check(&path, &dest);
+        let fm = Frontmatter::from_file(&skill_md).unwrap_or_default();
+
+        let status = if config.plugin_active {
+            LinkStatus::Linked
+        } else {
+            let dest = target_dir.join(&name);
+            crate::symlink::check(&path, &dest)
+        };
 
         items.push(TstackItem {
             name: fm.name.unwrap_or_else(|| name.clone()),
@@ -126,7 +153,7 @@ pub fn scan_skills(config: &TstackConfig) -> Vec<TstackItem> {
             model: fm.model,
             item_type: ItemType::Skill,
             source_path: path,
-            symlink_path: Some(dest),
+            symlink_path: None,
             status,
         });
     }

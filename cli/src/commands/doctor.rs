@@ -14,8 +14,8 @@ pub fn run() -> Result<()> {
     ui::separator("Symlinks");
     println!();
 
-    let commands = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command);
-    let agents = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent);
+    let commands = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command, config.plugin_active);
+    let agents = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent, config.plugin_active);
     let skills = scan_skills(&config);
 
     check_items("commands", &commands);
@@ -110,9 +110,9 @@ pub fn run() -> Result<()> {
                 if path.is_dir() {
                     let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
                     // Count agents, skills, commands in template
-                    let agent_count = count_files(&path.join("agents"), "tstack-*.md");
-                    let skill_count = count_dirs(&path.join("skills"), "tstack-");
-                    let cmd_count = count_files(&path.join("commands"), "tstack-*.md");
+                    let agent_count = count_files(&path.join("agents"), "*.md");
+                    let skill_count = count_dirs_with_skill(&path.join("skills"));
+                    let cmd_count = count_files(&path.join("commands"), "*.md");
                     ui::success(&format!(
                         "{name:<16} {agent_count} agents, {skill_count} skills, {cmd_count} commands"
                     ));
@@ -153,12 +153,11 @@ fn count_files(dir: &std::path::Path, pattern_prefix: &str) -> usize {
         .unwrap_or(0)
 }
 
-fn count_dirs(dir: &std::path::Path, prefix: &str) -> usize {
+fn count_dirs_with_skill(dir: &std::path::Path) -> usize {
     std::fs::read_dir(dir)
         .map(|entries| {
             entries.flatten().filter(|e| {
-                let name = e.file_name().to_string_lossy().to_string();
-                name.starts_with(prefix) && e.path().is_dir()
+                e.path().is_dir() && e.path().join("SKILL.md").exists()
             }).count()
         })
         .unwrap_or(0)
