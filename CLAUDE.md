@@ -295,6 +295,54 @@ Every agent must follow this protocol:
 10. Resume Instructions — write exactly what needs to happen to unblock
 11. Don't leave orphan state — note created-but-incomplete files so next agent doesn't duplicate work
 
+## Rust CLI (`cli/`)
+
+The CLI provides `tstack doctor`, `tstack add`, `tstack list`, `tstack install`, etc. Built with:
+
+| Crate | Version | Purpose | Notes |
+|-------|---------|---------|-------|
+| **clap** | 4 (derive) | Arg parsing | Uses `#[derive(Parser, Subcommand, ValueEnum)]` — no builder pattern |
+| **cliclack** | 0.3 | Interactive prompts | Spinners, confirm dialogs, intro/outro wrappers |
+| **comfy-table** | 7 | Table rendering | Used in `tstack list` output |
+| **serde** + **serde_yaml** | 1 / 0.9 | YAML frontmatter parsing | Deserialize command/agent/skill frontmatter |
+| **dirs** | 6 | Home dir resolution | `dirs::home_dir()` for `~/.claude/` paths |
+| **anyhow** | 1 | Error handling | `Result<()>` everywhere, `context()` for messages |
+| **indicatif** | 0.17 | Progress bars/spinners | Used in install/doctor flows |
+| **crossterm** | 0.28 | Terminal control | Raw mode, cursor, colors — powers the animated logo in `ui.rs` |
+
+**For API docs on any crate, use context7** (`mcp__context7__resolve-library-id` → `mcp__context7__query-docs`) instead of vendoring docs. This keeps references current without repo bloat.
+
+### CLI structure
+
+```
+cli/src/
+├── main.rs              ← entry point, routes to subcommands
+├── cli.rs               ← clap derive structs (Cli, Commands, enums)
+├── config.rs            ← config file reading
+├── types.rs             ← shared types
+├── frontmatter.rs       ← YAML frontmatter parser
+├── symlink.rs           ← symlink creation/removal logic
+├── ui.rs                ← animated logo, colors, terminal rendering
+└── commands/
+    ├── mod.rs
+    ├── add.rs            ← scaffold new command/agent/skill
+    ├── doctor.rs         ← health check
+    ├── install.rs        ← symlink to ~/.claude/
+    ├── uninstall.rs      ← remove symlinks
+    ├── list.rs           ← list installed items
+    ├── run.rs            ← run a command
+    ├── status.rs         ← show current state
+    ├── template.rs       ← project template management
+    └── version.rs        ← version display
+```
+
+### Patterns to follow
+
+- All commands return `anyhow::Result<()>`
+- Use `clap` derive macros, not builder
+- Colors via `ui::write_rgb()` helper — all RGB constants defined in `ui.rs`
+- Frontmatter parsing goes through `frontmatter.rs`, not ad-hoc serde
+
 ## Documentation
 
 Full docs in `docs/`:

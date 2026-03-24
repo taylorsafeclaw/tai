@@ -1,5 +1,5 @@
+use std::io::Write;
 use anyhow::Result;
-use owo_colors::OwoColorize;
 use crate::config::TstackConfig;
 use crate::frontmatter::Frontmatter;
 use crate::types::*;
@@ -8,14 +8,24 @@ use crate::ui;
 pub fn run() -> Result<()> {
     let config = TstackConfig::detect()?;
 
-    ui::heading("tstack doctor");
+    cliclack::intro("tstack doctor")?;
 
     // Check symlinks
     ui::separator("Symlinks");
     println!();
 
-    let commands = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command, config.plugin_active);
-    let agents = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent, config.plugin_active);
+    let commands = scan_md_items(
+        &config.commands_dir(),
+        &config.claude_commands_dir(),
+        ItemType::Command,
+        config.plugin_active,
+    );
+    let agents = scan_md_items(
+        &config.agents_dir(),
+        &config.claude_agents_dir(),
+        ItemType::Agent,
+        config.plugin_active,
+    );
     let skills = scan_skills(&config);
 
     check_items("commands", &commands);
@@ -23,10 +33,20 @@ pub fn run() -> Result<()> {
     check_items("skills", &skills);
 
     // Report broken/conflicting
-    let all_items: Vec<&TstackItem> = commands.iter().chain(agents.iter()).chain(skills.iter()).collect();
-    let broken: Vec<&&TstackItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Broken)).collect();
-    let conflicts: Vec<&&TstackItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Conflict(_))).collect();
-    let missing: Vec<&&TstackItem> = all_items.iter().filter(|i| matches!(i.status, LinkStatus::Missing)).collect();
+    let all_items: Vec<&TstackItem> =
+        commands.iter().chain(agents.iter()).chain(skills.iter()).collect();
+    let broken: Vec<&&TstackItem> = all_items
+        .iter()
+        .filter(|i| matches!(i.status, LinkStatus::Broken))
+        .collect();
+    let conflicts: Vec<&&TstackItem> = all_items
+        .iter()
+        .filter(|i| matches!(i.status, LinkStatus::Conflict(_)))
+        .collect();
+    let missing: Vec<&&TstackItem> = all_items
+        .iter()
+        .filter(|i| matches!(i.status, LinkStatus::Missing))
+        .collect();
 
     if !broken.is_empty() {
         for item in &broken {
@@ -41,7 +61,12 @@ pub fn run() -> Result<()> {
         }
     }
     if !missing.is_empty() {
-        println!("  {} {} not linked (run `tstack install`)", missing.len().to_string().yellow(), "items".dimmed());
+        let mut stdout = std::io::stdout();
+        write!(stdout, "  ").ok();
+        ui::write_rgb(&mut stdout, &format!("{}", missing.len()), ui::YELLOW);
+        ui::write_rgb(&mut stdout, " items not linked ", ui::DIM);
+        ui::write_rgb(&mut stdout, "(run `tstack install`)", ui::DIM);
+        writeln!(stdout).ok();
     }
 
     println!();
@@ -54,7 +79,6 @@ pub fn run() -> Result<()> {
     let mut warnings = Vec::new();
 
     for item in &all_items {
-        // Skills store frontmatter in SKILL.md inside the directory
         let fm_path = if item.source_path.is_dir() {
             item.source_path.join("SKILL.md")
         } else {
@@ -89,11 +113,12 @@ pub fn run() -> Result<()> {
     if hooks.is_empty() {
         ui::info("No hooks found.");
     } else {
-        println!("  {} {} available    {} configured in settings.json",
-            "○".dimmed(),
-            hooks.len(),
-            "0".dimmed()
-        );
+        let mut stdout = std::io::stdout();
+        write!(stdout, "  ").ok();
+        ui::write_rgb(&mut stdout, "○ ", ui::DIM);
+        ui::write_rgb(&mut stdout, &format!("{} available", hooks.len()), ui::WHITE);
+        ui::write_rgb(&mut stdout, "    0 configured in settings.json", ui::DIM);
+        writeln!(stdout).ok();
     }
 
     println!();
@@ -108,8 +133,11 @@ pub fn run() -> Result<()> {
             for entry in entries.flatten() {
                 let path = entry.path();
                 if path.is_dir() {
-                    let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
-                    // Count agents, skills, commands in template
+                    let name = path
+                        .file_name()
+                        .unwrap_or_default()
+                        .to_string_lossy()
+                        .to_string();
                     let agent_count = count_files(&path.join("agents"), "*.md");
                     let skill_count = count_dirs_with_skill(&path.join("skills"));
                     let cmd_count = count_files(&path.join("commands"), "*.md");
@@ -124,6 +152,9 @@ pub fn run() -> Result<()> {
     }
 
     println!();
+
+    cliclack::outro("Diagnostics complete.")?;
+
     Ok(())
 }
 
@@ -140,15 +171,17 @@ fn check_items(label: &str, items: &[TstackItem]) {
 }
 
 fn count_files(dir: &std::path::Path, pattern_prefix: &str) -> usize {
-    let prefix = pattern_prefix.split('*').next().unwrap_or("");
     let suffix = pattern_prefix.split('*').next_back().unwrap_or("");
 
     std::fs::read_dir(dir)
         .map(|entries| {
-            entries.flatten().filter(|e| {
-                let name = e.file_name().to_string_lossy().to_string();
-                name.starts_with(prefix) && name.ends_with(suffix)
-            }).count()
+            entries
+                .flatten()
+                .filter(|e| {
+                    let name = e.file_name().to_string_lossy().to_string();
+                    name.ends_with(suffix)
+                })
+                .count()
         })
         .unwrap_or(0)
 }
@@ -156,9 +189,10 @@ fn count_files(dir: &std::path::Path, pattern_prefix: &str) -> usize {
 fn count_dirs_with_skill(dir: &std::path::Path) -> usize {
     std::fs::read_dir(dir)
         .map(|entries| {
-            entries.flatten().filter(|e| {
-                e.path().is_dir() && e.path().join("SKILL.md").exists()
-            }).count()
+            entries
+                .flatten()
+                .filter(|e| e.path().is_dir() && e.path().join("SKILL.md").exists())
+                .count()
         })
         .unwrap_or(0)
 }

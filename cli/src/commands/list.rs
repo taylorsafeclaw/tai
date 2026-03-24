@@ -1,5 +1,4 @@
 use anyhow::Result;
-use owo_colors::OwoColorize;
 use crate::cli::ListKind;
 use crate::config::TstackConfig;
 use crate::types::*;
@@ -25,9 +24,14 @@ pub fn run(kind: ListKind) -> Result<()> {
 }
 
 fn list_commands(config: &TstackConfig) -> Result<()> {
-    let items = scan_md_items(&config.commands_dir(), &config.claude_commands_dir(), ItemType::Command, config.plugin_active);
+    let items = scan_md_items(
+        &config.commands_dir(),
+        &config.claude_commands_dir(),
+        ItemType::Command,
+        config.plugin_active,
+    );
 
-    ui::heading("tstack commands");
+    ui::heading("commands");
 
     if items.is_empty() {
         ui::info("No commands found.");
@@ -44,9 +48,14 @@ fn list_commands(config: &TstackConfig) -> Result<()> {
 }
 
 fn list_agents(config: &TstackConfig) -> Result<()> {
-    let items = scan_md_items(&config.agents_dir(), &config.claude_agents_dir(), ItemType::Agent, config.plugin_active);
+    let items = scan_md_items(
+        &config.agents_dir(),
+        &config.claude_agents_dir(),
+        ItemType::Agent,
+        config.plugin_active,
+    );
 
-    ui::heading("tstack agents");
+    ui::heading("agents");
 
     if items.is_empty() {
         ui::info("No agents found.");
@@ -65,7 +74,7 @@ fn list_agents(config: &TstackConfig) -> Result<()> {
 fn list_skills(config: &TstackConfig) -> Result<()> {
     let items = scan_skills(config);
 
-    ui::heading("tstack skills");
+    ui::heading("skills");
 
     if items.is_empty() {
         ui::info("No skills found.");
@@ -84,7 +93,7 @@ fn list_skills(config: &TstackConfig) -> Result<()> {
 fn list_hooks(config: &TstackConfig) -> Result<()> {
     let items = scan_hooks(config);
 
-    ui::heading("tstack hooks");
+    ui::heading("hooks");
 
     if items.is_empty() {
         ui::info("No hooks found.");
@@ -93,41 +102,26 @@ fn list_hooks(config: &TstackConfig) -> Result<()> {
     }
 
     for item in &items {
-        let name = format!("{:<24}", item.name);
-        println!("  {}  {}", name.bold(), item.source_path.display().to_string().dimmed());
+        ui::list_item(
+            ui::DIM,
+            &item.name,
+            &item.source_path.display().to_string(),
+            "",
+        );
     }
     println!();
 
     Ok(())
 }
 
-fn truncate_str(s: &str, max_chars: usize) -> String {
-    let chars: Vec<char> = s.chars().collect();
-    if chars.len() > max_chars {
-        let truncated: String = chars[..max_chars].iter().collect();
-        format!("{truncated}…")
-    } else {
-        s.to_string()
-    }
-}
-
 fn print_item(item: &TstackItem) {
-    let status_icon = match &item.status {
-        LinkStatus::Linked => "●".green().to_string(),
-        LinkStatus::Broken => "●".red().to_string(),
-        LinkStatus::Missing => "○".dimmed().to_string(),
-        LinkStatus::Conflict(_) => "●".yellow().to_string(),
+    let status_color = match &item.status {
+        LinkStatus::Linked => ui::GREEN,
+        LinkStatus::Broken => ui::RED,
+        LinkStatus::Missing => ui::DIM,
+        LinkStatus::Conflict(_) => ui::YELLOW,
     };
 
-    let name = format!("{:<24}", item.name);
-    let desc = truncate_str(&item.description, 40);
     let model = item.model.as_deref().unwrap_or("");
-
-    println!(
-        "  {} {}  {:<42} {}",
-        status_icon,
-        name.bold(),
-        desc.dimmed(),
-        model.dimmed()
-    );
+    ui::list_item(status_color, &item.name, &item.description, model);
 }
