@@ -1,8 +1,8 @@
 ---
 name: tstack:status
-description: [utility] Quick pulse — git state, STATE.md position, agent activity, mission progress. One-screen output.
+description: "[utility] Quick pulse — git state, STATE.md position, agent activity, mission progress. One-screen output."
 argument-hint: ""
-model: haiku
+model: sonnet
 ---
 
 Quick project status. One screen. No fluff.

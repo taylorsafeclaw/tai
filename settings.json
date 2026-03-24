@@ -2,8 +2,12 @@
   "_comment": "tstack-specific settings. 'mode' and 'models' are read by tstack commands, not the Claude Code plugin system.",
   "mode": "normal",
   "models": {
-    "gate": "haiku",
+    "gate": "sonnet",
     "work": "sonnet",
     "reasoning": "opus"
+  },
+  "model_rules": {
+    "blocked": ["sonnet[1m]", "opus[1m]", "haiku"],
+    "reason": "Extended context (1M) models are billed as extra usage. Haiku causes context limit errors in long sessions."
   }
 }

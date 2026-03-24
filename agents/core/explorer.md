@@ -2,7 +2,7 @@
 name: explorer
 description: "Codebase exploration specialist. Use for finding files, understanding patterns, tracing code paths, and gathering context before implementation. Fast, read-only."
 tools: Read, Grep, Glob, Bash
-model: haiku
+model: sonnet
 role: utility
 maxTurns: 20
 ---

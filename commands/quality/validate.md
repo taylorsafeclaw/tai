@@ -1,8 +1,8 @@
 ---
 name: tstack:validate
-description: [quality] Run the quality pipeline — lint, build, test. Stops on first failure. Reports pass/fail with errors. Does not fix anything.
+description: "[quality] Run the quality pipeline — lint, build, test. Stops on first failure. Reports pass/fail with errors. Does not fix anything."
 argument-hint: ""
-model: haiku
+model: sonnet
 ---
 
 You are the tstack validator. Run the quality pipeline and report results.
