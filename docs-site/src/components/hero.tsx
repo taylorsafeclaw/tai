@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { Star } from 'lucide-react'
 import { Button } from '@/components/button'
 import { BlurFade } from '@/components/ui/blur-fade'
 import { BorderBeam } from '@/components/ui/border-beam'
@@ -339,6 +340,31 @@ function AnimatedTerminal() {
   )
 }
 
+// --- GitHub Stars ---
+function GitHubStars() {
+  const [stars, setStars] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetch('/api/github-stars')
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.stars === 'number') {
+          setStars(data.stars)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  return (
+    <div className="mt-6 flex items-center gap-2 md:justify-center lg:justify-start">
+      <Star className="h-4 w-4 fill-lime-400 text-lime-400" />
+      <span className="font-mono text-sm tracking-wider text-neutral-400">
+        {stars !== null ? `${stars.toLocaleString()} stars on GitHub` : 'Star on GitHub'}
+      </span>
+    </div>
+  )
+}
+
 // --- Hero ---
 export function Hero() {
   return (
@@ -402,7 +428,7 @@ export function Hero() {
                       borderWidth={2}
                       pathRound={0}
                     />
-                    <Button href="/">
+                    <Button href="/docs/quickstart">
                       <span className="font-mono text-sm font-bold tracking-wider uppercase">
                         Get started →
                       </span>
@@ -417,6 +443,9 @@ export function Hero() {
                     </span>
                   </Button>
                 </div>
+              </BlurFade>
+              <BlurFade delay={0.3} direction="up">
+                <GitHubStars />
               </BlurFade>
             </div>
           </div>

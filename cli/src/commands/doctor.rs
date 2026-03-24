@@ -141,7 +141,7 @@ fn check_items(label: &str, items: &[TstackItem]) {
 
 fn count_files(dir: &std::path::Path, pattern_prefix: &str) -> usize {
     let prefix = pattern_prefix.split('*').next().unwrap_or("");
-    let suffix = pattern_prefix.split('*').last().unwrap_or("");
+    let suffix = pattern_prefix.split('*').next_back().unwrap_or("");
 
     std::fs::read_dir(dir)
         .map(|entries| {

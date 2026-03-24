@@ -49,8 +49,8 @@ impl LinkStatus {
 
 /// Scan a directory for tstack-*.md files and return TstackItems
 pub fn scan_md_items(
-    source_dir: &PathBuf,
-    target_dir: &PathBuf,
+    source_dir: &std::path::Path,
+    target_dir: &std::path::Path,
     item_type: ItemType,
 ) -> Vec<TstackItem> {
     let mut items = Vec::new();

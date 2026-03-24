@@ -19,7 +19,7 @@ impl TstackConfig {
             let candidates = [
                 std::env::current_exe()
                     .ok()
-                    .and_then(|p| p.parent().map(|p| p.parent().map(|p| p.to_path_buf())).flatten()),
+                    .and_then(|p| p.parent().and_then(|p| p.parent().map(|p| p.to_path_buf()))),
                 Some(std::env::current_dir().unwrap_or_default()),
                 Some(home_dir.join("tstack")),
             ];

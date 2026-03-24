@@ -1,5 +1,5 @@
 # Personal add-ons — not tracked in the public repo
-extensions/
+/extensions/
 
 # Rust / Cargo
 cli/target/
