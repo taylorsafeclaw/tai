@@ -3,6 +3,7 @@ name: implementer
 description: "Generic implementation agent for projects without domain-specific agents. Reads CLAUDE.md, implements tasks following project patterns, runs quality pipeline."
 tools: Read, Grep, Glob, Edit, Write, Bash
 model: sonnet
+role: fallback
 maxTurns: 30
 ---
 

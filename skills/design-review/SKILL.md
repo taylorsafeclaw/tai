@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: "Visual design audit with fix loop. First Impression phase, 10-category checklist, AI Slop detection, dual scoring (Design A-F / Slop A-F), CSS-first fixes with atomic commits."
+description: "Visual design audit with fix loop. Use when the user says 'this looks ugly', 'check the design', 'visual QA', 'polish the UI', 'design audit', 'is this pixel perfect', 'it looks off', 'make it look good', or after UI changes. 10-category checklist, AI Slop detection, dual scoring (Design/Slop A-F), CSS-first fixes. Also use proactively when UI work lands and visual quality hasn't been verified."
 user-invocable: true
 ---
 

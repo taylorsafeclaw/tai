@@ -24,7 +24,7 @@ process.stdin.on('end', () => {
     const data = JSON.parse(input);
     const agentName = data.agent_name || 'unknown';
     const duration = data.duration_ms || 0;
-    const status = data.exit_status || 'unknown';
+    const status = data.status || data.exit_status || 'unknown';
 
     // Resolve paths relative to CWD (hook runs in project root)
     const taiDir = resolve(process.cwd(), '.tstack');

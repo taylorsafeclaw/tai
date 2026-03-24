@@ -1,6 +1,6 @@
 ---
 name: office-hours
-description: "Product brainstorming. Two modes: Startup (6 forcing questions for product-market fit) and Builder (design thinking for side projects, hackathons, open source). Saves a design doc."
+description: "Product brainstorming and ideation. Use when the user says 'brainstorm this', 'I have an idea', 'is this worth building', 'help me think through this', 'product ideation', 'what should I build', 'validate my idea', or before writing any code for a new project. Two modes: Startup (PMF forcing questions) and Builder (design thinking for side projects). Saves a design doc."
 user-invocable: true
 ---
 

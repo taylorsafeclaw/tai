@@ -1,4 +1,5 @@
 {
+  "_comment": "tstack-specific settings. 'mode' and 'models' are read by tstack commands, not the Claude Code plugin system.",
   "mode": "normal",
   "models": {
     "gate": "haiku",

@@ -1,6 +1,6 @@
 ---
 name: test-gen
-description: "Generate tests for new or modified code. Detects test framework (Vitest, Jest, Playwright), finds existing test patterns, detects test file placement (co-located vs __tests__/), avoids duplicating existing coverage. Supports 'recent' mode via git diff."
+description: "Generate tests for new or modified code. Use when the user says 'write tests', 'add test coverage', 'test this function', 'generate tests', 'we need tests', 'coverage is low', or after implementing features. Detects framework (Vitest, Jest, Playwright), finds existing patterns, avoids duplicating coverage. Also use proactively when new code lands without corresponding tests."
 user-invocable: true
 ---
 

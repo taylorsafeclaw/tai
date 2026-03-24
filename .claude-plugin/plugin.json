@@ -22,7 +22,5 @@
   ],
   "skills": "./skills",
   "hooks": "./hooks/hooks.json",
-  "mcpServers": "./.mcp.json",
-  "lspServers": "./.lsp.json",
-  "outputStyles": "./output-styles/"
+  "rules": "./rules"
 }

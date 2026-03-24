@@ -35,17 +35,20 @@ Use the Agent tool with these parameters:
 
 After gathering context, identify which agents are relevant:
 
-Use Glob to check what's available:
-```
-.claude/agents/*.md
-~/.claude/agents/*.md
-```
+**Agent discovery:**
+1. Glob `.claude/agents/*.md` to find project-specific agents (installed via templates)
+2. If no project agents found, the plugin's core agents are available as fallbacks:
+   - `explorer` (haiku) — read-only codebase exploration
+   - `implementer` (sonnet) — generic implementation
+3. Read frontmatter of discovered agents to extract: name, domain, description, model
+4. Build agent roster grouped by domain
 
 Map the task domains:
-- Backend/Convex changes → `convex` (if available)
-- UI/component changes → `ui` (if available)
-- Both → both agents with coordination needed
-- Neither domain → implement in main context or use `implementer`
+- Schema/database changes → agent with `domain: schema` (if available)
+- Backend/API changes → agent with `domain: backend` (if available)
+- UI/component changes → agent with `domain: frontend` (if available)
+- Both domains → both agents with coordination needed
+- No domain agents → implement in main context or use `implementer`
 
 ## Output format
 
@@ -62,7 +65,7 @@ Map the task domains:
 - Pattern name: example at file:line
 
 ### Available agents
-- convex / ui / implementer / main context
+- List discovered agents by domain, or note "implementer" / "main context" as fallback
 
 ### Gotchas
 - Any non-obvious constraints or requirements

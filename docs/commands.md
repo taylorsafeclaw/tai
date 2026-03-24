@@ -1,6 +1,6 @@
 # Command Reference
 
-All commands are available after running `plugin install` (or `~/tstack/setup`). Invoke with `/<name>` in Claude Code — e.g. `/task "fix the login bug"`.
+All commands are available after installing the plugin (`claude plugin add /path/to/tstack`). Invoke with `/<name>` in Claude Code — e.g. `/task "fix the login bug"`.
 
 ---
 
@@ -20,6 +20,7 @@ All commands are available after running `plugin install` (or `~/tstack/setup`).
 |---------|-------------|----------|-------|
 | `/review-cycle` | Fetch Claude Code GH Action review comments from a PR, classify with confidence scoring, create Linear tickets, fix issues, push, and re-review until clean. | `<PR#> [--ingest \| --ticket \| --fix] [--max-iter N] [--all]` | opus |
 | `/linear` | Run Linear issues through tstack — fetches issue, auto-routes to the right tier, executes, and updates Linear when done. | `<issue ID or query> [--tier task\|feature] [--dry-run]` | sonnet |
+| `/dag-execute` | Build and execute a structured dependency DAG from a reviewed plan. Creates Tasks with blockedBy relationships and agent assignments. | `[plan source]` | sonnet |
 
 ---
 

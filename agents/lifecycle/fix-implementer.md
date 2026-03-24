@@ -3,6 +3,7 @@ name: fix-implementer
 description: "Implement a single fix for a review issue. Reads context via git blame, applies minimal targeted fix, commits atomically with Linear ticket reference."
 tools: Bash, Read, Grep, Edit, Write
 model: sonnet
+role: lifecycle
 maxTurns: 15
 ---
 

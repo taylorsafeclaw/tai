@@ -6,6 +6,7 @@ model: sonnet
 skills:
   - false-positives
   - linear-mappings
+role: lifecycle
 maxTurns: 15
 ---
 

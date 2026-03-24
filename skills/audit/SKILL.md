@@ -1,6 +1,6 @@
 ---
 name: audit
-description: "Security and performance audit. Checks OWASP top 10 (injection, auth bypass, SSRF, secrets exposure), N+1 queries, race conditions, dependency vulnerabilities. Use after implementing features or before shipping."
+description: "Security and performance audit. Use when the user says 'is this secure', 'security review', 'check for vulnerabilities', 'OWASP check', 'before we ship to production', 'audit this', 'any security issues', or before deploying. Checks OWASP top 10, N+1 queries, race conditions, dependency vulnerabilities. Also use proactively when new auth, API, or data-handling code lands without review."
 user-invocable: true
 ---
 

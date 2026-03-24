@@ -3,6 +3,7 @@ name: commit-analyzer
 description: "Analyze diffs for logical groupings — file clusters, module boundaries, import chains. Used by /commit --split and /commit --multi to propose atomic commit boundaries."
 tools: Bash, Read, Grep, Glob
 model: sonnet
+role: lifecycle
 maxTurns: 20
 ---
 

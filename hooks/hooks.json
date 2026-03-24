@@ -29,6 +29,10 @@
         {
           "command": "node ./hooks/freeze.js",
           "description": "Block edits outside the frozen directory scope (when active)"
+        },
+        {
+          "command": "node ./hooks/clear-quality-flag.js",
+          "description": "Clear quality-passed flag when source files are edited (forces re-run of lint/build/test)"
         }
       ]
     },

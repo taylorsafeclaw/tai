@@ -60,16 +60,14 @@ tstack v0.3.0 — Claude Code plugin for structured dev workflows
 /new-command                  Scaffold new command
 
 ━━━ AGENTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Core:
-  explorer (haiku)            Read-only codebase exploration
-  implementer (sonnet)        Generic implementation
 
-Lifecycle:
-  detect (haiku)              Detect dev lifecycle phase
-  commit-analyzer (sonnet)    Analyze diffs for logical groupings
-  review-ingester (sonnet)    Parse + classify PR review comments
-  fix-implementer (sonnet)    Implement single review fix
+Glob for agent files and read their frontmatter:
+1. Check `.claude/agents/*.md` for project-specific agents
+2. List the plugin's core agents from `agents/core/` and `agents/lifecycle/`
+3. For each agent: show name (model) — description
 
 ━━━ SKILLS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[List skill names + descriptions from skills/*/SKILL.md frontmatter]
+
+Glob `skills/*/SKILL.md` and read frontmatter of each.
+For each skill with `user-invocable: true`: show name — description
 ```

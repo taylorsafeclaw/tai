@@ -1,6 +1,6 @@
 ---
 name: qa
-description: "Browser QA with fix loop. Tests user flows, triages issues by severity, fixes bugs with atomic commits, and re-verifies. Three tiers: Quick (critical/high), Standard (+medium), Exhaustive (+cosmetic). Supersedes dogfood."
+description: "Browser QA with fix loop. Tests user flows, triages by severity, fixes bugs with atomic commits. Use when the user says 'test my app', 'check for bugs', 'is this ready to ship', 'run QA', 'does this work', 'smoke test', 'test the site', 'find issues', or after UI changes. Three tiers: Quick, Standard, Exhaustive. Also use proactively when code changes affect user-facing flows."
 user-invocable: true
 ---
 

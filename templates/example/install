@@ -19,7 +19,7 @@ TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Installing example template into $PROJECT_ROOT/.claude/"
 echo ""
 
-mkdir -p "$PROJECT_ROOT/.claude/agents" "$PROJECT_ROOT/.claude/commands"
+mkdir -p "$PROJECT_ROOT/.claude/agents" "$PROJECT_ROOT/.claude/commands" "$PROJECT_ROOT/.claude/skills"
 
 # Copy agents
 agent_count=0
@@ -49,5 +49,26 @@ if [ -d "$TEMPLATE_DIR/commands" ] && [ "$cmd_count" -eq 0 ]; then
   echo "  ⚠ Warning: commands/ directory exists but no .md files were copied"
 fi
 
+# Copy skills
+skill_count=0
+if [ -d "$TEMPLATE_DIR/skills" ]; then
+  for src_dir in "$TEMPLATE_DIR/skills"/*/; do
+    [ -d "$src_dir" ] || continue
+    skill_name="$(basename "$src_dir")"
+    mkdir -p "$PROJECT_ROOT/.claude/skills/$skill_name"
+    for src in "$src_dir"*; do
+      [ -f "$src" ] || continue
+      filename="$(basename "$src")"
+      cp "$src" "$PROJECT_ROOT/.claude/skills/$skill_name/$filename"
+    done
+    echo "  ✓ skills/$skill_name/"
+    skill_count=$((skill_count + 1))
+  done
+fi
+
+if [ -d "$TEMPLATE_DIR/skills" ] && [ "$skill_count" -eq 0 ]; then
+  echo "  ⚠ Warning: skills/ directory exists but no skills were copied"
+fi
+
 echo ""
-echo "Done. Copied $agent_count agent(s) and $cmd_count command(s). Re-run this script any time to update."
+echo "Done. Copied $agent_count agent(s), $cmd_count command(s), and $skill_count skill(s). Re-run this script any time to update."

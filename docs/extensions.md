@@ -1,17 +1,17 @@
 # Extension System
 
-tstack is extended by dropping `*.md` files in specific directories. No registration, no config — Claude Code discovers them automatically.
+tstack is a Claude Code plugin — installed via `claude plugin add /path/to/tstack`. It is extended by dropping `*.md` files in specific directories. No registration, no config — the plugin system discovers them automatically.
 
 ## Directory priority
 
 ```
-<project>/.claude/agents/tstack-*.md       ← highest (project override)
-<project>/.claude/commands/tstack-*.md
+<project>/.claude/agents/*.md              ← highest (project override)
+<project>/.claude/commands/*.md
     ↓
-~/tstack/extensions/                       ← personal add-ons (gitignored)
+<tstack>/extensions/                       ← personal add-ons (gitignored)
     ↓
-~/tstack/agents/                           ← core global agents
-~/tstack/commands/                         ← core global commands (lowest)
+<tstack>/agents/                           ← core plugin agents
+<tstack>/commands/                         ← core plugin commands (lowest)
 ```
 
 A project-level `<name>.md` overrides the global one. This is how project templates work — they install project-specific agents that know about your schema, auth patterns, and conventions.
@@ -20,20 +20,18 @@ A project-level `<name>.md` overrides the global one. This is how project templa
 
 **Global (available in all projects):**
 ```bash
-cp my-command.md ~/tstack/commands/tstack-my-command.md
-# Re-run setup to refresh symlink:
-~/tstack/setup
+cp my-command.md <tstack>/commands/<category>/my-command.md
 ```
 
 **Personal add-on (global but not in git):**
 ```bash
-mkdir -p ~/tstack/extensions
-cp my-command.md ~/tstack/extensions/tstack-my-command.md
+mkdir -p <tstack>/extensions
+cp my-command.md <tstack>/extensions/my-command.md
 ```
 
 **Project-only:**
 ```bash
-cp my-command.md <project>/.claude/commands/tstack-my-command.md
+cp my-command.md <project>/.claude/commands/my-command.md
 ```
 
 ## Adding an agent
@@ -41,16 +39,15 @@ cp my-command.md <project>/.claude/commands/tstack-my-command.md
 Same pattern:
 ```bash
 # Project-only (most common):
-cp my-agent.md <project>/.claude/agents/tstack-my-agent.md
+cp my-agent.md <project>/.claude/agents/my-agent.md
 
 # Global:
-cp my-agent.md ~/tstack/agents/tstack-my-agent.md
-~/tstack/setup
+cp my-agent.md <tstack>/agents/<category>/my-agent.md
 ```
 
 ## Naming convention
 
-All tstack files must be prefixed ``. This prevents collisions with other frameworks (`gsd-*`, `gstack-*`, etc.) and makes them instantly recognizable.
+Filenames are bare — e.g., `task.md`, `implementer.md`, not `tstack-task.md`. The plugin system handles namespacing automatically. In frontmatter, the `name:` field uses a `tstack:` colon namespace (e.g., `name: tstack:task`), but filenames themselves need no prefix.
 
 Examples: `my-command.md`, `stripe.md`, `rails.md`
 
@@ -59,8 +56,8 @@ Examples: `my-command.md`, `stripe.md`, `rails.md`
 Use the built-in scaffolders instead of writing from scratch:
 
 ```
-/tstack-new-command    → asks what the command should do, writes the file
-/tstack-new-agent      → asks about domain + bootstrap, writes the file
+/new-command    → asks what the command should do, writes the file
+/new-agent      → asks about domain + bootstrap, writes the file
 ```
 
 ## Project templates
@@ -68,7 +65,7 @@ Use the built-in scaffolders instead of writing from scratch:
 For reusable project setups, create a template directory:
 
 ```
-~/tstack/templates/<project-name>/
+<tstack>/templates/<project-name>/
 ├── install                 ← copies agents + commands to project .claude/
 ├── agents/
 │   └── *.md
@@ -89,7 +86,7 @@ Agents start project-specific and are promoted to global when they prove useful 
 
 1. Identify what's project-specific vs generic in the agent
 2. Extract project-specific bootstrap/patterns into the project override
-3. Move the generic version to `~/tstack/agents/`
+3. Move the generic version to `<tstack>/agents/<category>/`
 4. The project keeps its override — the global version is the fallback
 
 Example: A project-specific `validate` agent that knows your exact `pnpm` commands could be generalized to auto-detect the package manager and test runner, then promoted to global.
