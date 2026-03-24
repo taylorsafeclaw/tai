@@ -21,7 +21,7 @@ First, assess the scope:
 - Ask: "Ready to implement?"
 
 **Large (>3 files or multiple domains):**
-- Before writing the plan, load the `leader` skill and run the plan-tier interview (1-2 premise checks)
+- Before writing the plan, read `skills/leader/SKILL.md` and run the plan-tier interview (1-2 premise checks)
 - Header context: task name from `$ARGUMENTS`, model `o`, mission position from `.tstack/state.json` if active
 - After premises are locked, proceed to plan format below
 - Determine plan location:

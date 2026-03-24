@@ -30,7 +30,7 @@ Before advancing to the next step:
 
 ### Step 0 — Leader Interview
 
-Load the `leader` skill and run the feature-tier interview (3 questions max).
+Read `skills/leader/SKILL.md` and follow its instructions for the feature-tier interview (3 questions max).
 
 Header context:
 - Feature name: `$ARGUMENTS`

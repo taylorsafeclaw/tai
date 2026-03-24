@@ -15,7 +15,7 @@ Mission description or requirements: $ARGUMENTS
 
 ### 0. Leader Interview
 
-Load the `leader` skill and run the mission-tier interview (4-5 questions).
+Read `skills/leader/SKILL.md` and follow its instructions for the mission-tier interview (5 questions).
 
 Header context:
 - Mission name: `$ARGUMENTS`

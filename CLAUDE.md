@@ -62,7 +62,7 @@ cd cli && cargo install --path .   # puts `tstack` on PATH
 - Agents: `agents/<category>/<name>.md` with frontmatter (`name`, `description`, `model`, `tools`, `maxTurns`)
 - Skills: `skills/<name>/SKILL.md` with frontmatter (`name`, `description`, `user-invocable`)
 - Project templates: `templates/<project>/` with an `install` script
-- **Always use `/skill-creator` when creating or modifying skill files** — never edit skills directly
+- **Always use `/skill-creator` when creating or modifying skill files** — never edit skills directly (exception: initial bootstrap of a new skill before `/skill-creator` exists)
 
 ## Adding components
 

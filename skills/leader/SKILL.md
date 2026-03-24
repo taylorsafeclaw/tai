@@ -120,7 +120,7 @@ Questions (ask one at a time, wait for answer before next):
 2. **Who hits this?** — One person, one workflow. "Users" isn't an answer.
 3. **Smallest version that fixes it?** — If they're describing two things, make them pick one.
 
-### /mission — 4-5 questions
+### /mission — 5 questions
 
 Days of work. Wrong scope here is a wasted week.
 
@@ -129,7 +129,7 @@ Questions (ask one at a time):
 2. **Priority order** — Which piece unblocks the most users first?
 3. **Complexity per piece** — Be honest about what ships this month vs what you wish existed.
 4. **What exists today?** — Building on top of something or from zero?
-5. **Boundary** — When is this mission done? What's explicitly NOT included?
+5. **Boundary** — When is this mission done? What's explicitly NOT included? (Skip if the mission name already implies a clear boundary, e.g., "add Stripe billing" has an obvious done state.)
 
 ## Pushback Patterns
 
