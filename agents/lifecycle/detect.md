@@ -4,6 +4,7 @@ description: "Detect current dev lifecycle phase by analyzing git state, open PR
 tools: Bash, Read, Grep
 model: haiku
 color: cyan
+role: lifecycle
 maxTurns: 10
 ---
 

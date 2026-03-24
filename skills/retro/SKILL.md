@@ -1,6 +1,6 @@
 ---
 name: retro
-description: "Weekly engineering retrospective. Analyzes git history for shipping velocity, commit patterns, hotspot files, and work sessions. Persistent history in .tstack/retros/. Supports time ranges and week-over-week comparison."
+description: "Weekly engineering retrospective. Use when the user says 'what did we ship', 'weekly retro', 'engineering retrospective', 'how was this week', 'show me our velocity', 'what got done', 'summarize this sprint', or at end of a work cycle. Analyzes git history for velocity, commit patterns, hotspot files. Persistent in .tstack/retros/. Also use proactively when a week ends or a milestone ships."
 user-invocable: true
 model: haiku
 ---

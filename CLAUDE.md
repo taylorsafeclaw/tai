@@ -9,21 +9,21 @@ tstack/
 ├── .claude-plugin/
 │   └── plugin.json             ← plugin manifest
 ├── commands/                   ← slash commands, organized by category
-│   ├── git/                    ← branch, commit, pr, ship, review
-│   ├── lifecycle/              ← task, feature, mission, execute, validate
-│   ├── planning/               ← plan, context, scope, roadmap
-│   ├── quality/                ← lint, audit, test-gen
-│   ├── testing/                ← qa, dogfood
-│   ├── general/                ← help, status, new-command, new-agent
-│   └── utility/                ← simplify, research, changelog
+│   ├── git/                    ← commit, ship, undo
+│   ├── lifecycle/              ← dag-execute, linear, review-cycle
+│   ├── planning/               ← context, execute, feature, mission, next, plan, scope, task
+│   ├── quality/                ← debug, plan-review, refactor, review, validate, verify
+│   ├── testing/                ← test
+│   ├── general/                ← audit, changelog, explain, find-examples, office-hours, research, simplify, summarize
+│   └── utility/                ← help, new-agent, new-command, resume, status
 ├── agents/                     ← subagents, organized by category
-│   ├── core/                   ← implementer, reviewer, planner, researcher
-│   └── lifecycle/              ← executor, validator, shipper
+│   ├── core/                   ← explorer, implementer
+│   └── lifecycle/              ← commit-analyzer, detect, fix-implementer, review-ingester
 ├── skills/                     ← skills (flat), each a <name>/SKILL.md
 ├── hooks/
 │   ├── hooks.json              ← hook registry
 │   └── *.js                    ← individual hook scripts
-├── rules/                      ← path-scoped rule files
+├── rules/                      ← path-scoped rule files (convex.md, frontend.md, tests.md)
 ├── settings.json               ← default Claude settings
 ├── .mcp.json                   ← MCP server config
 ├── .lsp.json                   ← LSP config
@@ -89,7 +89,14 @@ maxTurns: 30
 ---
 ```
 
-The `domain` field enables dynamic agent discovery. Commands like `/feature` and `/execute` glob `.claude/agents/*.md`, read frontmatter, and dispatch agents by domain in this order: schema -> backend -> infrastructure (parallel) -> integration -> frontend -> testing -> review -> quality.
+The `domain` field is for **project-specific agents** that participate in Agent Team dispatch. Core plugin agents (explorer, implementer, commit-analyzer, detect, fix-implementer, review-ingester) are utility/lifecycle agents — they don't have domain fields because they're dispatched directly by commands, not by domain routing. Only project agents installed via templates (e.g., a `convex` agent with `domain: schema` or a `ui` agent with `domain: frontend`) use domain-based discovery. Commands like `/feature` and `/execute` glob `.claude/agents/*.md`, read frontmatter, and dispatch agents by domain in this order: schema -> backend -> infrastructure (parallel) -> integration -> frontend -> testing -> review -> quality.
+
+**Extended agent frontmatter:**
+- `skills: [list]` — Skills the agent should load (used by review-ingester)
+- `color: <name>` — Display color hint for CLI tooling (used by detect)
+
+**Extended command frontmatter:**
+- `allowed-tools: <list>` — Restrict which tools the command can use (used by commit, review-cycle, dag-execute)
 
 **New skill** — create `skills/<name>/SKILL.md`. Auto-discovered.
 

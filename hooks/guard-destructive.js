@@ -32,6 +32,24 @@ process.stdin.on('end', () => {
       process.exit(2);
     }
 
+    // Block git clean (removes untracked files)
+    else if (command.match(/\bgit\s+clean\s+-[a-zA-Z]*f/)) {
+      process.stdout.write(JSON.stringify({
+        decision: "block",
+        reason: "git clean removes untracked files permanently. Use git stash -u to safely stash them instead."
+      }));
+      process.exit(2);
+    }
+
+    // Block git checkout -- . or git checkout . (discards all changes)
+    else if (command.match(/\bgit\s+checkout\s+(--\s+)?\.(\s|$)/)) {
+      process.stdout.write(JSON.stringify({
+        decision: "block",
+        reason: "git checkout -- . discards all uncommitted changes. Use git stash to save them first."
+      }));
+      process.exit(2);
+    }
+
     // Block rm -rf on dangerous paths
     else if (command.match(/\brm\s+-rf\s+[\/~]/) || command.match(/\brm\s+-rf\s+\.(\s|$)/)) {
       process.stdout.write(JSON.stringify({

@@ -1,6 +1,6 @@
 ---
 name: deps
-description: "Dependency analyzer. Finds unused deps, duplicate packages, bundle size bloat, license issues, and suggests lighter alternatives. Use during cleanup, before releases, or when bundle size grows."
+description: "Dependency analyzer. Finds unused deps, duplicates, bundle bloat, license issues, and suggests lighter alternatives. Use when the user says 'why is the bundle so big', 'check dependencies', 'unused packages', 'license audit', 'dependency review', 'update packages', 'too many deps', or before releases. Also use proactively when you notice bloated node_modules or redundant packages."
 user-invocable: true
 ---
 

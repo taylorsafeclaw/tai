@@ -26,7 +26,7 @@ process.stdin.on('end', () => {
     const command = toolInput.command || '';
 
     // Block npm and yarn (enforce pnpm)
-    if (command.match(/\b(npm|yarn)\s+(install|add|remove|i)\b/)) {
+    if (command.match(/\b(npm|yarn)\s+(install|add|remove|run|test|start|exec|i)\b/)) {
       process.stdout.write(JSON.stringify({
         decision: "block",
         reason: "Use pnpm instead of npm/yarn. Run: pnpm install, pnpm add, etc."

@@ -46,12 +46,14 @@ Read the plan file. Extract:
 - Dependencies between tasks
 
 **Agent discovery:**
-1. Glob `.claude/agents/*.md` to find all project agents
-2. Read frontmatter of each to extract: name, domain, description, model
-3. Build agent roster grouped by domain
-4. Match plan tasks to agents by domain:
+1. Glob `.claude/agents/*.md` to find project-specific agents (installed via templates)
+2. If no project agents found, the plugin's core agents are available as fallbacks:
+   - `explorer` (haiku) — read-only codebase exploration
+   - `implementer` (sonnet) — generic implementation
+3. Read frontmatter of discovered agents to extract: name, domain, description, model
+4. Build agent roster grouped by domain
+5. Match plan tasks to agents by domain:
    - schema → backend → infrastructure (parallel if independent) → integration → frontend → testing → review → quality
-If no project agents exist, fall back to the generic implementer agent.
 
 ## Step 2 — Agent coordination
 

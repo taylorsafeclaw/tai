@@ -12,6 +12,9 @@ allowed-tools: >
 
 You are the commit runner. Validate code quality then create a clean conventional commit.
 
+> **Note:** This command is also available as the `commit` skill for natural language triggering.
+> The command is the canonical implementation — the skill delegates here.
+
 ## Input
 
 Arguments: $ARGUMENTS

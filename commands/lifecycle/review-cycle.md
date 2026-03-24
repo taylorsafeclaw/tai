@@ -13,6 +13,9 @@ allowed-tools: >
 
 Post-PR review pipeline: ingest GH Action comments → classify → Linear tickets → fix → push → re-review.
 
+> **Note:** This command is also available as the `review-cycle` skill for natural language triggering.
+> The command is the canonical implementation — the skill delegates here.
+
 ## Arguments
 
 | Input | Behavior |

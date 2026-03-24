@@ -1,6 +1,6 @@
 ---
 name: doc-sync
-description: "Post-ship documentation sync. Cross-references .md files against the diff, updates drifted docs (README, ARCHITECTURE, CONTRIBUTING, CLAUDE.md, CHANGELOG), polishes CHANGELOG voice, optionally bumps VERSION."
+description: "Post-ship documentation sync. Use when the user says 'update the docs', 'docs are stale', 'sync documentation', 'README is wrong', 'CHANGELOG needs updating', or after shipping features. Cross-references .md files against the diff, updates drifted docs (README, CLAUDE.md, CHANGELOG), bumps VERSION. Also use proactively after code ships and docs haven't been updated."
 user-invocable: true
 ---
 

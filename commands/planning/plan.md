@@ -37,11 +37,11 @@ One sentence describing what success looks like.
 
 ## Tasks
 
-### Backend (tai-convex)
+### Backend (backend-agent)
 - [ ] Task 1
 - [ ] Task 2
 
-### Frontend (tai-ui)
+### Frontend (frontend-agent)
 - [ ] Task 3 (blocked by backend tasks)
 - [ ] Task 4
 

@@ -31,10 +31,13 @@ Before advancing to the next step:
 ### Step 1 — Context + Agent Discovery
 
 **Agent discovery:**
-1. Glob `.claude/agents/*.md` to find all project agents
-2. Read frontmatter of each to extract: name, domain, description, model
-3. Build agent roster grouped by domain
-4. Match plan tasks to agents by domain:
+1. Glob `.claude/agents/*.md` to find project-specific agents (installed via templates)
+2. If no project agents found, the plugin's core agents are available as fallbacks:
+   - `explorer` (haiku) — read-only codebase exploration
+   - `implementer` (sonnet) — generic implementation
+3. Read frontmatter of discovered agents to extract: name, domain, description, model
+4. Build agent roster grouped by domain
+5. Match plan tasks to agents by domain:
    - schema tasks → agents with domain: schema
    - backend tasks → agents with domain: backend
    - infrastructure tasks → agents with domain: infrastructure (parallel with backend if independent)
@@ -43,8 +46,6 @@ Before advancing to the next step:
    - testing tasks → agents with domain: testing (after implementation)
    - review tasks → agents with domain: review (after testing)
    - quality tasks → agents with domain: quality (final gate)
-
-If no project agents exist, fall back to the generic implementer agent.
 
 **Codebase exploration:**
 Use the Agent tool to explore the codebase:
@@ -64,10 +65,23 @@ Read state files if they exist:
 - `.tstack/STATE.md` — project position, what's in progress, resume instructions
 - `.tstack/DECISIONS.md` — locked decisions to respect
 
+Ensure `.tstack` directory exists for state writes:
+```bash
+mkdir -p .tstack
+```
+
 If a mission is active (`.tstack/state.json` exists), determine the current feature number and create the feature directory:
 ```bash
 mkdir -p .tstack/features/<n>
 ```
+
+**Initialize state files (if they don't exist):**
+If `.tstack/STATE.md` doesn't exist, create it with:
+- Current Position: Feature — $ARGUMENTS, Phase: planning, Branch: (current)
+- What's In Progress: "Starting feature: $ARGUMENTS"
+- Resume Instructions: "Confirm plan, then begin implementation"
+
+This enables `/resume` to work even for standalone features (no mission required).
 
 **Write RESEARCH.md** from explorer findings:
 Write `.tstack/features/<n>/RESEARCH.md` (or `RESEARCH.md` in project root if no mission) with:

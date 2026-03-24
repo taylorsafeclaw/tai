@@ -21,40 +21,38 @@ cd cli && cargo build --release
 
 Status dashboard — shows ASCII logo, item counts with link health, and config paths.
 
-### `plugin install`
+### `tstack install`
 
-Symlinks all commands, agents, and skills from the tstack repo to `~/.claude/`. Equivalent to running the `setup` bash script. Idempotent — safe to re-run.
+Registers tstack components with Claude Code. Idempotent — safe to re-run.
 
 ### `tstack uninstall`
 
-Removes all `*` symlinks from `~/.claude/commands/`, `~/.claude/agents/`, and `~/.claude/skills/`. Does not touch project-level `.claude/` files.
+Removes tstack components from Claude Code. Does not touch project-level `.claude/` files.
 
 ### `tstack list [commands|agents|skills|hooks|all]`
 
-Pretty-prints installed items with link status, description, and model. Defaults to `all`.
+Pretty-prints installed items with status, description, and model. Defaults to `all`.
 
 Status icons:
-- `●` green — linked and healthy
-- `●` red — broken symlink (target missing)
-- `●` yellow — conflict (non-symlink file exists)
-- `○` dim — not linked
+- `●` green — healthy
+- `●` red — error (missing or broken)
+- `●` yellow — conflict
+- `○` dim — not installed
 
 ### `tstack add <command|agent|skill> <name>`
 
-Scaffolds a new item with proper frontmatter template. The `` prefix is added automatically if not provided.
+Scaffolds a new item with proper frontmatter template. Filenames are bare — the plugin system handles namespacing.
 
 ```bash
-tstack add command my-thing    # → commands/tstack-my-thing.md
-tstack add agent reviewer      # → agents/reviewer.md
-tstack add skill linter        # → skills/tstack-linter/SKILL.md
+tstack add command my-thing    # → commands/<category>/my-thing.md
+tstack add agent reviewer      # → agents/<category>/reviewer.md
+tstack add skill linter        # → skills/linter/SKILL.md
 ```
-
-Run `plugin install` after adding to create the symlink.
 
 ### `tstack doctor`
 
 Full diagnostic:
-- **Symlinks** — checks all items for healthy/broken/missing/conflict status
+- **Components** — checks all commands, agents, and skills for health status
 - **Frontmatter** — validates YAML in all markdown files, warns on missing descriptions
 - **Hooks** — lists available hooks and configuration status
 - **Templates** — inventories available project templates
