@@ -43,7 +43,7 @@ All commands are available after installing the plugin (`claude plugin add /path
 
 | Command | Description | Argument | Model |
 |---------|-------------|----------|-------|
-| `/validate` | Run the quality pipeline — lint, build, test. Stops on first failure. Reports pass/fail with errors. Does not fix anything. | — | haiku |
+| `/validate` | Run the quality pipeline — lint, build, test. Stops on first failure. Reports pass/fail with errors. Does not fix anything. | — | sonnet |
 | `/review` | Code review recent changes — security, logic errors, convention violations. Single pass, high-confidence issues only. | `[files \| staged \| branch]` | sonnet |
 | `/debug` | Systematic debugging — reads error, traces execution path, checks recent changes, proposes a fix. | `<error message or stack trace>` | opus |
 | `/refactor` | Safe refactoring — greps all references first, makes the change, runs quality pipeline. Reverts on failure. | `<what to refactor>` | sonnet |
@@ -79,8 +79,8 @@ All commands are available after installing the plugin (`claude plugin add /path
 
 | Command | Description | Argument | Model |
 |---------|-------------|----------|-------|
-| `/status` | Quick pulse — git state, mission progress if active, one-screen output. | — | haiku |
+| `/status` | Quick pulse — git state, mission progress if active, one-screen output. | — | sonnet |
 | `/resume` | Session continuity — shows git state, reads plan/mission files, summarizes where you are and what's next. | — | sonnet |
-| `/help` | List all available tstack commands, agents, and skills, grouped by tier. | — | haiku |
+| `/help` | List all available tstack commands, agents, and skills, grouped by tier. | — | sonnet |
 | `/new-agent` | Scaffold a new tstack agent with proper frontmatter. Places in the right directory (global or project). | `<agent name and purpose>` | sonnet |
 | `/new-command` | Scaffold a new tstack command with proper frontmatter. Places in the right directory (global or project). | `<command name and purpose>` | sonnet |

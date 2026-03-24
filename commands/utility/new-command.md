@@ -13,12 +13,12 @@ Command name and purpose: $ARGUMENTS
 
 ## Step 1 — Clarify placement
 
-- **Global core (`~/tstack/commands/`) — workflow commands for any project`) — workflow commands for any project
+- **Global core** (`~/tstack/commands/`) — workflow commands for any project
 - **Project** (`.claude/commands/`) — project-specific workflows
 
 ## Step 2 — Clarify model
 
-- **haiku** — fast, simple, reporting
+- **haiku** — not used; use sonnet for lightweight commands (haiku context limits cause issues)
 - **sonnet** — implementation, execution
 - **opus** — planning, research, complex reasoning
 
@@ -55,9 +55,4 @@ $ARGUMENTS description.
 
 ## Step 4 — Write and register
 
-Write to the appropriate directory. If global:
-```bash
-~/tstack/setup  # re-symlinks
-```
-
-Confirm with the user where it was placed.
+Write to the appropriate directory. If adding to the tstack plugin repo, changes take effect on the next Claude Code session — no setup needed. Confirm with the user where it was placed.

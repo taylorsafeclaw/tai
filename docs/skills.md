@@ -10,7 +10,7 @@ Skills live in `skills/<name>/SKILL.md`. Each has a frontmatter header and a bod
 - **Agent-loaded** (`user-invocable: false`) — loaded by agents via the `skills:` frontmatter field, or auto-invoked by commands
 - **Catalog skills** (`disable-model-invocation: true`) — inject static reference data rather than running a procedure; Claude Code reads the content but does not treat it as a callable workflow
 
-Skills are symlinked to `~/.claude/skills/` by `plugin install` (or `./setup`).
+The plugin discovers skills from `skills/` automatically when installed via `claude plugin add`.
 
 ---
 
@@ -244,11 +244,11 @@ disable-model-invocation: true   # only for reference catalogs
 <skill instructions>
 ```
 
-Run `plugin install` (or `./setup`) to symlink it to `~/.claude/skills/`.
+The plugin discovers new skills automatically when installed via `claude plugin add`. No extra setup needed.
 
 ## Skill resolution priority
 
 Same as commands and agents — project-specific overrides global:
 
 1. `<project>/.claude/skills/<name>/SKILL.md` — project-specific
-2. `~/.claude/skills/<name>/SKILL.md` — global (from this repo)
+2. Plugin `skills/<name>/SKILL.md` — from the installed tstack plugin

@@ -17,6 +17,7 @@ Claude Code plugin — opinionated dev framework with three tiers, quality pipel
 | [missions.md](missions.md) | Mission state, ROADMAP.md, state.json format |
 | [agent-teams.md](agent-teams.md) | How Agent Team coordination works |
 | [extensions.md](extensions.md) | All extension points and priority resolution |
+| [EVALUATION.md](EVALUATION.md) | Structure, best practices, LLM judge eval |
 
 ## Quick reference
 
@@ -68,7 +69,7 @@ tstack version            → version + paths
 | Category | Commands |
 |----------|----------|
 | git | commit, ship, undo |
-| lifecycle | review-cycle, linear |
+| lifecycle | review-cycle, linear, dag-execute |
 | planning | task, feature, mission, plan, scope, context, next, execute |
 | quality | validate, review, debug, refactor, verify, plan-review |
 | testing | test |

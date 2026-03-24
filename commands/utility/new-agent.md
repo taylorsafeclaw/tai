@@ -14,7 +14,7 @@ Agent name and purpose: $ARGUMENTS
 ## Step 1 — Clarify placement
 
 Ask (or infer from context):
-- **Global (`~/tstack/agents/`) — general-purpose, useful in any project`) — general-purpose, useful in any project
+- **Global** (`~/tstack/agents/`) — general-purpose, useful in any project
 - **Project** (`.claude/agents/`) — project-specific, uses project patterns
 
 If the agent references project-specific things (Convex, specific UI patterns), it's project-level.
@@ -22,7 +22,7 @@ If the agent references project-specific things (Convex, specific UI patterns), 
 ## Step 2 — Clarify model and capabilities
 
 Based on the purpose:
-- **haiku** — validation, status checks, simple reporting (fast, cheap)
+- **haiku** — not used; use sonnet for lightweight agents (haiku context limits cause issues)
 - **sonnet** — implementation, code generation, review (balanced)
 - **opus** — complex research, planning, multi-step reasoning (powerful)
 
@@ -83,10 +83,6 @@ When spawned by an orchestrator, return:
 
 Write to the appropriate directory. Confirm with user.
 
-## Step 5 — Update setup (if global)
+## Step 5 — Verify (if adding to tstack plugin)
 
-If the agent goes in `~/tstack/agents/`, remind the user to run:
-```bash
-~/tstack/setup
-```
-to re-symlink it.
+If the agent goes in the tstack plugin repo (`agents/<category>/`), changes take effect on the next Claude Code session. No setup needed.

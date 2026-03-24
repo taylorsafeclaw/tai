@@ -2,14 +2,12 @@
 name: dag-execute
 description: |
   Build and execute a structured dependency DAG using Claude Code Tasks from a reviewed plan.
-  Takes plan items (from /autoplan, a spec, or ad-hoc list), analyzes dependencies, creates
+  Takes plan items (from a spec or ad-hoc list), analyzes dependencies, creates
   real Tasks with blockedBy relationships and agent owner assignments, then generates a
   self-contained orchestration prompt. Use when: "generate execution prompt", "create DAG",
   "dag execute", "make the agent team prompt", "turn this plan into waves", "execute this
   with agents", "orchestrate these tasks", "build the execution prompt", "create task DAG",
-  or after any /autoplan approval. Also use when the user says "kick off implementation",
-  "dispatch agents", or "run the plan with agents". Even if the user just says "execute"
-  after an /autoplan approval, this is the right skill.
+  Use when the user says "kick off implementation", "dispatch agents", or "run the plan with agents".
 allowed-tools:
   - Read
   - Grep
@@ -50,13 +48,8 @@ This skill prevents all three failure modes.
 Find the plan items to execute. Check these sources in order:
 
 1. **User provided items directly** — if the user said "execute these 5 things", use those
-2. **Active spec with Decision Audit Trail** — look for the most recent `/autoplan` output:
-   ```bash
-   grep -rl "Decision Audit Trail" docs/ 2>/dev/null | head -3
-   ```
-3. **Plan files** — check `plan.md`, `.tstack/features/*/plan.md`, `docs/superpowers/plans/*.md`
-4. **Test plan artifact** — check `~/.gstack/projects/*/eng-review-test-plan-*.md`
-5. **Ask the user** if nothing found
+2. **Plan files** — check `plan.md`, `.tstack/features/*/plan.md`
+3. **Ask the user** if nothing found
 
 For each item, extract:
 - **ID** — short slug (e.g., `O1`, `schema-prep`, `add-tests`)
@@ -190,7 +183,7 @@ A Task DAG has been created with [N] tasks across [M] waves. Each task has:
 9. If any task fails, mark it `in_progress` still, create a new task describing the blocker, and continue with other unblocked tasks
 
 ### Context Files (read before dispatching)
-- **Design spec:** `[path]` — scroll to Decision Audit Trail for review decisions
+- **Design spec:** `[path]` — design decisions and review notes
 - **Test plan:** `[path]` — test requirements for Wave N-1
 [additional context files]
 

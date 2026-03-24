@@ -25,7 +25,7 @@ If no suitable agent is found, commands fall back to inline implementation.
 Core agents live in `agents/core/` and handle the two universal concerns: understanding the codebase and changing it.
 
 ### `explorer` — Codebase exploration specialist
-**Model:** haiku | **Tools:** Read, Grep, Glob, Bash | **Max turns:** 20
+**Model:** sonnet | **Tools:** Read, Grep, Glob, Bash | **Max turns:** 20
 
 Fast, read-only codebase exploration. Finds files, understands patterns, traces code paths, checks git history, and returns structured findings.
 
@@ -73,7 +73,7 @@ General-purpose implementation agent. Reads CLAUDE.md, follows project patterns,
 Lifecycle agents live in `agents/lifecycle/` and support the post-commit pipeline: detecting where you are, analyzing commits, ingesting PR review comments, and applying fixes.
 
 ### `detect` — Lifecycle phase detector
-**Model:** haiku | **Tools:** Bash, Read, Grep | **Max turns:** 10
+**Model:** sonnet | **Tools:** Bash, Read, Grep | **Max turns:** 10
 
 Analyzes git state, open PRs, review comments, and Linear tickets to determine the current development phase. Used by lifecycle commands to infer context and suggest the next action.
 
@@ -203,7 +203,7 @@ Skills with `disable-model-invocation: true` are reference catalogs (not callabl
 
 | Model | Role | Agents |
 |-------|------|--------|
-| haiku | Fast reads, phase detection, status checks | explorer, detect |
+| sonnet | Fast reads, phase detection, status checks | explorer, detect |
 | sonnet | Building, analysis, fixing, committing | implementer, commit-analyzer, review-ingester, fix-implementer |
 | opus | Reserved for orchestrator commands (planning, mission, review-cycle) | — |
 
@@ -243,7 +243,7 @@ Use `/new-agent` to scaffold or create manually:
 ---
 name: <name>
 description: <one-line description>
-model: sonnet | opus | haiku
+model: sonnet | opus
 tools: Read, Grep, Glob, Edit, Write, Bash
 maxTurns: 30
 skills:          # optional

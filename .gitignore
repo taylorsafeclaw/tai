@@ -25,3 +25,12 @@ cli/Cargo.lock
 # Misc
 *.log
 tmp/
+
+# Browser / build artifacts
+.playwright-mcp/
+docs-site/.astro/
+docs-site/.next/
+docs-site/node_modules/
+
+# Runtime state (when developing tstack itself)
+.tstack/

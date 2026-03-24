@@ -4,77 +4,71 @@ tstack is a collection of markdown files that extend Claude Code. Contributing i
 
 ## What you can contribute
 
-- **Commands** (`commands/tstack-*.md`) — new slash commands
-- **Agents** (`agents/tstack-*.md`) — new specialized agents
-- **Skills** (`skills/tstack-*/SKILL.md`) — new reusable skill modules
+- **Commands** (`commands/<category>/<name>.md`) — new slash commands
+- **Agents** (`agents/<category>/<name>.md`) — new specialized agents
+- **Skills** (`skills/<name>/SKILL.md`) — new reusable skill modules
 - **Hooks** (`hooks/*.js`) — new PreToolUse/PostToolUse hooks
 - **Docs** (`docs/*.md`) — documentation improvements
 - **CLI** (`cli/src/`) — Rust CLI improvements
 
 ## Adding a command
 
-1. Create `commands/tstack-<name>.md` with required frontmatter:
+1. Create `commands/<category>/<name>.md` with required frontmatter:
 
 ```yaml
 ---
-name: tstack-<name>
+name: tstack:<name>
 description: <one-line description>
 argument-hint: "<hint for the user>"
-model: sonnet | opus | haiku
+model: sonnet | opus
 ---
-
-<command instructions>
 ```
 
-2. Test it by running `./setup` and using it in Claude Code
+2. Test it by installing the plugin (`claude plugin add /path/to/tstack`) and using it in Claude Code
 3. Add a line to `docs/commands.md`
 4. Open a PR
 
 ## Adding an agent
 
-1. Create `agents/tstack-<name>.md` with required frontmatter:
+1. Create `agents/<category>/<name>.md` with required frontmatter:
 
 ```yaml
 ---
-name: tstack-<name>
+name: <name>
 description: <one-line description>
-model: sonnet | opus | haiku
+model: sonnet | opus
 tools: Read, Grep, Glob, Edit, Write, Bash
 maxTurns: 30
 ---
-
-<agent instructions>
 ```
 
-2. Test by running `./setup` and spawning the agent from a command
+2. Test by installing the plugin and spawning the agent from a command
 3. Add a section to `docs/agents.md`
 4. Open a PR
 
 ## Adding a skill
 
-1. Create `skills/tstack-<name>/SKILL.md` with frontmatter:
+1. Create `skills/<name>/SKILL.md` with frontmatter:
 
 ```yaml
 ---
-name: tstack-<name>
+name: <name>
 description: "<when to use this skill>"
 user-invocable: true | false
 ---
-
-<skill instructions>
 ```
 
-2. Run `./setup` to symlink it
+2. The plugin discovers skills automatically — no setup needed
 3. Add a section to `docs/skills.md`
 4. Open a PR
 
 ## Guidelines
 
-- **Prefix everything `tstack-`** — prevents collisions with other frameworks
-- **One responsibility per file** — commands should orchestrate, agents should implement
-- **Document the `Return contract`** in every agent — orchestrators depend on it
+- **Namespacing** — commands use `name: tstack:<name>` in frontmatter; agents and skills use plain names
+- **One responsibility per file** — commands orchestrate, agents implement
+- **Document the Return contract** in every agent — orchestrators depend on it
 - **No secrets or credentials** in any files
-- **Test before PR** — run `./setup` and exercise your addition in a real Claude Code session
+- **Test before PR** — install the plugin and exercise your addition in a real Claude Code session
 
 ## CLI development
 

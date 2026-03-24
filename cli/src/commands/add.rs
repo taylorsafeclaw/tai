@@ -1,6 +1,6 @@
-use anyhow::{bail, Result};
 use crate::cli::AddKind;
 use crate::config::TstackConfig;
+use anyhow::{bail, Result};
 
 pub fn run(kind: AddKind, name: String) -> Result<()> {
     let config = TstackConfig::detect()?;
@@ -15,7 +15,7 @@ pub fn run(kind: AddKind, name: String) -> Result<()> {
         AddKind::Skill => add_skill(&config, name)?,
     }
 
-    cliclack::log::info("Run `tstack install` to symlink the new item.")?;
+    cliclack::log::info("Run `tstack install` to link, or if using `claude plugin add`, changes take effect next session.")?;
     cliclack::outro("Created successfully.")?;
 
     Ok(())
@@ -35,8 +35,8 @@ fn add_command(config: &TstackConfig, name: &str) -> Result<()> {
     let model: String = cliclack::select("Model:")
         .item("sonnet", "Sonnet", "fast, good for implementation")
         .item("opus", "Opus", "deep thinking, planning")
-        .item("haiku", "Haiku", "lightweight, validation")
-        .interact().map(|s: &str| s.to_string())?;
+        .interact()
+        .map(|s: &str| s.to_string())?;
 
     let spin = cliclack::spinner();
     spin.start("Creating command...");
@@ -83,8 +83,8 @@ fn add_agent(config: &TstackConfig, name: &str) -> Result<()> {
     let model: String = cliclack::select("Model:")
         .item("sonnet", "Sonnet", "fast, good for implementation")
         .item("opus", "Opus", "deep thinking, planning")
-        .item("haiku", "Haiku", "lightweight, validation")
-        .interact().map(|s: &str| s.to_string())?;
+        .interact()
+        .map(|s: &str| s.to_string())?;
 
     let spin = cliclack::spinner();
     spin.start("Creating agent...");

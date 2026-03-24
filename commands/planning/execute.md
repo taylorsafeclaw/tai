@@ -48,7 +48,7 @@ Read the plan file. Extract:
 **Agent discovery:**
 1. Glob `.claude/agents/*.md` to find project-specific agents (installed via templates)
 2. If no project agents found, the plugin's core agents are available as fallbacks:
-   - `explorer` (haiku) — read-only codebase exploration
+   - `explorer` (sonnet) — read-only codebase exploration
    - `implementer` (sonnet) — generic implementation
 3. Read frontmatter of discovered agents to extract: name, domain, description, model
 4. Build agent roster grouped by domain

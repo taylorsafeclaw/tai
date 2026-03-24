@@ -35,6 +35,7 @@ TIER 3: MISSION   → /mission "build this system"  days, multiple features, PRs
 ### Lifecycle
 - `/review-cycle <PR#>` — ingest PR review → fix → re-review loop
 - `/linear <issue>` — Linear issue pipeline
+- `/dag-execute` — build dependency DAG from plan → create Tasks → generate orchestration prompt
 
 ### Planning
 - `/task` — quick fix → commit (no PR)
@@ -86,9 +87,9 @@ Stop on first failure. Never commit broken code.
 
 | Agent | Category | Model | Purpose |
 |-------|----------|-------|---------|
-| explorer | core | haiku | Read-only codebase exploration |
+| explorer | core | sonnet | Read-only codebase exploration |
 | implementer | core | sonnet | Generic implementation |
-| detect | lifecycle | haiku | Detect dev lifecycle phase |
+| detect | lifecycle | sonnet | Detect dev lifecycle phase |
 | commit-analyzer | lifecycle | sonnet | Analyze diffs for logical groupings |
 | review-ingester | lifecycle | sonnet | Parse + classify PR review comments |
 | fix-implementer | lifecycle | sonnet | Implement single review fix |
